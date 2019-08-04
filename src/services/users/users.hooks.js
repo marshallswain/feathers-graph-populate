@@ -22,6 +22,13 @@ const namedQueries = {
     posts: {
       comments: {}
     }
+  },
+  postsWithCommentsWithUser: {
+    posts: {
+      comments: {
+        user:{}
+      }
+    }
   }
 }
 // !end

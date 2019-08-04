@@ -175,6 +175,80 @@ describe('Test users/users.service.server.test.js', () => {
         })
       })
     })
+
+    describe('Three Levels Deep', () => {
+      it('populates external, by name', async () => {
+        const users = await app.service('users').find({
+          query: {},
+          $populateParams: {
+            name: 'postsWithCommentsWithUser'
+          },
+          paginate: false,
+          provider: 'socketio'
+        })
+
+        const user = users[0]
+
+        assert(user.posts.length, 'user has posts')
+        user.posts.forEach(post => {
+          assert.strictEqual(post.authorId, user._id, 'post was added to the correct user')
+          assert(!post.author, 'no author was populated, since we did not request one.')
+          assert(post.comments.length, 'comments were populated')
+          post.comments.forEach(comment => {
+            assert.strictEqual(post._id, comment.postId, 'the comment was populated on the correct post.')
+            assert(comment.user, 'populated the user object')
+          })
+        })
+      })
+
+      it('populates nothing external, by query', async () => {
+        const users = await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {
+                comments: {}
+              }
+            }
+          },
+          paginate: false,
+          provider: 'socketio'
+        })
+
+        const user = users[0]
+
+        assert(!user.posts, 'posts were not populated')
+      })
+
+      it('populates internal, by query', async () => {
+        const users = await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {
+                comments: {
+                  user: {}
+                }
+              }
+            }
+          },
+          paginate: false
+        })
+
+        const user = users[0]
+
+        assert(user.posts.length, 'user has posts')
+        user.posts.forEach(post => {
+          assert.strictEqual(post.authorId, user._id, 'post was added to the correct user')
+          assert(!post.author, 'no author was populated, since we did not request one.')
+          assert(post.comments.length, 'comments were populated')
+          post.comments.forEach(comment => {
+            assert.strictEqual(post._id, comment.postId, 'the comment was populated on the correct post.')
+            assert(comment.user, 'populated the user object')
+          })
+        })
+      })
+    })
   })
   describe('Populate Utility', () => {
     it('populates on a single record', async () => {
