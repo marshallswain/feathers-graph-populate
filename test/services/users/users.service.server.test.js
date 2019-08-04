@@ -3,7 +3,7 @@ const assert = require('assert')
 const { readJsonFileSync } = require('@feathers-plus/test-utils')
 const app = require('../../../src/app')
 const config = require('../../../config/default.json')
-const populateUtil = require('../../../lib/util.populate')
+const { populateUtil } = require('../../../lib/index')
 const userPopulates = require('../../../src/services/users/users.schema').populates
 
 // Determine if environment allows test to mutate existing DB data.
