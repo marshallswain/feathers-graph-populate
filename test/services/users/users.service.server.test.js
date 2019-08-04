@@ -356,7 +356,7 @@ describe('Test users/users.service.server.test.js', () => {
           app.service('tasks').remove(null),
         ])
       })
-      it.only('can handle recursive populates', async () => {
+      it('can handle recursive populates', async () => {
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
