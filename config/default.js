@@ -17,7 +17,7 @@ module.exports = {
     jsf: {
       // Configure a maximum amount of items to generate in an array.
       // This will override the maximum items found inside a JSON Schema.
-      maxItems: 15,
+      maxItems: 100,
       // Configure a maximum length to allow generating strings for.
       // This will override the maximum length found inside a JSON Schema.
       maxLength: 40,
@@ -46,8 +46,8 @@ module.exports = {
       localeFallback: 'en',
       // Custom seeders.
       // faz: {
-           // Invoked with: faker: 'faz.foo', faker: { 'faz.foo': 'bar' } or faker: { 'faz.foo': ['bar', 'baz'] }
-           // foo: (p1 = 'hello', p2 = 'world') => `${p1} ${p2}`,
+      // Invoked with: faker: 'faz.foo', faker: { 'faz.foo': 'bar' } or faker: { 'faz.foo': ['bar', 'baz'] }
+      // foo: (p1 = 'hello', p2 = 'world') => `${p1} ${p2}`,
       // },
     },
     // http://chancejs.com/usage/seed.html
