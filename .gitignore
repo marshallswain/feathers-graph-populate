@@ -113,3 +113,9 @@ compiled/
 
 # Others
 data/
+/nedb:/no-connection-string-config-test/users.db
+/nedb:/no-connection-string-config-test/tasks.db
+/nedb:/no-connection-string-config-test/posts.db
+/nedb:/no-connection-string-config-test/org-users.db
+/nedb:/no-connection-string-config-test/group-users.db
+/nedb:/no-connection-string-config-test/comments.db
