@@ -22,7 +22,28 @@ let schema = {
 
   // Fields in the model.
   properties: {
-    // !code: schema_properties // !end
+    // !code: schema_properties
+    name: {
+      type: 'string',
+      faker: 'lorem.words'
+    },
+    ownerIds: {
+      type: 'array',
+      maxItems: 10,
+      items: {
+        type: 'ID',
+        faker: { fk: 'users:next' }
+      }
+    },
+    childTasksIds: {
+      type: 'array',
+      items: {
+        type: 'ID',
+        maxItems: 5,
+        faker: { fk: 'tasks:next'}
+      }
+    }
+    // !end
   },
   // !code: schema_more // !end
 }
