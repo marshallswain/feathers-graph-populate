@@ -1,7 +1,11 @@
 
 // Hooks for service `groups`. (Can be re-generated.)
 const commonHooks = require('feathers-hooks-common')
-// !code: imports // !end
+// !code: imports
+const { populates } = require('./org-users.schema')
+const { populate } = require('../../../lib/index')
+const namedQueries = undefined
+// !end
 
 // !<DEFAULT> code: used
 // eslint-disable-next-line no-unused-vars
@@ -26,9 +30,11 @@ let moduleExports = {
   },
 
   after: {
-    // !<DEFAULT> code: after
+    // !<> code: after
     all: [],
-    find: [],
+    find: [
+      populate({ populates, namedQueries })
+    ],
     get: [],
     create: [],
     update: [],
