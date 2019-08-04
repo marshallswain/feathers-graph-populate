@@ -31,7 +31,7 @@ let schema = {
     },
     ownerIds: {
       type: 'array',
-      maxItems: 2s,
+      maxItems: 2,
       items: {
         type: 'ID',
         faker: { fk: 'users:random' }
