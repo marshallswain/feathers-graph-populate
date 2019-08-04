@@ -19,16 +19,16 @@ let moduleExports = merge({},
         bsonType: "string"
       },
       ownerIds: {
-        maxItems: 10,
+        maxItems: 2,
         items: {
           type: "ID",
           faker: {
-            fk: "users:next"
+            fk: "users:random"
           }
         },
         bsonType: "array"
       },
-      childTasksIds: {
+      childTaskIds: {
         items: {
           type: "ID",
           maxItems: 5,

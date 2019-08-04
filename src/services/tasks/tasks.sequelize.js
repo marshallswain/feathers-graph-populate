@@ -17,7 +17,7 @@ let moduleExports = merge({},
     ownerIds: {
       type: DataTypes.JSONB
     },
-    childTasksIds: {
+    childTaskIds: {
       type: DataTypes.JSONB
     }
   },

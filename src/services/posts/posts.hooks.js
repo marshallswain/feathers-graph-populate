@@ -31,7 +31,7 @@ let moduleExports = {
   },
 
   after: {
-    // !<> code: after
+    // !code: after
     all: [],
     find: [
       populate({ populates, namedQueries })

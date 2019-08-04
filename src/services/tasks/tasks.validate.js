@@ -17,6 +17,7 @@ let base = merge({},
   {
     title: "Tasks",
     description: "Tasks database.",
+    fakeRecords: 50,
     required: [],
     uniqueItemProperties: [],
     properties: {
@@ -26,15 +27,15 @@ let base = merge({},
       },
       ownerIds: {
         type: "array",
-        maxItems: 10,
+        maxItems: 2,
         items: {
           type: ID,
           faker: {
-            fk: "users:next"
+            fk: "users:random"
           }
         }
       },
-      childTasksIds: {
+      childTaskIds: {
         type: "array",
         items: {
           type: ID,

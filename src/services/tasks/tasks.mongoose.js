@@ -16,7 +16,7 @@ let moduleExports = merge({},
         type: mongoose.Schema.Types.ObjectId
       }
     ],
-    childTasksIds: [
+    childTaskIds: [
       {
         type: mongoose.Schema.Types.ObjectId,
         maxItems: 5

@@ -17,6 +17,7 @@ let base = merge({},
   {
     title: "Comments",
     description: "Comments database.",
+    fakeRecords: 40,
     required: [],
     uniqueItemProperties: [],
     properties: {
