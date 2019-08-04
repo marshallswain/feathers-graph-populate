@@ -2,7 +2,7 @@
   "options": {
     "ver": "1.0.0",
     "inspectConflicts": false,
-    "semicolons": true,
+    "semicolons": false,
     "freeze": [],
     "ts": false
   },

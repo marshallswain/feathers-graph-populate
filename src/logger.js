@@ -1,6 +1,6 @@
 
 // Logger. (Can be re-generated.)
-const { createLogger, format, transports } = require('winston');
+const { createLogger, format, transports } = require('winston')
 // !code: imports // !end
 // !code: init // !end
 
@@ -22,10 +22,10 @@ const moduleExports = createLogger({
   ],
   // !end
   // !code: moduleExports // !end
-});
+})
 
 // !code: exports // !end
-module.exports = moduleExports;
+module.exports = moduleExports
 
 // !code: funcs // !end
 // !code: end // !end

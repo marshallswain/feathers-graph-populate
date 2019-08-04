@@ -7,10 +7,10 @@
 // eslint-disable-next-line no-unused-vars
 let moduleExports = function (app) {
   // !code: func_return // !end
-};
+}
 
 // !code: exports // !end
-module.exports = moduleExports;
+module.exports = moduleExports
 
 // !code: funcs // !end
 // !code: end // !end
