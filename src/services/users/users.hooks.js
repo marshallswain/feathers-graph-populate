@@ -1,7 +1,10 @@
 
 // Hooks for service `users`. (Can be re-generated.)
 const commonHooks = require('feathers-hooks-common')
-// !code: imports // !end
+// !code: imports
+const { populates } = require('./users.schema')
+const { populate } = require('../../../lib/index')
+// !end
 
 // !<DEFAULT> code: used
 // eslint-disable-next-line no-unused-vars
@@ -10,7 +13,18 @@ const { iff } = commonHooks
 const { create, update, patch, validateCreate, validateUpdate, validatePatch } = require('./users.validate')
 // !end
 
-// !code: init // !end
+// !code: init
+const namedQueries = {
+  withPosts: {
+    posts: {}
+  },
+  postsWithComments: {
+    posts: {
+      comments: {}
+    }
+  }
+}
+// !end
 
 let moduleExports = {
   before: {
@@ -26,9 +40,13 @@ let moduleExports = {
   },
 
   after: {
-    // !<DEFAULT> code: after
-    all: [],
-    find: [],
+    // !<> code: after
+    all: [
+
+    ],
+    find: [
+      populate({ populates, namedQueries })
+    ],
     get: [],
     create: [],
     update: [],

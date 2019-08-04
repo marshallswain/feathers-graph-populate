@@ -10,7 +10,7 @@ let schema = {
   description: 'Users database.',
   // !end
   // !code: schema_definitions
-  fakeRecords: 10,
+  fakeRecords: 5,
   // !end
 
   // Required fields.
@@ -102,7 +102,7 @@ let moduleExports = {
       service: 'posts',
       nameAs: 'posts',
       keyHere: '_id',
-      keyThere: 'userId',
+      keyThere: 'authorId',
       asArray: true,
       params: {}
     },
