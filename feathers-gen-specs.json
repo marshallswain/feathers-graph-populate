@@ -1,0 +1,22 @@
+{
+  "options": {
+    "ver": "1.0.0",
+    "inspectConflicts": false,
+    "semicolons": true,
+    "freeze": [],
+    "ts": false
+  },
+  "app": {
+    "environmentsAllowingSeedData": "test,development",
+    "seedData": true,
+    "name": "ionomy-deep-populate",
+    "description": "Project ionomy-deep-populate",
+    "src": "src",
+    "packager": "yarn@>= 0.18.0",
+    "providers": [
+      "rest"
+    ]
+  },
+  "services": {},
+  "hooks": {}
+}

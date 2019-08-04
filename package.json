@@ -1,0 +1,56 @@
+{
+  "name": "ionomy-deep-populate",
+  "description": "Project ionomy-deep-populate",
+  "version": "0.0.0",
+  "homepage": "",
+  "main": "src",
+  "keywords": [
+    "feathers"
+  ],
+  "author": {
+    "name": "Marshall Thompson",
+    "email": "marshall@creativeideal.net"
+  },
+  "contributors": [],
+  "bugs": {},
+  "directories": {
+    "lib": "src",
+    "test": "test/"
+  },
+  "engines": {
+    "node": "^12.0.0",
+    "yarn": ">= 0.18.0"
+  },
+  "scripts": {
+    "test": "yarn run eslint && yarn run mocha",
+    "test:all": "yarn run eslint && cross-env NODE_ENV=test npm run mocha",
+    "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "dev": "nodemon src/",
+    "dev:seed": "nodemon src/ --seed",
+    "start": "node src/",
+    "start:seed": "cross-env NODE_ENV=test node src/ --seed",
+    "mocha": "mocha test/ --recursive --exit --timeout 10000"
+  },
+  "dependencies": {
+    "@feathers-plus/test-utils": "^0.3.5",
+    "@feathersjs/configuration": "^2.0.0",
+    "@feathersjs/errors": "^3.3.0",
+    "@feathersjs/express": "^1.2.3",
+    "@feathersjs/feathers": "^3.1.7",
+    "compression": "^1.7.3",
+    "cors": "^2.8.4",
+    "cross-env": "^5.2.0",
+    "feathers-hooks-common": "^4.16.3",
+    "helmet": "^3.13.0",
+    "lodash.merge": "^4.6.1",
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.3.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.7",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2"
+  }
+}
