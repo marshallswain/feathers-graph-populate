@@ -118,7 +118,7 @@ let moduleExports = {
       service: 'tasks',
       nameAs: 'tasks',
       keyHere: '_id',
-      keyThere: 'userId',
+      keyThere: 'ownerIds',
       asArray: true,
       params: {}
     }

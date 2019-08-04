@@ -2,7 +2,7 @@
 // Hooks for service `groupUsers`. (Can be re-generated.)
 const commonHooks = require('feathers-hooks-common')
 // !code: imports
-const { populates } = require('./org-users.schema')
+const { populates } = require('./group-users.schema')
 const { populate } = require('../../../lib/index')
 const namedQueries = undefined
 // !end

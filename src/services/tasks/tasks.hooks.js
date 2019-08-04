@@ -2,7 +2,7 @@
 // Hooks for service `tasks`. (Can be re-generated.)
 const commonHooks = require('feathers-hooks-common')
 // !code: imports
-const { populates } = require('./org-users.schema')
+const { populates } = require('./tasks.schema')
 const { populate } = require('../../../lib/index')
 const namedQueries = undefined
 // !end

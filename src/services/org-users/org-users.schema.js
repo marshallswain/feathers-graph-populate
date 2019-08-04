@@ -84,10 +84,10 @@ let moduleExports = {
   extensions,
   // !code: moduleExports
   populates: {
-    group: {
-      service: 'groups',
-      nameAs: 'group',
-      keyHere: 'groupId',
+    org: {
+      service: 'orgs',
+      nameAs: 'org',
+      keyHere: 'orgId',
       keyThere: '_id',
       asArray: false,
       params: {}
