@@ -1,9 +1,9 @@
 {
   "name": "ionomy-deep-populate",
-  "description": "Project ionomy-deep-populate",
+  "description": "Add lightning fast, GraphQL-like populates to your FeathersJS API.",
   "version": "0.0.0",
   "homepage": "",
-  "main": "src",
+  "main": "lib/index.js",
   "keywords": [
     "feathers"
   ],
@@ -37,12 +37,15 @@
     "@feathersjs/errors": "^3.3.0",
     "@feathersjs/express": "^1.2.3",
     "@feathersjs/feathers": "^3.1.7",
+    "ajv": "5.5.2",
     "compression": "^1.7.3",
     "cors": "^2.8.4",
     "cross-env": "^5.2.0",
     "feathers-hooks-common": "^4.16.3",
+    "feathers-nedb": "^3.1.0",
     "helmet": "^3.13.0",
     "lodash.merge": "^4.6.1",
+    "nedb": "^1.8.0",
     "serve-favicon": "^2.5.0",
     "winston": "^3.0.0"
   },

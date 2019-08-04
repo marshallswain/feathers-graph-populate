@@ -17,6 +17,54 @@
       "rest"
     ]
   },
-  "services": {},
-  "hooks": {}
+  "services": {
+    "users": {
+      "name": "users",
+      "nameSingular": "user",
+      "subFolder": "",
+      "fileName": "users",
+      "adapter": "nedb",
+      "path": "/users",
+      "isAuthEntity": false,
+      "graphql": false
+    },
+    "tasks": {
+      "name": "tasks",
+      "nameSingular": "task",
+      "subFolder": "",
+      "fileName": "tasks",
+      "adapter": "nedb",
+      "path": "/tasks",
+      "isAuthEntity": false,
+      "graphql": false
+    },
+    "posts": {
+      "name": "posts",
+      "nameSingular": "post",
+      "subFolder": "",
+      "fileName": "posts",
+      "adapter": "nedb",
+      "path": "/posts",
+      "isAuthEntity": false,
+      "graphql": false
+    },
+    "comments": {
+      "name": "comments",
+      "nameSingular": "comment",
+      "subFolder": "",
+      "fileName": "comments",
+      "adapter": "nedb",
+      "path": "/comments",
+      "isAuthEntity": false,
+      "graphql": false
+    }
+  },
+  "hooks": {},
+  "connections": {
+    "nedb": {
+      "database": "nedb",
+      "adapter": "nedb",
+      "connectionString": "nedb://../data"
+    }
+  }
 }
