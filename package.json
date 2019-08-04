@@ -1,5 +1,5 @@
 {
-  "name": "ionomy-deep-populate",
+  "name": "@ionomy/deep-populate",
   "description": "Add lightning fast, GraphQL-like populates to your FeathersJS API.",
   "version": "0.0.0",
   "homepage": "",
