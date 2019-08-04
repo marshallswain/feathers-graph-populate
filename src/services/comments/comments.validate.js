@@ -19,7 +19,36 @@ let base = merge({},
     description: "Comments database.",
     required: [],
     uniqueItemProperties: [],
-    properties: {}
+    properties: {
+      text: {
+        type: "string",
+        faker: "lorem.sentence"
+      },
+      userId: {
+        type: ID,
+        faker: {
+          fk: "users:next:_id"
+        }
+      },
+      userFirstName: {
+        type: "string",
+        faker: {
+          fk: "users:next:firstName"
+        }
+      },
+      userLastName: {
+        type: "string",
+        faker: {
+          fk: "users:next:lastName"
+        }
+      },
+      postId: {
+        type: ID,
+        faker: {
+          fk: "posts:next:_id"
+        }
+      }
+    }
   },
   // !end
   // !code: base_more // !end

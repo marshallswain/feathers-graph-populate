@@ -19,7 +19,50 @@ let base = merge({},
     description: "GroupUsers database.",
     required: [],
     uniqueItemProperties: [],
-    properties: {}
+    properties: {
+      userId: {
+        type: ID,
+        faker: {
+          fk: "users:next:_id"
+        }
+      },
+      userFirstName: {
+        type: "string",
+        faker: {
+          fk: "users:next:firstName"
+        }
+      },
+      userLastName: {
+        type: "string",
+        faker: {
+          fk: "users:next:lastName"
+        }
+      },
+      orgId: {
+        type: ID,
+        faker: {
+          fk: "orgs:next:_id"
+        }
+      },
+      orgName: {
+        type: "string",
+        faker: {
+          fk: "orgs:next:name"
+        }
+      },
+      groupId: {
+        type: ID,
+        faker: {
+          fk: "groups:next:_id"
+        }
+      },
+      groupName: {
+        type: "string",
+        faker: {
+          fk: "groups:next:name"
+        }
+      }
+    }
   },
   // !end
   // !code: base_more // !end

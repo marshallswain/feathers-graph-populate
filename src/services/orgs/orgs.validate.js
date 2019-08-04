@@ -19,7 +19,12 @@ let base = merge({},
     description: "Orgs database.",
     required: [],
     uniqueItemProperties: [],
-    properties: {}
+    properties: {
+      name: {
+        type: "string",
+        faker: "company.companyName"
+      }
+    }
   },
   // !end
   // !code: base_more // !end

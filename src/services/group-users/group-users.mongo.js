@@ -13,6 +13,48 @@ let moduleExports = merge({},
     properties: {
       _id: {
         bsonType: "objectId"
+      },
+      userId: {
+        faker: {
+          fk: "users:next:_id"
+        },
+        bsonType: "objectId"
+      },
+      userFirstName: {
+        faker: {
+          fk: "users:next:firstName"
+        },
+        bsonType: "string"
+      },
+      userLastName: {
+        faker: {
+          fk: "users:next:lastName"
+        },
+        bsonType: "string"
+      },
+      orgId: {
+        faker: {
+          fk: "orgs:next:_id"
+        },
+        bsonType: "objectId"
+      },
+      orgName: {
+        faker: {
+          fk: "orgs:next:name"
+        },
+        bsonType: "string"
+      },
+      groupId: {
+        faker: {
+          fk: "groups:next:_id"
+        },
+        bsonType: "objectId"
+      },
+      groupName: {
+        faker: {
+          fk: "groups:next:name"
+        },
+        bsonType: "string"
       }
     }
   },

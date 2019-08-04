@@ -13,6 +13,16 @@ let moduleExports = merge({},
     properties: {
       _id: {
         bsonType: "objectId"
+      },
+      name: {
+        faker: "lorem.word",
+        bsonType: "string"
+      },
+      orgId: {
+        faker: {
+          fk: "orgs:next:_id"
+        },
+        bsonType: "objectId"
       }
     }
   },

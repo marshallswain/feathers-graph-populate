@@ -19,7 +19,18 @@ let base = merge({},
     description: "Posts database.",
     required: [],
     uniqueItemProperties: [],
-    properties: {}
+    properties: {
+      title: {
+        type: "string",
+        faker: "lorem.words"
+      },
+      authorId: {
+        type: ID,
+        faker: {
+          fk: "users:random"
+        }
+      }
+    }
   },
   // !end
   // !code: base_more // !end

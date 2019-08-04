@@ -9,7 +9,9 @@ const mongoose = require('mongoose')
 
 let moduleExports = merge({},
   // !<DEFAULT> code: model
-  {},
+  {
+    name: String
+  },
   // !end
   // !code: moduleExports // !end
 )

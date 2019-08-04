@@ -19,7 +19,18 @@ let base = merge({},
     description: "Groups database.",
     required: [],
     uniqueItemProperties: [],
-    properties: {}
+    properties: {
+      name: {
+        type: "string",
+        faker: "lorem.word"
+      },
+      orgId: {
+        type: ID,
+        faker: {
+          fk: "orgs:next:_id"
+        }
+      }
+    }
   },
   // !end
   // !code: base_more // !end
