@@ -22,7 +22,16 @@ let schema = {
 
   // Fields in the model.
   properties: {
-    // !code: schema_properties // !end
+    // !code: schema_properties
+    name: {
+      type: 'string',
+      faker: 'lorem.word'
+    },
+    orgId: {
+      type: 'ID',
+      faker: { fk: 'orgs:next:_id' }
+    }
+    // !end
   },
   // !code: schema_more // !end
 }
@@ -61,7 +70,27 @@ let extensions = {
 let moduleExports = {
   schema,
   extensions,
-  // !code: moduleExports // !end
+  // !code: moduleExports
+  populates: {
+    members: {
+      service: 'group-users',
+      nameAs: 'members',
+      keyHere: '_id',
+      keyThere: 'groupId',
+      asArray: true,
+      params: {}
+    },
+    org: {
+      service: 'orgs',
+      nameAs: 'org',
+      keyHere: 'orgId',
+      keyThere: '_id',
+      asArray: false,
+      params: {}
+    },
+
+  }
+  // !end
 }
 
 // !code: exports // !end
