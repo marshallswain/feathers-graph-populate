@@ -22,7 +22,36 @@ let schema = {
 
   // Fields in the model.
   properties: {
-    // !code: schema_properties // !end
+    // !code: schema_properties
+    userId: {
+      type: 'ID',
+      faker: { fk: 'users:next:_id' }
+    },
+    userFirstName: {
+      type: 'string',
+      faker: { fk: 'users:next:firstName' }
+    },
+    userLastName: {
+      type: 'string',
+      faker: { fk: 'users:next:lastName' }
+    },
+    orgId: {
+      type: 'ID',
+      faker: { fk: 'orgs:next:_id' }
+    },
+    orgName: {
+      type: 'string',
+      faker: { fk: 'orgs:next:name' }
+    },
+    groupId: {
+      type: 'ID',
+      faker: { fk: 'groups:next:_id' }
+    },
+    groupName: {
+      type: 'string',
+      faker: { fk: 'groups:next:name' }
+    }
+    // !end
   },
   // !code: schema_more // !end
 }
@@ -61,7 +90,35 @@ let extensions = {
 let moduleExports = {
   schema,
   extensions,
-  // !code: moduleExports // !end
+  // !code: moduleExports
+  populates: {
+    user: {
+      service: 'users',
+      nameAs: 'user',
+      keyHere: 'userId',
+      keyThere: '_id',
+      asArray: false,
+      params: {}
+    },
+    org: {
+      service: 'orgs',
+      nameAs: 'org',
+      keyHere: 'orgId',
+      keyThere: '_id',
+      asArray: false,
+      params: {}
+    },
+    group: {
+      service: 'groups',
+      nameAs: 'group',
+      keyHere: 'groupId',
+      keyThere: '_id',
+      asArray: false,
+      params: {}
+    },
+
+  }
+  // !end
 }
 
 // !code: exports // !end
