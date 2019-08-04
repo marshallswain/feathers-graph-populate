@@ -13,6 +13,24 @@ let moduleExports = merge({},
     properties: {
       _id: {
         bsonType: "objectId"
+      },
+      firstName: {
+        faker: "name.firstName",
+        bsonType: "string"
+      },
+      lastName: {
+        faker: "name.lastName",
+        bsonType: "string"
+      },
+      email: {
+        faker: "internet.email",
+        bsonType: "string"
+      },
+      password: {
+        faker: {
+          exp: "ctx.hashPassword(\"12341234\")"
+        },
+        bsonType: "string"
       }
     }
   },

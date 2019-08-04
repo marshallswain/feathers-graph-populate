@@ -10,7 +10,20 @@ const DataTypes = Sequelize.DataTypes
 
 let moduleExports = merge({},
   // !<DEFAULT> code: sequelize_model
-  {},
+  {
+    firstName: {
+      type: DataTypes.TEXT
+    },
+    lastName: {
+      type: DataTypes.TEXT
+    },
+    email: {
+      type: DataTypes.TEXT
+    },
+    password: {
+      type: DataTypes.TEXT
+    }
+  },
   // !end
   // !code: moduleExports // !end
 )

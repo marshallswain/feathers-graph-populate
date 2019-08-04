@@ -19,7 +19,26 @@ let base = merge({},
     description: "Users database.",
     required: [],
     uniqueItemProperties: [],
-    properties: {}
+    properties: {
+      firstName: {
+        type: "string",
+        faker: "name.firstName"
+      },
+      lastName: {
+        type: "string",
+        faker: "name.lastName"
+      },
+      email: {
+        type: "string",
+        faker: "internet.email"
+      },
+      password: {
+        type: "string",
+        faker: {
+          exp: "ctx.hashPassword(\"12341234\")"
+        }
+      }
+    }
   },
   // !end
   // !code: base_more // !end
