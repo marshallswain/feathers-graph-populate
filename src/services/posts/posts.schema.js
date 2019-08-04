@@ -22,7 +22,16 @@ let schema = {
 
   // Fields in the model.
   properties: {
-    // !code: schema_properties // !end
+    // !code: schema_properties
+    title: {
+      type: 'string',
+      faker: 'lorem.words'
+    },
+    authorId: {
+      type: 'ID',
+      faker: { fk: 'users:random' }
+    }
+    // !end
   },
   // !code: schema_more // !end
 }
@@ -61,7 +70,27 @@ let extensions = {
 let moduleExports = {
   schema,
   extensions,
-  // !code: moduleExports // !end
+  // !code: moduleExports
+  populates: {
+    author: {
+      service: 'users',
+      nameAs: 'author',
+      keyHere: 'authorId',
+      keyThere: '_id',
+      asArray: false,
+      params: {}
+    },
+    comments: {
+      service: 'comments',
+      nameAs: 'comments',
+      keyHere: '_id',
+      keyThere: 'postId',
+      asArray: true,
+      params: {}
+    },
+
+  }
+  // !end
 }
 
 // !code: exports // !end
