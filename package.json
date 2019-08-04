@@ -32,6 +32,11 @@
     "mocha": "mocha test/ --recursive --exit --timeout 10000"
   },
   "dependencies": {
+    "feathers-hooks-common": "^4.16.3",
+    "feathers-shallow-populate": "^1.0.0",
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {
     "@feathers-plus/test-utils": "^0.3.5",
     "@feathersjs/configuration": "^2.0.0",
     "@feathersjs/errors": "^3.3.0",
@@ -41,19 +46,16 @@
     "compression": "^1.7.3",
     "cors": "^2.8.4",
     "cross-env": "^5.2.0",
-    "feathers-hooks-common": "^4.16.3",
+    "eslint": "^5.3.0",
     "feathers-nedb": "^3.1.0",
     "helmet": "^3.13.0",
     "lodash.merge": "^4.6.1",
-    "nedb": "^1.8.0",
-    "serve-favicon": "^2.5.0",
-    "winston": "^3.0.0"
-  },
-  "devDependencies": {
-    "eslint": "^5.3.0",
     "mocha": "^5.2.0",
+    "nedb": "^1.8.0",
     "nodemon": "^1.18.7",
     "request": "^2.88.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.0.0"
   }
 }
