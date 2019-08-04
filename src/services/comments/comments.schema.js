@@ -24,7 +24,7 @@ let schema = {
   properties: {
     // !code: schema_properties
     text: {
-      type: 'text',
+      type: 'string',
       faker: 'lorem.sentence'
     },
     userId: {
