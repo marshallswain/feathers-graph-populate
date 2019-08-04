@@ -77,6 +77,26 @@
       "path": "/groups",
       "isAuthEntity": false,
       "graphql": false
+    },
+    "orgUsers": {
+      "name": "orgUsers",
+      "nameSingular": "orgUser",
+      "subFolder": "",
+      "fileName": "org-users",
+      "adapter": "nedb",
+      "path": "/org-users",
+      "isAuthEntity": false,
+      "graphql": false
+    },
+    "groupUsers": {
+      "name": "groupUsers",
+      "nameSingular": "groupUser",
+      "subFolder": "",
+      "fileName": "group-users",
+      "adapter": "nedb",
+      "path": "/group-users",
+      "isAuthEntity": false,
+      "graphql": false
     }
   },
   "hooks": {},
