@@ -37,7 +37,7 @@ let schema = {
         faker: { fk: 'users:random' }
       }
     },
-    childTasksIds: {
+    childTaskIds: {
       type: 'array',
       items: {
         type: 'ID',
