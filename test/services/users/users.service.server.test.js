@@ -270,7 +270,9 @@ describe('Test users/users.service.server.test.js', () => {
       after(async () => {
         await Promise.all([
           app.service('org-users').remove(null),
+          app.service('orgs').remove(null),
           app.service('group-users').remove(null),
+          app.service('groups').remove(null),
           app.service('tasks').remove(null),
         ])
       })
@@ -337,6 +339,57 @@ describe('Test users/users.service.server.test.js', () => {
         })
 
         assert.strictEqual(user.tasks.length, tasks.length, 'got all of the user tasks')
+      })
+    })
+
+    describe('Recursive Populates', () => {
+      before(async () => {
+        await Promise.all([
+          app.service('tasks').remove(null),
+        ])
+        await Promise.all([
+          app.service('tasks').create(fakeData.tasks)
+        ])
+      })
+      after(async () => {
+        await Promise.all([
+          app.service('tasks').remove(null),
+        ])
+      })
+      it.only('can handle recursive populates', async () => {
+        const users = await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              tasks: {
+                childTasks: {
+                  childTasks: {
+                    childTasks: {}
+                  }
+                }
+              }
+            }
+          },
+          paginate: false
+        })
+        const user = users[0]
+
+        assert(user.tasks.length)
+        user.tasks.forEach(task => {
+          assert(task.childTasks.length, 'got the childTasks')
+
+          task.childTasks.forEach(task => {
+            assert(task.childTasks.length, 'got the childTasks')
+
+            task.childTasks.forEach(task => {
+              assert(task.childTasks.length, 'got the childTasks')
+
+              task.childTasks.forEach(task => {
+                assert(!task.ChildTasks, 'no tasks populated at this level')
+              })
+            })
+          })
+        })
       })
     })
   })
