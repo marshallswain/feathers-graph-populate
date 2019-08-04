@@ -9,7 +9,9 @@ let schema = {
   title: 'Users',
   description: 'Users database.',
   // !end
-  // !code: schema_definitions // !end
+  // !code: schema_definitions
+  fakeRecords: 10,
+  // !end
 
   // Required fields.
   required: [

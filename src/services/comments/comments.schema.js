@@ -9,7 +9,9 @@ let schema = {
   title: 'Comments',
   description: 'Comments database.',
   // !end
-  // !code: schema_definitions // !end
+  // !code: schema_definitions
+  fakeRecords: 40,
+  // !end
 
   // Required fields.
   required: [
