@@ -111,6 +111,14 @@ let moduleExports = {
       keyThere: 'userId',
       asArray: true,
       params: {}
+    },
+    tasks: {
+      service: 'tasks',
+      nameAs: 'tasks',
+      keyHere: '_id',
+      keyThere: 'userId',
+      asArray: true,
+      params: {}
     }
   }
   // !end
