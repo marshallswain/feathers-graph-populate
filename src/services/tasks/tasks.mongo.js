@@ -13,6 +13,30 @@ let moduleExports = merge({},
     properties: {
       _id: {
         bsonType: "objectId"
+      },
+      name: {
+        faker: "lorem.words",
+        bsonType: "string"
+      },
+      ownerIds: {
+        maxItems: 10,
+        items: {
+          type: "ID",
+          faker: {
+            fk: "users:next"
+          }
+        },
+        bsonType: "array"
+      },
+      childTasksIds: {
+        items: {
+          type: "ID",
+          maxItems: 5,
+          faker: {
+            fk: "tasks:next"
+          }
+        },
+        bsonType: "array"
       }
     }
   },

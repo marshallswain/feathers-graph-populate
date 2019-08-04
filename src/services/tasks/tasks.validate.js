@@ -19,7 +19,32 @@ let base = merge({},
     description: "Tasks database.",
     required: [],
     uniqueItemProperties: [],
-    properties: {}
+    properties: {
+      name: {
+        type: "string",
+        faker: "lorem.words"
+      },
+      ownerIds: {
+        type: "array",
+        maxItems: 10,
+        items: {
+          type: ID,
+          faker: {
+            fk: "users:next"
+          }
+        }
+      },
+      childTasksIds: {
+        type: "array",
+        items: {
+          type: ID,
+          maxItems: 5,
+          faker: {
+            fk: "tasks:next"
+          }
+        }
+      }
+    }
   },
   // !end
   // !code: base_more // !end

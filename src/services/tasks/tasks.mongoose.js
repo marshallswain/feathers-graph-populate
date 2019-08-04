@@ -9,7 +9,20 @@ const mongoose = require('mongoose')
 
 let moduleExports = merge({},
   // !<DEFAULT> code: model
-  {},
+  {
+    name: String,
+    ownerIds: [
+      {
+        type: mongoose.Schema.Types.ObjectId
+      }
+    ],
+    childTasksIds: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        maxItems: 5
+      }
+    ]
+  },
   // !end
   // !code: moduleExports // !end
 )
