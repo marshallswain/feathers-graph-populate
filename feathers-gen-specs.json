@@ -57,6 +57,26 @@
       "path": "/comments",
       "isAuthEntity": false,
       "graphql": false
+    },
+    "orgs": {
+      "name": "orgs",
+      "nameSingular": "org",
+      "subFolder": "",
+      "fileName": "orgs",
+      "adapter": "nedb",
+      "path": "/orgs",
+      "isAuthEntity": false,
+      "graphql": false
+    },
+    "groups": {
+      "name": "groups",
+      "nameSingular": "group",
+      "subFolder": "",
+      "fileName": "groups",
+      "adapter": "nedb",
+      "path": "/groups",
+      "isAuthEntity": false,
+      "graphql": false
     }
   },
   "hooks": {},
