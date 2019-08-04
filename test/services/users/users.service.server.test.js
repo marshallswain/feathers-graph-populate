@@ -46,7 +46,7 @@ describe('Test users/users.service.server.test.js', () => {
   })
 
   describe('Populate Hook', () => {
-    describe('one level deep', () => {
+    describe('One Level Deep', () => {
       it('populates external, by name', async () => {
         const users = await app.service('users').find({
           query: {},
@@ -106,7 +106,7 @@ describe('Test users/users.service.server.test.js', () => {
       })
 
     })
-    describe('two levels deep', () => {
+    describe('Two Levels Deep', () => {
       it('populates external, by name', async () => {
         const users = await app.service('users').find({
           query: {},
