@@ -82,7 +82,27 @@ let extensions = {
 let moduleExports = {
   schema,
   extensions,
-  // !code: moduleExports // !end
+  // !code: moduleExports
+  populates: {
+    users: {
+      service: 'users',
+      nameAs: 'users',
+      keyHere: 'ownerIds',
+      keyThere: '_id',
+      asArray: true,
+      params: {}
+    },
+    childTasks: {
+      service: 'tasks',
+      nameAs: 'childTasks',
+      keyHere: 'childTaskIds',
+      keyThere: '_id',
+      asArray: true,
+      params: {}
+    },
+
+  }
+  // !end
 }
 
 // !code: exports // !end
