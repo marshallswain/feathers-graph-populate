@@ -249,6 +249,96 @@ describe('Test users/users.service.server.test.js', () => {
         })
       })
     })
+
+    describe('Multiple Populates Per Level', () => {
+      before(async () => {
+        await Promise.all([
+          app.service('org-users').remove(null),
+          app.service('orgs').remove(null),
+          app.service('group-users').remove(null),
+          app.service('groups').remove(null),
+          app.service('tasks').remove(null),
+        ])
+        await Promise.all([
+          app.service('org-users').create(fakeData.orgUsers),
+          app.service('orgs').create(fakeData.orgs),
+          app.service('group-users').create(fakeData.groupUsers),
+          app.service('groups').create(fakeData.groups),
+          app.service('tasks').create(fakeData.tasks)
+        ])
+      })
+      after(async () => {
+        await Promise.all([
+          app.service('org-users').remove(null),
+          app.service('group-users').remove(null),
+          app.service('tasks').remove(null),
+        ])
+      })
+
+      it('populates multiple relationships at multiple levels', async () => {
+        const users = await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              orgMemberships: {
+                org: {},
+                user: {}
+              },
+              groupMemberships: {
+                group: {},
+                org: {},
+                user: {}
+              },
+              posts: {
+                comments: {}
+              },
+              comments: {
+                post: {}
+              },
+              tasks: {}
+            }
+          },
+          paginate: false
+        })
+        const user = users[0]
+
+        assert(user.orgMemberships.length, 'user has orgMemberships')
+        user.orgMemberships.forEach(orgMembership => {
+          assert(orgMembership.org, 'got orgMembership with nested org')
+          assert(orgMembership.user, 'got orgMembership with nested user')
+        })
+
+        user.groupMemberships.forEach(groupMembership => {
+          assert(groupMembership.org, 'got groupMembership with nested org')
+          assert(groupMembership.group, 'got groupMembership with nested group')
+          assert(groupMembership.user, 'got groupMembership with nested user')
+        })
+
+        assert(user.posts.length, 'user has posts')
+        user.posts.forEach(post => {
+          assert.strictEqual(post.authorId, user._id, 'post was added to the correct user')
+          assert(!post.author, 'no author was populated, since we did not request one.')
+          assert(post.comments.length, 'comments were populated')
+          post.comments.forEach(comment => {
+            assert.strictEqual(post._id, comment.postId, 'the comment was populated on the correct post.')
+          })
+        })
+
+        assert(user.comments.length, 'got all of the user comments')
+        user.comments.forEach(comment => {
+          assert(comment.post, 'got the post nested in the coment')
+        })
+
+        const tasks = await app.service('tasks').find({
+          query: {
+            ownerIds: user._id
+          },
+          paginate: false
+        })
+
+        assert.strictEqual(user.tasks.length, tasks.length, 'got all of the user tasks')
+      })
+    })
   })
   describe('Populate Utility', () => {
     it('populates on a single record', async () => {
