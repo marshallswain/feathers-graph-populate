@@ -31,10 +31,10 @@ let schema = {
     },
     ownerIds: {
       type: 'array',
-      maxItems: 10,
+      maxItems: 2s,
       items: {
         type: 'ID',
-        faker: { fk: 'users:next' }
+        faker: { fk: 'users:random' }
       }
     },
     childTasksIds: {
