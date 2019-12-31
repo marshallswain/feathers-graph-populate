@@ -1,6 +1,6 @@
-# ionomy-deep-populate
+# @ionomy/deep-populate
 
-> Project ionomy-deep-populate
+> Project @ionomy/deep-populate
 
 ## About
 
@@ -8,20 +8,118 @@ This project uses [FeathersJS](http://feathersjs.com). An open source web framew
 
 ## Getting Started
 
-Getting up and running is as easy as 1, 2, 3.
+### Define your relationships
 
-1. Make sure you have [NodeJS](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed.
-2. Install your dependencies
+```js
+const populates = {
+  orgMemberships: {
+    service: 'org-users',
+    nameAs: 'orgMemberships',
+    keyHere: '_id',
+    keyThere: 'userId',
+    asArray: true,
+    params: {}
+  },
+  groupMemberships: {
+    service: 'group-users',
+    nameAs: 'groupMemberships',
+    keyHere: '_id',
+    keyThere: 'userId',
+    asArray: true,
+    params: {}
+  },
+  posts: {
+    service: 'posts',
+    nameAs: 'posts',
+    keyHere: '_id',
+    keyThere: 'authorId',
+    asArray: true,
+    params: {}
+  },
+  comments: {
+    service: 'comments',
+    nameAs: 'comments',
+    keyHere: '_id',
+    keyThere: 'userId',
+    asArray: true,
+    params: {}
+  },
+  tasks: {
+    service: 'tasks',
+    nameAs: 'tasks',
+    keyHere: '_id',
+    keyThere: 'ownerIds',
+    asArray: true,
+    params: {}
+  }
+}
+```
 
-    ```
-    cd path/to/ionomy-deep-populate; npm install
-    ```
+### Create named queries to use from connected clients.
 
-3. Start your app
+```js
+const namedQueries = {
+  withPosts: {
+    posts: {}
+  },
+  postsWithComments: {
+    posts: {
+      comments: {}
+    }
+  },
+  postsWithCommentsWithUser: {
+    posts: {
+      comments: {
+        user:{}
+      }
+    }
+  }
+}
+```
 
-    ```
-    npm start
-    ```
+### Register the hook
+
+```js
+const { populate } = require('feathers-deep-populate')
+
+const hooks = {
+  after: {
+    all: [
+      populate({ populates, namedQueries })
+    ]
+  }
+}
+```
+
+### Perform Queries
+
+Use a named query from a connected client:
+
+```js
+feathersClient.service('users').find({
+  query: {},
+  $populateParams: {
+    name: 'postsWithCommentsWithUser'
+  }
+})
+```
+
+Use a query object for internal requests. (named queries also work, internally):
+
+```js
+app.service('users').find({
+  query: {},
+  $populateParams: {
+    query: {
+      posts: {
+        comments: {
+          user:{}
+        }
+      }
+    }
+  }
+})
+```
 
 ## Testing
 
