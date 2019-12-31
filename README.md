@@ -121,6 +121,36 @@ app.service('users').find({
 })
 ```
 
+### Handling Custom Client-Side Params
+
+Since FeathersJS only supports passing `params.query` from client to server, by default, we need to let it know about the new `$populateParams` object.  We can do this using the `paramsForServer` and `paramsFromCLient` hooks:
+
+```js
+const { paramsForServer } = require('feathers-deep-populate')
+
+feathersClient.hooks({
+  before: {
+    all: [
+      paramsForServer('$populateParams')
+    ]
+  }
+})
+```
+
+Now to allow the API server to receive the custom param:
+
+```js
+const { paramsFromClient } = require('feathers-deep-populate')
+
+feathersClient.hooks({
+  before: {
+    all: [
+      paramsFromClient('$populateParams')
+    ]
+  }
+})
+```
+
 ## Testing
 
 Simply run `npm test` and all your tests in the `test/` directory will be run.
