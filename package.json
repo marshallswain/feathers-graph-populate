@@ -33,7 +33,9 @@
     "dev:seed": "nodemon src/ --seed",
     "start": "node src/",
     "start:seed": "cross-env NODE_ENV=test node src/ --seed",
-    "mocha": "mocha test/ --recursive --exit --timeout 10000"
+    "mocha": "mocha test/ --recursive --exit --timeout 10000",
+    "docs:serve": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "feathers-hooks-common": "^4.16.3",
@@ -50,7 +52,7 @@
     "compression": "^1.7.3",
     "cors": "^2.8.4",
     "cross-env": "^5.2.0",
-    "eslint": "^5.3.0",
+    "eslint": "^6.7.2",
     "feathers-nedb": "^3.1.0",
     "helmet": "^3.13.0",
     "lodash.merge": "^4.6.1",
@@ -60,6 +62,8 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "serve-favicon": "^2.5.0",
+    "vuepress": "^1.2.0",
+    "vuepress-theme-default-prefers-color-scheme": "^1.0.3",
     "winston": "^3.0.0"
   }
 }
