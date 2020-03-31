@@ -1,8 +1,6 @@
 # feathers-graph-populate
 
-> Project feathers-graph-populate
-
-## About
+Add lightning fast, GraphQL-like populates to your FeathersJS API.
 
 This project is built for [FeathersJS](http://feathersjs.com). An open source web framework for building modern real-time applications.
 
