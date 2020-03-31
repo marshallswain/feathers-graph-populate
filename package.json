@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "feathers-hooks-common": "^4.16.3",
-    "feathers-shallow-populate": "^2.0.0",
+    "feathers-shallow-populate": "^2.0.1",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
