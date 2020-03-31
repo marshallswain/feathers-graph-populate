@@ -114,3 +114,4 @@ compiled/
 # Others
 data/
 /nedb:/no-connection-string-config-test/*
+/nedb:

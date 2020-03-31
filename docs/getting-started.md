@@ -3,291 +3,193 @@ title: Getting Started
 sidebarDepth: 3
 ---
 
-# Getting Started with Feathers-Vuex
+<!--- Usage ------------------------------------------------------------------------------------ -->
+[![Build Status](https://travis-ci.org/marshallswain/feathers-graph-populate.png?branch=master)](https://travis-ci.org/marshallswain/feathers-graph-populate)
+[![Dependency Status](https://img.shields.io/david/marshallswain/feathers-graph-populate.svg?style=flat-square)](https://david-dm.org/marshallswain/feathers-graph-populate)
+[![Download Status](https://img.shields.io/npm/dm/feathers-graph-populate.svg?style=flat-square)](https://www.npmjs.com/package/feathers-graph-populate)
+
+![feathers-graph-populate logo](/img/graph-populate-logo.png)
+
+## About
+
+This project is built for [FeathersJS](http://feathersjs.com). An open source web framework for building modern real-time applications.
 
 ## Installation
 
-```bash
-npm install feathers-vuex --save
+```
+npm i feathers-graph-populate
+
+yarn add feathers-graph-populate
 ```
 
-```bash
-yarn add feathers-vuex
-```
+## Getting Started
 
-IMPORTANT: Feathers-Vuex is (and requires to be) published in ES6 format for full compatibility with JS classes.  If your project uses Babel, it must be configured properly.  See the [Project Configuration](#projectconfiguration) section for more information.
-
-### With feathers-socketio
-
-A realtime-transport like Socket.io or Primus is required in order to take advantage of the real-time socket events built into Feathers-Vuex. The `feathers-hooks-common` package, specified below, is not required to work with Feathers-Vuex.
-
-```bash
-npm i @feathersjs/feathers @feathersjs/socketio-client @feathersjs/authentication-client socket.io-client feathers-vuex feathers-hooks-common --save
-```
-
-```bash
-yarn add @feathersjs/feathers @feathersjs/socketio-client @feathersjs/authentication-client socket.io-client feathers-vuex feathers-hooks-common
-```
-
-### With feathers-rest
-
-Feathers-Vuex works with Feathers-Rest, but keep in mind that the `feathers-rest` client does not listen to socket events. The `feathers-hooks-common` package, specified below, is not required to work with Feathers-Vuex.
-
-```bash
-npm i @feathersjs/feathers @feathersjs/rest-client @feathersjs/authentication-client feathers-hooks-common feathers-vuex --save
-```
-
-```bash
-yarn add @feathersjs/feathers @feathersjs/rest-client @feathersjs/authentication-client feathers-hooks-common feathers-vuex
-```
-
-## Project Configuration
-
-### Vue-CLI
-
-If your project runs on Vue-CLI, add the following to your `vue.config.js` file:
+### Define the Relationships
 
 ```js
-module.exports = {
-  transpileDependencies: ['feathers-vuex']
-}
-```
-
-### Quasar
-
-For Quasar apps, `transpileDependencies` can be updated in `quasar.conf.js` under build as
-
-```
-build: {
-  transpileDependencies: ['feathers-vuex']
-}
-```
-
-### Nuxt
-
-If your project uses Nuxt, add the following to your `nuxt.config.js` file:
-
-```
-build: {
-  transpile: ['feathers-vuex'],
-}
-```
-
-Be sure to read the section of the docs dedicated to [Working With Nuxt](./nuxt.md).
-
-## Vue DevTools
-
-Since Feathers-Vuex extensively uses Vuex under the hood, you'll want to make sure your VueJS developer tools are up to date AND setup properly.  Specifically, the "New Vuex Backend" needs to be enabled.  To setup the devtools
-
-1. Open the Vue tab of the developer tools while viewing your Vue project in the browser.
-1. Go to the Settings panel.
-1. Enable the new Vuex backend:
-
-![New Vuex Backend in Vue DevTools](/img/devtools.jpg)
-
-When the above setting is not enabled, the Vue Devtools will likely hang when you start working on a large project.
-
-## Setup
-
-Using Feathers-Vuex happens in these steps:
-
-1. [Setup the Feathers client and Feathers-Vuex](#setup-the-feathers-client-and-feathers-vuex)
-2. [Define a Model class and service plugin for each service](#setup-one-or-more-service-plugins)
-3. [Setup the auth plugin](#setup-the-auth-plugin), if required.
-4. Register the plugins with the Vuex store.
-
-### Feathers Client & Feathers-Vuex
-
-To setup `feathers-vuex`, we first need to setup the latest Feathers client.  We can also setup feathers-vuex in the same file.  Depending on your requirements, you'll need to install the feathers-client dependencies, as shown, above.
-
-Note that this example includes an app-level hook that removes attributes for handling temporary (local-only) records.
-
-```js
-// src/feathers-client.js
-import feathers from '@feathersjs/feathers'
-import socketio from '@feathersjs/socketio-client'
-import auth from '@feathersjs/authentication-client'
-import io from 'socket.io-client'
-import { iff, discard } from 'feathers-hooks-common'
-import feathersVuex from 'feathers-vuex'
-
-const socket = io('http://localhost:3030', {transports: ['websocket']})
-
-const feathersClient = feathers()
-  .configure(socketio(socket))
-  .configure(auth({ storage: window.localStorage }))
-  .hooks({
-    before: {
-      all: [
-        iff(
-          context => ['create', 'update', 'patch'].includes(context.method),
-          discard('__id', '__isTemp')
-        )
-      ]
-    }
-  })
-
-export default feathersClient
-
-// Setting up feathers-vuex
-const { makeServicePlugin, makeAuthPlugin, BaseModel, models, FeathersVuex } = feathersVuex(
-  feathersClient,
-  {
-    serverAlias: 'api', // optional for working with multiple APIs (this is the default value)
-    idField: '_id', // Must match the id field in your database table/collection
-    whitelist: ['$regex', '$options']
-  }
-)
-
-export { makeAuthPlugin, makeServicePlugin, BaseModel, models, FeathersVuex }
-```
-
-### Service Plugins
-
-The following example creates a User class and registers it with the new `makeServicePlugin` utility function.  This same file is also a great place to add your service-level hooks, so they're shown, too.
-
-```js
-// src/store/services/users.js
-import feathersClient, { makeServicePlugin, BaseModel } from '../../feathers-client'
-
-class User extends BaseModel {
-  constructor(data, options) {
-    super(data, options)
-  }
-  // Required for $FeathersVuex plugin to work after production transpile.
-  static modelName = 'User'
-  // Define default properties here
-  static instanceDefaults() {
-    return {
-      email: '',
-      password: ''
-    }
-  }
-}
-const servicePath = 'users'
-const servicePlugin = makeServicePlugin({
-  Model: User,
-  service: feathersClient.service(servicePath),
-  servicePath
-})
-
-// Setup the client-side Feathers hooks.
-feathersClient.service(servicePath).hooks({
-  before: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
+const populates = {
+  orgMemberships: {
+    service: 'org-users',
+    nameAs: 'orgMemberships',
+    keyHere: '_id',
+    keyThere: 'userId',
+    asArray: true,
+    params: {}
   },
+  groupMemberships: {
+    service: 'group-users',
+    nameAs: 'groupMemberships',
+    keyHere: '_id',
+    keyThere: 'userId',
+    asArray: true,
+    params: {}
+  },
+  posts: {
+    service: 'posts',
+    nameAs: 'posts',
+    keyHere: '_id',
+    keyThere: 'authorId',
+    asArray: true,
+    params: {}
+  },
+  comments: {
+    service: 'comments',
+    nameAs: 'comments',
+    keyHere: '_id',
+    keyThere: 'userId',
+    asArray: true,
+    params: {}
+  },
+  tasks: {
+    service: 'tasks',
+    nameAs: 'tasks',
+    keyHere: '_id',
+    keyThere: 'ownerIds',
+    asArray: true,
+    params: {}
+  }
+}
+```
+
+### Create Named Queries
+
+To keep API security simpler, this package only accepts a query name from extrnal requests.  We need to pre-configure a few named queries for connected clients to use:
+
+```js
+const namedQueries = {
+  withPosts: {
+    posts: {}
+  },
+  postsWithComments: {
+    posts: {
+      comments: {}
+    }
+  },
+  postsWithCommentsWithUser: {
+    posts: {
+      comments: {
+        user:{}
+      }
+    }
+  }
+}
+```
+
+The first level of keys in the `namedQueries` object contains the names of each query.  So, the first query above is called `withPosts`.  Its query is `{ posts: {} }`.  It tells `feathers-graph-populate` to load all records on the `posts` relationship that was defined in the previous step.  All records are populated with a single query.
+
+The second query, above, is called `postsWithComments`. The query is `{ posts: { comments: {} } }`.  This tells `feathers-graph-populate` to pull in the `posts` relationship.  The posts are populated with a single query, then the `comments` are populated onto the posts with one additional query.
+
+The last query, above, is called `postsWithCommentsWithUser`.  The query is `{ posts: { comments: { user: {} } } }`, which tells `feathers-graph-populate` to perform three queries, one at each level.
+
+### Register the Populate Hook
+
+The populate hook will need to be registered on all services on which you wish to populate data AND their target populates.  For the query examples, above, the `posts`, `comments`, and `users` services will all require the hook to be registered as an "after all" hook:
+
+```js
+const { populate } = require('feathers-graph-populate')
+
+const populates = { /* See above */ }
+const namedQueries = { /* See above */ }
+
+const hooks = {
   after: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
-  },
-  error: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
+    all: [
+      populate({ populates, namedQueries })
+    ]
   }
-})
-
-export default servicePlugin
-```
-
-### Auth Plugin
-
-If your application uses authentication, the Auth Plugin will probably come in handy.  It's a couple of lines to setup:
-
-```js
-// src/store/store.auth.js
-import { makeAuthPlugin } from '../feathers-client'
-
-export default makeAuthPlugin({ userService: 'users' })
-```
-
-[Read more about the Auth Plugin](/auth-plugin.html).
-
-### Vuex store
-
-This example uses Webpack's `require.context` feature.  If you're not using Webpack, you'll need to manually import each module and list them in the `plugins` array.
-
-```js
-// src/store/store.js
-import Vue from 'vue'
-import Vuex from 'vuex'
-import { FeathersVuex } from '../feathers-client'
-import auth from './store.auth'
-
-Vue.use(Vuex)
-Vue.use(FeathersVuex)
-
-const requireModule = require.context(
-  // The path where the service modules live
-  './services',
-  // Whether to look in subfolders
-  false,
-  // Only include .js files (prevents duplicate imports`)
-  /.js$/
-)
-const servicePlugins = requireModule
-  .keys()
-  .map(modulePath => requireModule(modulePath).default)
-
-export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
-  plugins: [...servicePlugins, auth]
-})
-```
-
-## Begin Using Feathers-Vuex
-
-There are a couple of ways to use Feathers-Vuex.  Version 2.0 heavily focuses on abstracting away the Vuex syntax in favor of using [Model classes](/model-classes.html).  The Model classes are a layer on top of the Vuex getters, mutations, and actions. You can, of course, also directly use the [service plugin's getters, mutations, and actions](/service-plugin.html).
-
-There are two plugins included:
-
-1. The [Service Plugin](./service-plugin.md) adds a Vuex store for new services.
-2. The [Auth Plugin](./auth-plugin.md) sets up the Vuex store for authentication / logout.
-
-To see `feathers-vuex` in a working vue-cli application, check out [`feathers-chat-vuex`](https://github.com/feathersjs-ecosystem/feathers-chat-vuex).
-
-### Global Configuration
-
-The following default options are available for configuration:
-
-```js
-const defaultOptions = {
-  autoRemove: false, // Automatically remove records missing from responses (only use with feathers-rest)
-  addOnUpsert: false, // Add new records pushed by 'updated/patched' socketio events into store, instead of discarding them
-  enableEvents: true, // Listens to socket.io events when available. See the `handleEvents` API for more details
-  idField: 'id', // The field in each record that will contain the id
-  tempIdField: '__id',
-  debug: false, // Set to true to enable logging messages.
-  keepCopiesInStore: false, // Set to true to store cloned copies in the store instead of on the Model.
-  nameStyle: 'short', // Determines the source of the module name. 'short', 'path', or 'explicit'
-  paramsForServer: [], // Custom query operators that are ignored in the find getter, but will pass through to the server.
-  preferUpdate: false, // When true, calling model.save() will do an update instead of a patch.
-  replaceItems: false, // Instad of merging in changes in the store, replace the entire record.
-  serverAlias: 'api',
-  skipRequestIfExists: false, // For get action, if the record already exists in store, skip the remote request
-  whitelist: [] // Custom query operators that will be allowed in the find getter.
 }
 ```
 
-### Note about feathers-reactive
+### Enable Custom Client-Side Params
 
-Previous versions of this plugin required both RxJS and `feathers-reactive` to receive realtime updates.  `feathers-vuex@1.0.0` has socket messaging support built in and takes advantage of Vuex reactivity, so RxJS and `feathers-reactive` are no longer required or supported.
+Since FeathersJS only supports passing `params.query` from client to server, by default, we need to let it know about the new `$populateParams` object.  We can do this using the `paramsForServer` and `paramsFromClient` hooks:
 
-Each service module can also be individually configured.
+```js
+const { paramsForServer } = require('feathers-graph-populate')
+
+feathersClient.hooks({
+  before: {
+    all: [
+      paramsForServer('$populateParams')
+    ]
+  }
+})
+```
+
+Now to allow the API server to receive the custom param:
+
+```js
+const { paramsFromClient } = require('feathers-graph-populate')
+
+feathersClient.hooks({
+  before: {
+    all: [
+      paramsFromClient('$populateParams')
+    ]
+  }
+})
+```
+
+### Perform Queries
+
+Use a named query from a connected client:
+
+```js
+feathersClient.service('users').find({
+  query: {},
+  $populateParams: {
+    name: 'postsWithCommentsWithUser'
+  }
+})
+```
+
+> Notice that the `populateParams` is a custom `param`, so it is outside of the `query` object.
+
+For internal requests, in addition to supporting named queries, you can directly provide a query object.  This allows custom, unnamed queries like the following:
+
+```js
+app.service('users').find({
+  query: {},
+  $populateParams: {
+    query: {
+      posts: {
+        comments: {
+          user:{}
+        }
+      }
+    }
+  }
+})
+```
+
+## Testing
+
+`npm test`
+
+## Help
+
+Open an issue or come talk on the FeathersJS Slack.
+
+## License
+
+Licensed under the [MIT license](LICENSE).

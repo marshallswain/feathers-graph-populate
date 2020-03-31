@@ -9,8 +9,8 @@
   "app": {
     "environmentsAllowingSeedData": "test,development",
     "seedData": true,
-    "name": "ionomy-deep-populate",
-    "description": "Project ionomy-deep-populate",
+    "name": "feathers-graph-populate",
+    "description": "Project feathers-graph-populate",
     "src": "src",
     "packager": "yarn@>= 0.18.0",
     "providers": [

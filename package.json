@@ -1,8 +1,8 @@
 {
-  "name": "@ionomy/deep-populate",
+  "name": "feathers-graph-populate",
   "description": "Add lightning fast, GraphQL-like populates to your FeathersJS API.",
-  "version": "2.0.0",
-  "homepage": "https://www.npmjs.com/package/@ionomy/deep-populate",
+  "version": "1.0.0",
+  "homepage": "https://www.npmjs.com/package/feathers-graph-populate",
   "main": "lib/index.js",
   "keywords": [
     "feathers"
@@ -34,12 +34,12 @@
     "start": "node src/",
     "start:seed": "cross-env NODE_ENV=test node src/ --seed",
     "mocha": "mocha test/ --recursive --exit --timeout 10000",
-    "docs:serve": "vuepress dev docs",
+    "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
   "dependencies": {
     "feathers-hooks-common": "^4.16.3",
-    "feathers-shallow-populate": "^1.0.0",
+    "feathers-shallow-populate": "^2.0.0",
     "lodash": "^4.17.15"
   },
   "devDependencies": {
@@ -62,8 +62,8 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.2",
     "serve-favicon": "^2.5.0",
-    "vuepress": "^1.2.0",
-    "vuepress-theme-default-prefers-color-scheme": "^1.0.3",
+    "vuepress": "^1.4.0",
+    "vuepress-theme-default-prefers-color-scheme": "^1.0.6",
     "winston": "^3.0.0"
   }
 }

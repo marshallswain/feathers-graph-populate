@@ -2,20 +2,9 @@
 const assert = require('assert')
 const { readJsonFileSync } = require('@feathers-plus/test-utils')
 const app = require('../../../src/app')
-const config = require('../../../config/default.json')
 const { populateUtil } = require('../../../lib/index')
 const userPopulates = require('../../../src/services/users/users.schema').populates
 
-// Determine if environment allows test to mutate existing DB data.
-const env = (config.tests || {}).environmentsAllowingSeedData || []
-if (!env.includes(process.env.NODE_ENV)) {
-  // eslint-disable-next-line no-console
-  console.log('SKIPPED - Test users/users.service.server.test.js')
-
-  return
-}
-
-// eslint-disable-next-line no-unused-vars
 const fakeData = readJsonFileSync([__dirname, '../../../seeds/fake-data.json']) || {}
 
 describe('Test users/users.service.server.test.js', () => {
