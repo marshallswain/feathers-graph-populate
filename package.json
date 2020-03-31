@@ -20,10 +20,6 @@
     "lib": "src",
     "test": "test/"
   },
-  "engines": {
-    "node": ">=10",
-    "yarn": ">= 0.18.0"
-  },
   "scripts": {
     "test": "yarn run eslint && yarn run mocha",
     "test:all": "yarn run eslint && cross-env NODE_ENV=test npm run mocha",
