@@ -163,7 +163,7 @@ feathersClient.service('users').find({
 })
 ```
 
-> Notice that the `populateParams` is a custom `param`, so it is outside of the `query` object.
+> Notice that the `$populateParams` is a custom `param`, so it is outside of the `query` object.
 
 For internal requests, in addition to supporting named queries, you can directly provide a query object.  This allows custom, unnamed queries like the following:
 
