@@ -4,6 +4,9 @@
   "version": "1.0.0",
   "homepage": "https://www.npmjs.com/package/feathers-graph-populate",
   "main": "lib/index.js",
+  "files": [
+    "lib/*"
+  ],
   "keywords": [
     "feathers"
   ],
