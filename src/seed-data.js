@@ -40,6 +40,7 @@ module.exports = async function (app) {
   }
 
   for (const serviceName in services) {
+    // eslint-disable-next-line no-prototype-builtins
     if (services.hasOwnProperty(serviceName)) {
       const { name, adapter, path } = services[serviceName]
       // !<DEFAULT> code: seed_select
