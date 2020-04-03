@@ -26,6 +26,8 @@ yarn add feathers-graph-populate
 
 ### Define the Relationships
 
+The first step is to create a `populates` object.  It's recommended that you make the first-level key names match the `nameAs` property.  Doing so will reduce cognitive overhead required when building queries, later.  Each item represents a populate object and will be passed directly to [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate).
+
 ```js
 const populates = {
   orgMemberships: {
