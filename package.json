@@ -62,8 +62,6 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "serve-favicon": "^2.5.0",
-    "vuepress": "^1.5.2",
-    "vuepress-theme-default-prefers-color-scheme": "^1.0.9",
     "winston": "^3.3.3"
   }
 }
