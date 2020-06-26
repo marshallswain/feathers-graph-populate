@@ -8,6 +8,8 @@ This project is built for [FeathersJS](http://feathersjs.com). An open source we
 
 ### Define your relationships
 
+The top-level keys in the `populates` represent the name of the relationship.
+
 ```js
 const populates = {
   orgMemberships: {
@@ -54,6 +56,8 @@ const populates = {
 ```
 
 ### Create named queries to use from connected clients.
+
+The top-level keys in the `nameQueries` object are the query names. Nested keys under the query name refer to the name of the relationship, found in the `populates` object from the previous code snippet.
 
 ```js
 const namedQueries = {
