@@ -14,7 +14,6 @@ let moduleExports = function (app) {
   let options = {
     Model,
     paginate,
-    // !code: options_more // !end
     multi: true
   }
   // !code: options_change // !end

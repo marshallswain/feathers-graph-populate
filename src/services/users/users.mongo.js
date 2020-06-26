@@ -1,9 +1,7 @@
 
 /* eslint quotes: 0 */
-// Defines the MongoDB $jsonSchema for service `users`. (Can be re-generated.)
+// Defines the MongoDB $jsonSchema for service `users`. 
 const merge = require('lodash.merge')
-// !code: imports // !end
-// !code: init // !end
 
 let moduleExports = merge({},
   // !<DEFAULT> code: model
@@ -34,12 +32,6 @@ let moduleExports = merge({},
       }
     }
   },
-  // !end
-  // !code: moduleExports // !end
 )
 
-// !code: exports // !end
 module.exports = moduleExports
-
-// !code: funcs // !end
-// !code: end // !end
