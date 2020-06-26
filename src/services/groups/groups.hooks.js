@@ -1,24 +1,24 @@
 
-// Hooks for service `groups`. (Can be re-generated.)
+// Hooks for service `groups`.
 const commonHooks = require('feathers-hooks-common')
-// !code: imports
+
 const { populates } = require('./groups.schema')
 const { populate } = require('../../../lib/index')
 const namedQueries = undefined
-// !end
 
-// !<DEFAULT> code: used
+
+
 // eslint-disable-next-line no-unused-vars
 const { iff } = commonHooks
 // eslint-disable-next-line no-unused-vars
 const { create, update, patch, validateCreate, validateUpdate, validatePatch } = require('./groups.validate')
-// !end
 
-// !code: init // !end
+
+
 
 let moduleExports = {
   before: {
-    // !<DEFAULT> code: before
+
     all: [],
     find: [],
     get: [],
@@ -26,11 +26,11 @@ let moduleExports = {
     update: [],
     patch: [],
     remove: []
-    // !end
+
   },
 
   after: {
-    // !code: after
+
     all: [],
     find: [
       populate({ populates, namedQueries })
@@ -40,11 +40,11 @@ let moduleExports = {
     update: [],
     patch: [],
     remove: []
-    // !end
+
   },
 
   error: {
-    // !<DEFAULT> code: error
+
     all: [],
     find: [],
     get: [],
@@ -52,13 +52,13 @@ let moduleExports = {
     update: [],
     patch: [],
     remove: []
-    // !end
+
   },
-  // !code: moduleExports // !end
+
 }
 
-// !code: exports // !end
+
 module.exports = moduleExports
 
-// !code: funcs // !end
-// !code: end // !end
+
+

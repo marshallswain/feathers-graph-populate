@@ -1,6 +1,6 @@
 
 /* eslint quotes: 0 */
-// Validation definitions for validateSchema hook for service `users`. (Can be re-generated.)
+// Validation definitions for validateSchema hook for service `users`.
 const { validateSchema } = require('feathers-hooks-common')
 const merge = require('lodash.merge')
 const ajv = require('ajv')

@@ -1,5 +1,5 @@
 
-// Initializes the `users` service on path `/users`. (Can be re-generated.)
+// Initializes the `users` service on path `/users`.
 const createService = require('feathers-nedb')
 const createModel = require('../../models/users.model')
 const hooks = require('./users.hooks')

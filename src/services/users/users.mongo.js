@@ -4,7 +4,7 @@
 const merge = require('lodash.merge')
 
 let moduleExports = merge({},
-  // !<DEFAULT> code: model
+
   {
     bsonType: "object",
     additionalProperties: false,

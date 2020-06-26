@@ -1,5 +1,5 @@
 
-// Define the Feathers schema for service `users`. (Can be re-generated.)
+// Define the Feathers schema for service `users`.
 
 // Define the model using JSON-schema
 let schema = {

@@ -3,7 +3,7 @@
 const { join } = require('path')
 const { readJsonFileSync } = require('@feathers-plus/test-utils')
 
-// !code: imports // !end
+
 
 // Determine if command line argument exists for seeding data
 let ifSeedServices = ['--seed', '-s'].some(str => process.argv.slice(2).includes(str))
@@ -22,11 +22,11 @@ let fakeData = readJsonFileSync(join(__dirname, '../seeds/fake-data.json')) || {
 
 // Get generated services
 let services = (readJsonFileSync(join(__dirname, '../feathers-gen-specs.json')) || {}).services
-// !code: init // !end
+
 
 module.exports = async function (app) {
   const ifDbChangesAllowed = areDbChangesAllowed(app.get('tests'))
-  // !code: func_init // !end
+
   if (!ifSeedServices) return
   if (!ifDbChangesAllowed) return
 
@@ -43,20 +43,20 @@ module.exports = async function (app) {
     // eslint-disable-next-line no-prototype-builtins
     if (services.hasOwnProperty(serviceName)) {
       const { name, adapter, path } = services[serviceName]
-      // !<DEFAULT> code: seed_select
+
       const doSeed = adapter !== 'generic'
-      // !end
+
 
       if (doSeed) {
         if (fakeData[name] && fakeData[name].length) {
           try {
             const service = app.service(path)
 
-            // !<DEFAULT> code: seed_try
+
             const deleted = await service.remove(null)
             const result = await service.create(fakeData[name])
             console.log(`Seeded service ${name} on path ${path} deleting ${deleted.length} records, adding ${result.length}.`)
-            // !end
+
           } catch (err) {
             console.log(`Error on seeding service ${name} on path ${path}`, err.message)
           }
@@ -68,8 +68,8 @@ module.exports = async function (app) {
       }
     }
   }
-  // !code: func_return // !end
+
 }
 
-// !code: funcs // !end
-// !code: end // !end
+
+

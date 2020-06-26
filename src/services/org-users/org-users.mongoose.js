@@ -1,14 +1,14 @@
 
 /* eslint quotes: 0 */
-// Defines Mongoose model for service `orgUsers`. (Can be re-generated.)
+// Defines Mongoose model for service `orgUsers`.
 const merge = require('lodash.merge')
 // eslint-disable-next-line no-unused-vars
 const mongoose = require('mongoose')
-// !code: imports // !end
-// !code: init // !end
+
+
 
 let moduleExports = merge({},
-  // !<DEFAULT> code: model
+
   {
     userId: mongoose.Schema.Types.ObjectId,
     userFirstName: String,
@@ -16,12 +16,12 @@ let moduleExports = merge({},
     orgId: mongoose.Schema.Types.ObjectId,
     orgName: String
   },
-  // !end
-  // !code: moduleExports // !end
+
+
 )
 
-// !code: exports // !end
+
 module.exports = moduleExports
 
-// !code: funcs // !end
-// !code: end // !end
+
+

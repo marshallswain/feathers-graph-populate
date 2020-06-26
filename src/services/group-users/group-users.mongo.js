@@ -1,12 +1,12 @@
 
 /* eslint quotes: 0 */
-// Defines the MongoDB $jsonSchema for service `groupUsers`. (Can be re-generated.)
+// Defines the MongoDB $jsonSchema for service `groupUsers`.
 const merge = require('lodash.merge')
-// !code: imports // !end
-// !code: init // !end
+
+
 
 let moduleExports = merge({},
-  // !<DEFAULT> code: model
+
   {
     bsonType: "object",
     additionalProperties: false,
@@ -58,12 +58,12 @@ let moduleExports = merge({},
       }
     }
   },
-  // !end
-  // !code: moduleExports // !end
+
+
 )
 
-// !code: exports // !end
+
 module.exports = moduleExports
 
-// !code: funcs // !end
-// !code: end // !end
+
+

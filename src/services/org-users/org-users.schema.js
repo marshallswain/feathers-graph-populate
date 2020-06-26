@@ -1,30 +1,30 @@
 
-// Define the Feathers schema for service `orgUsers`. (Can be re-generated.)
-// !code: imports // !end
-// !code: init // !end
+// Define the Feathers schema for service `orgUsers`.
+
+
 
 // Define the model using JSON-schema
 let schema = {
-  // !<DEFAULT> code: schema_header
+
   title: 'OrgUsers',
   description: 'OrgUsers database.',
-  // !end
-  // !code: schema_definitions
+
+
   fakeRecords: 10,
-  // !end
+
 
   // Required fields.
   required: [
-    // !code: schema_required // !end
+
   ],
   // Fields with unique values.
   uniqueItemProperties: [
-    // !code: schema_unique // !end
+
   ],
 
   // Fields in the model.
   properties: {
-    // !code: schema_properties
+
     userId: {
       type: 'ID',
       faker: { fk: 'users:next:_id' }
@@ -45,16 +45,16 @@ let schema = {
       type: 'string',
       faker: { fk: 'orgs:next:name' }
     }
-    // !end
+
   },
-  // !code: schema_more // !end
+
 }
 
 // Define optional, non-JSON-schema extensions.
 let extensions = {
   // GraphQL generation.
   graphql: {
-    // !code: graphql_header
+
     name: 'OrgUser',
     service: {
       sort: { _id: 1 },
@@ -66,25 +66,25 @@ let extensions = {
     //     __authorId__: '__author_id__',
     //   },
     // },
-    // !end
+
     discard: [
-      // !code: graphql_discard // !end
+
     ],
     add: {
-      // !<DEFAULT> code: graphql_add
+
       // __author__: { type: '__User__!', args: false, relation: { ourTable: '__authorId__', otherTable: '_id' } },
-      // !end
+
     },
-    // !code: graphql_more // !end
+
   },
 }
 
-// !code: more // !end
+
 
 let moduleExports = {
   schema,
   extensions,
-  // !code: moduleExports
+
   populates: {
     org: {
       service: 'orgs',
@@ -104,11 +104,11 @@ let moduleExports = {
     },
 
   }
-  // !end
+
 }
 
-// !code: exports // !end
+
 module.exports = moduleExports
 
-// !code: funcs // !end
-// !code: end // !end
+
+
