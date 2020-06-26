@@ -1,3 +1,9 @@
+<img 
+  src="https://feathers-graph-populate.netlify.app/img/graph-populate-logo.png" 
+  alt="Feathers Graph Populate"
+  style="margin: 0 auto;"
+/>
+
 # feathers-graph-populate
 
 Add lightning fast, GraphQL-like populates to your FeathersJS API.
