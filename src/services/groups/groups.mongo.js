@@ -1,37 +1,29 @@
-
 /* eslint quotes: 0 */
 // Defines the MongoDB $jsonSchema for service `groups`.
-const merge = require('lodash.merge')
+const merge = require('lodash.merge');
 
-
-
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
 
   {
-    bsonType: "object",
+    bsonType: 'object',
     additionalProperties: false,
     properties: {
       _id: {
-        bsonType: "objectId"
+        bsonType: 'objectId',
       },
       name: {
-        faker: "lorem.word",
-        bsonType: "string"
+        faker: 'lorem.word',
+        bsonType: 'string',
       },
       orgId: {
         faker: {
-          fk: "orgs:next:_id"
+          fk: 'orgs:next:_id',
         },
-        bsonType: "objectId"
-      }
-    }
-  },
+        bsonType: 'objectId',
+      },
+    },
+  }
+);
 
-
-)
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

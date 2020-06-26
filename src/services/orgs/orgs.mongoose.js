@@ -1,23 +1,15 @@
-
 /* eslint quotes: 0 */
 // Defines Mongoose model for service `orgs`.
-const merge = require('lodash.merge')
-// eslint-disable-next-line no-unused-vars
-const mongoose = require('mongoose')
+const merge = require('lodash.merge');
+/* eslint no-unused-vars:0 */
+const mongoose = require('mongoose');
 
-
-
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
 
   {
-    name: String
-  },
+    name: String,
+  }
+);
 
-
-)
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

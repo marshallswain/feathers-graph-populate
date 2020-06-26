@@ -1,46 +1,32 @@
-
 // Define the Feathers schema for service `groups`.
-
-
 
 // Define the model using JSON-schema
 let schema = {
-
   title: 'Groups',
   description: 'Groups database.',
 
-
-
   // Required fields.
-  required: [
-
-  ],
+  required: [],
   // Fields with unique values.
-  uniqueItemProperties: [
-
-  ],
+  uniqueItemProperties: [],
 
   // Fields in the model.
   properties: {
-
     name: {
       type: 'string',
-      faker: 'lorem.word'
+      faker: 'lorem.word',
     },
     orgId: {
       type: 'ID',
-      faker: { fk: 'orgs:next:_id' }
-    }
-
+      faker: { fk: 'orgs:next:_id' },
+    },
   },
-
-}
+};
 
 // Define optional, non-JSON-schema extensions.
 let extensions = {
   // GraphQL generation.
   graphql: {
-
     name: 'Group',
     service: {
       sort: { _id: 1 },
@@ -53,19 +39,12 @@ let extensions = {
     //   },
     // },
 
-    discard: [
-
-    ],
+    discard: [],
     add: {
-
       // __author__: { type: '__User__!', args: false, relation: { ourTable: '__authorId__', otherTable: '_id' } },
-
     },
-
   },
-}
-
-
+};
 
 let moduleExports = {
   schema,
@@ -78,7 +57,7 @@ let moduleExports = {
       keyHere: '_id',
       keyThere: 'groupId',
       asArray: true,
-      params: {}
+      params: {},
     },
     org: {
       service: 'orgs',
@@ -86,15 +65,9 @@ let moduleExports = {
       keyHere: 'orgId',
       keyThere: '_id',
       asArray: false,
-      params: {}
+      params: {},
     },
+  },
+};
 
-  }
-
-}
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

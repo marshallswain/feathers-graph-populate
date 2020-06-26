@@ -28,6 +28,7 @@
     "release:minor": "npm version minor && npm publish",
     "release:major": "npm version major && npm publish",
     "eslint": "eslint src/. test/. --config .eslintrc.json",
+    "lint": "prettier --write src",
     "dev": "nodemon src/",
     "dev:seed": "nodemon src/ --seed",
     "start": "node src/",

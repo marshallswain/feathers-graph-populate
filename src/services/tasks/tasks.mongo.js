@@ -1,51 +1,43 @@
-
 /* eslint quotes: 0 */
 // Defines the MongoDB $jsonSchema for service `tasks`.
-const merge = require('lodash.merge')
+const merge = require('lodash.merge');
 
-
-
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
 
   {
-    bsonType: "object",
+    bsonType: 'object',
     additionalProperties: false,
     properties: {
       _id: {
-        bsonType: "objectId"
+        bsonType: 'objectId',
       },
       name: {
-        faker: "lorem.words",
-        bsonType: "string"
+        faker: 'lorem.words',
+        bsonType: 'string',
       },
       ownerIds: {
         maxItems: 2,
         items: {
-          type: "ID",
+          type: 'ID',
           faker: {
-            fk: "users:random"
-          }
+            fk: 'users:random',
+          },
         },
-        bsonType: "array"
+        bsonType: 'array',
       },
       childTaskIds: {
         items: {
-          type: "ID",
+          type: 'ID',
           maxItems: 5,
           faker: {
-            fk: "tasks:next"
-          }
+            fk: 'tasks:next',
+          },
         },
-        bsonType: "array"
-      }
-    }
-  },
+        bsonType: 'array',
+      },
+    },
+  }
+);
 
-
-)
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

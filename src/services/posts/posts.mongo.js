@@ -1,37 +1,29 @@
-
 /* eslint quotes: 0 */
 // Defines the MongoDB $jsonSchema for service `posts`.
-const merge = require('lodash.merge')
+const merge = require('lodash.merge');
 
-
-
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
 
   {
-    bsonType: "object",
+    bsonType: 'object',
     additionalProperties: false,
     properties: {
       _id: {
-        bsonType: "objectId"
+        bsonType: 'objectId',
       },
       title: {
-        faker: "lorem.words",
-        bsonType: "string"
+        faker: 'lorem.words',
+        bsonType: 'string',
       },
       authorId: {
         faker: {
-          fk: "users:random"
+          fk: 'users:random',
         },
-        bsonType: "objectId"
-      }
-    }
-  },
+        bsonType: 'objectId',
+      },
+    },
+  }
+);
 
-
-)
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

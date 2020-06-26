@@ -1,26 +1,16 @@
-
 // users-model.js - An nedb model
-const NeDB = require('nedb')
-const path = require('path')
-
-
+const NeDB = require('nedb');
+const path = require('path');
 
 let moduleExports = function (app) {
-  const dbPath = app.get('nedb')
+  const dbPath = app.get('nedb');
 
   let Model = new NeDB({
     filename: path.join(dbPath, 'users.db'),
-    autoload: true
-  })
+    autoload: true,
+  });
 
+  return Model;
+};
 
-
-  return Model
-}
-
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

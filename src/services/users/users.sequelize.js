@@ -1,25 +1,25 @@
-
 /* eslint quotes: 0 */
 // Defines Sequelize model for service `users`.
-const merge = require('lodash.merge')
-const Sequelize = require('sequelize')
-// eslint-disable-next-line no-unused-vars
-const DataTypes = Sequelize.DataTypes
+const merge = require('lodash.merge');
+const Sequelize = require('sequelize');
+/* eslint no-unused-vars:0 */
+const DataTypes = Sequelize.DataTypes;
 
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
   {
     firstName: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
     },
     lastName: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
     },
     email: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
     },
     password: {
-      type: DataTypes.TEXT
-    }
-  },
-)
-module.exports = moduleExports
+      type: DataTypes.TEXT,
+    },
+  }
+);
+module.exports = moduleExports;

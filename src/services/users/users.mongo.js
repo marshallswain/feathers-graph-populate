@@ -1,37 +1,37 @@
-
 /* eslint quotes: 0 */
-// Defines the MongoDB $jsonSchema for service `users`. 
-const merge = require('lodash.merge')
+// Defines the MongoDB $jsonSchema for service `users`.
+const merge = require('lodash.merge');
 
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
 
   {
-    bsonType: "object",
+    bsonType: 'object',
     additionalProperties: false,
     properties: {
       _id: {
-        bsonType: "objectId"
+        bsonType: 'objectId',
       },
       firstName: {
-        faker: "name.firstName",
-        bsonType: "string"
+        faker: 'name.firstName',
+        bsonType: 'string',
       },
       lastName: {
-        faker: "name.lastName",
-        bsonType: "string"
+        faker: 'name.lastName',
+        bsonType: 'string',
       },
       email: {
-        faker: "internet.email",
-        bsonType: "string"
+        faker: 'internet.email',
+        bsonType: 'string',
       },
       password: {
         faker: {
-          exp: "ctx.hashPassword(\"12341234\")"
+          exp: 'ctx.hashPassword("12341234")',
         },
-        bsonType: "string"
-      }
-    }
-  },
-)
+        bsonType: 'string',
+      },
+    },
+  }
+);
 
-module.exports = moduleExports
+module.exports = moduleExports;

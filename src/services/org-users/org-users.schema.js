@@ -1,60 +1,46 @@
-
 // Define the Feathers schema for service `orgUsers`.
-
-
 
 // Define the model using JSON-schema
 let schema = {
-
   title: 'OrgUsers',
   description: 'OrgUsers database.',
 
-
   fakeRecords: 10,
 
-
   // Required fields.
-  required: [
-
-  ],
+  required: [],
   // Fields with unique values.
-  uniqueItemProperties: [
-
-  ],
+  uniqueItemProperties: [],
 
   // Fields in the model.
   properties: {
-
     userId: {
       type: 'ID',
-      faker: { fk: 'users:next:_id' }
+      faker: { fk: 'users:next:_id' },
     },
     userFirstName: {
       type: 'string',
-      faker: { fk: 'users:next:firstName'}
+      faker: { fk: 'users:next:firstName' },
     },
     userLastName: {
       type: 'string',
-      faker: { fk: 'users:next:lastName'}
+      faker: { fk: 'users:next:lastName' },
     },
     orgId: {
       type: 'ID',
-      faker: { fk: 'orgs:next:_id' }
+      faker: { fk: 'orgs:next:_id' },
     },
     orgName: {
       type: 'string',
-      faker: { fk: 'orgs:next:name' }
-    }
-
+      faker: { fk: 'orgs:next:name' },
+    },
   },
-
-}
+};
 
 // Define optional, non-JSON-schema extensions.
 let extensions = {
   // GraphQL generation.
   graphql: {
-
     name: 'OrgUser',
     service: {
       sort: { _id: 1 },
@@ -67,19 +53,12 @@ let extensions = {
     //   },
     // },
 
-    discard: [
-
-    ],
+    discard: [],
     add: {
-
       // __author__: { type: '__User__!', args: false, relation: { ourTable: '__authorId__', otherTable: '_id' } },
-
     },
-
   },
-}
-
-
+};
 
 let moduleExports = {
   schema,
@@ -92,7 +71,7 @@ let moduleExports = {
       keyHere: 'orgId',
       keyThere: '_id',
       asArray: false,
-      params: {}
+      params: {},
     },
     user: {
       service: 'users',
@@ -100,15 +79,9 @@ let moduleExports = {
       keyHere: 'userId',
       keyThere: '_id',
       asArray: false,
-      params: {}
+      params: {},
     },
+  },
+};
 
-  }
-
-}
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

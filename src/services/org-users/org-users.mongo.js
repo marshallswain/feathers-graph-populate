@@ -1,57 +1,49 @@
-
 /* eslint quotes: 0 */
 // Defines the MongoDB $jsonSchema for service `orgUsers`.
-const merge = require('lodash.merge')
+const merge = require('lodash.merge');
 
-
-
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
 
   {
-    bsonType: "object",
+    bsonType: 'object',
     additionalProperties: false,
     properties: {
       _id: {
-        bsonType: "objectId"
+        bsonType: 'objectId',
       },
       userId: {
         faker: {
-          fk: "users:next:_id"
+          fk: 'users:next:_id',
         },
-        bsonType: "objectId"
+        bsonType: 'objectId',
       },
       userFirstName: {
         faker: {
-          fk: "users:next:firstName"
+          fk: 'users:next:firstName',
         },
-        bsonType: "string"
+        bsonType: 'string',
       },
       userLastName: {
         faker: {
-          fk: "users:next:lastName"
+          fk: 'users:next:lastName',
         },
-        bsonType: "string"
+        bsonType: 'string',
       },
       orgId: {
         faker: {
-          fk: "orgs:next:_id"
+          fk: 'orgs:next:_id',
         },
-        bsonType: "objectId"
+        bsonType: 'objectId',
       },
       orgName: {
         faker: {
-          fk: "orgs:next:name"
+          fk: 'orgs:next:name',
         },
-        bsonType: "string"
-      }
-    }
-  },
+        bsonType: 'string',
+      },
+    },
+  }
+);
 
-
-)
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

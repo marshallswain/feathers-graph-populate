@@ -1,46 +1,46 @@
-
 /* eslint quotes: 0 */
 // Defines the MongoDB $jsonSchema for service `comments`.
-const merge = require('lodash.merge')
+const merge = require('lodash.merge');
 
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
   {
-    bsonType: "object",
+    bsonType: 'object',
     additionalProperties: false,
     properties: {
       _id: {
-        bsonType: "objectId"
+        bsonType: 'objectId',
       },
       text: {
-        faker: "lorem.sentence",
-        bsonType: "string"
+        faker: 'lorem.sentence',
+        bsonType: 'string',
       },
       userId: {
         faker: {
-          fk: "users:next:_id"
+          fk: 'users:next:_id',
         },
-        bsonType: "objectId"
+        bsonType: 'objectId',
       },
       userFirstName: {
         faker: {
-          fk: "users:next:firstName"
+          fk: 'users:next:firstName',
         },
-        bsonType: "string"
+        bsonType: 'string',
       },
       userLastName: {
         faker: {
-          fk: "users:next:lastName"
+          fk: 'users:next:lastName',
         },
-        bsonType: "string"
+        bsonType: 'string',
       },
       postId: {
         faker: {
-          fk: "posts:next:_id"
+          fk: 'posts:next:_id',
         },
-        bsonType: "objectId"
-      }
-    }
-  },
-)
+        bsonType: 'objectId',
+      },
+    },
+  }
+);
 
-module.exports = moduleExports
+module.exports = moduleExports;

@@ -1,18 +1,19 @@
 /* eslint quotes: 0 */
 // Defines Sequelize model for service `posts`.
-const merge = require('lodash.merge')
-const Sequelize = require('sequelize')
-const DataTypes = Sequelize.DataTypes
+const merge = require('lodash.merge');
+const Sequelize = require('sequelize');
+const DataTypes = Sequelize.DataTypes;
 
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
   {
     title: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
     },
     authorId: {
-      type: DataTypes.INTEGER
-    }
-  },
-)
+      type: DataTypes.INTEGER,
+    },
+  }
+);
 
-module.exports = moduleExports
+module.exports = moduleExports;

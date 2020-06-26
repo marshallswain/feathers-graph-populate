@@ -1,4 +1,3 @@
-
 // Define the Feathers schema for service `users`.
 
 // Define the model using JSON-schema
@@ -8,32 +7,30 @@ let schema = {
   fakeRecords: 5,
 
   // Required fields.
-  required: [
-  ],
+  required: [],
   // Fields with unique values.
-  uniqueItemProperties: [
-  ],
+  uniqueItemProperties: [],
 
   // Fields in the model.
   properties: {
     firstName: {
       type: 'string',
-      faker: 'name.firstName'
+      faker: 'name.firstName',
     },
     lastName: {
       type: 'string',
-      faker: 'name.lastName'
+      faker: 'name.lastName',
     },
     email: {
       type: 'string',
-      faker: 'internet.email'
+      faker: 'internet.email',
     },
     password: {
       type: 'string',
-      faker: { exp: 'ctx.hashPassword("12341234")' }
+      faker: { exp: 'ctx.hashPassword("12341234")' },
     },
   },
-}
+};
 
 // Define optional, non-JSON-schema extensions.
 let extensions = {
@@ -43,12 +40,10 @@ let extensions = {
     service: {
       sort: { _id: 1 },
     },
-    discard: [
-    ],
-    add: {
-    },
+    discard: [],
+    add: {},
   },
-}
+};
 
 let moduleExports = {
   schema,
@@ -60,7 +55,7 @@ let moduleExports = {
       keyHere: '_id',
       keyThere: 'userId',
       asArray: true,
-      params: {}
+      params: {},
     },
     groupMemberships: {
       service: 'group-users',
@@ -68,7 +63,7 @@ let moduleExports = {
       keyHere: '_id',
       keyThere: 'userId',
       asArray: true,
-      params: {}
+      params: {},
     },
     posts: {
       service: 'posts',
@@ -76,7 +71,7 @@ let moduleExports = {
       keyHere: '_id',
       keyThere: 'authorId',
       asArray: true,
-      params: {}
+      params: {},
     },
     comments: {
       service: 'comments',
@@ -84,7 +79,7 @@ let moduleExports = {
       keyHere: '_id',
       keyThere: 'userId',
       asArray: true,
-      params: {}
+      params: {},
     },
     tasks: {
       service: 'tasks',
@@ -92,9 +87,9 @@ let moduleExports = {
       keyHere: '_id',
       keyThere: 'ownerIds',
       asArray: true,
-      params: {}
-    }
-  }
-}
+      params: {},
+    },
+  },
+};
 
-module.exports = moduleExports
+module.exports = moduleExports;

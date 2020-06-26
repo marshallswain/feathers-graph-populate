@@ -1,13 +1,11 @@
-
 /* eslint quotes: 0 */
 // Defines Mongoose model for service `groupUsers`.
-const merge = require('lodash.merge')
-// eslint-disable-next-line no-unused-vars
-const mongoose = require('mongoose')
+const merge = require('lodash.merge');
+/* eslint no-unused-vars:0 */
+const mongoose = require('mongoose');
 
-
-
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
 
   {
     userId: mongoose.Schema.Types.ObjectId,
@@ -16,14 +14,8 @@ let moduleExports = merge({},
     orgId: mongoose.Schema.Types.ObjectId,
     orgName: String,
     groupId: mongoose.Schema.Types.ObjectId,
-    groupName: String
-  },
+    groupName: String,
+  }
+);
 
-
-)
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

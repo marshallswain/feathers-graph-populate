@@ -1,31 +1,23 @@
-
 /* eslint quotes: 0 */
 // Defines the MongoDB $jsonSchema for service `orgs`.
-const merge = require('lodash.merge')
+const merge = require('lodash.merge');
 
-
-
-let moduleExports = merge({},
+let moduleExports = merge(
+  {},
 
   {
-    bsonType: "object",
+    bsonType: 'object',
     additionalProperties: false,
     properties: {
       _id: {
-        bsonType: "objectId"
+        bsonType: 'objectId',
       },
       name: {
-        faker: "company.companyName",
-        bsonType: "string"
-      }
-    }
-  },
+        faker: 'company.companyName',
+        bsonType: 'string',
+      },
+    },
+  }
+);
 
-
-)
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

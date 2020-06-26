@@ -1,4 +1,3 @@
-
 // Define the Feathers schema for service `comments`.
 
 // Define the model using JSON-schema
@@ -8,36 +7,34 @@ let schema = {
   fakeRecords: 40,
 
   // Required fields.
-  required: [
-  ],
+  required: [],
   // Fields with unique values.
-  uniqueItemProperties: [
-  ],
+  uniqueItemProperties: [],
 
   // Fields in the model.
   properties: {
     text: {
       type: 'string',
-      faker: 'lorem.sentence'
+      faker: 'lorem.sentence',
     },
     userId: {
       type: 'ID',
-      faker: { fk: 'users:next:_id' }
+      faker: { fk: 'users:next:_id' },
     },
     userFirstName: {
       type: 'string',
-      faker: { fk: 'users:next:firstName'}
+      faker: { fk: 'users:next:firstName' },
     },
     userLastName: {
       type: 'string',
-      faker: { fk: 'users:next:lastName'}
+      faker: { fk: 'users:next:lastName' },
     },
     postId: {
       type: 'ID',
-      faker: { fk: 'posts:next:_id' }
-    }
+      faker: { fk: 'posts:next:_id' },
+    },
   },
-}
+};
 
 // Define optional, non-JSON-schema extensions.
 let extensions = {
@@ -47,12 +44,10 @@ let extensions = {
     service: {
       sort: { _id: 1 },
     },
-    discard: [
-    ],
-    add: {
-    },
+    discard: [],
+    add: {},
   },
-}
+};
 
 let moduleExports = {
   schema,
@@ -64,7 +59,7 @@ let moduleExports = {
       keyHere: 'userId',
       keyThere: '_id',
       asArray: false,
-      params: {}
+      params: {},
     },
     post: {
       service: 'posts',
@@ -72,9 +67,9 @@ let moduleExports = {
       keyHere: 'postId',
       keyThere: '_id',
       asArray: false,
-      params: {}
+      params: {},
     },
-  }
-}
+  },
+};
 
-module.exports = moduleExports
+module.exports = moduleExports;

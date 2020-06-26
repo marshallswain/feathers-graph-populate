@@ -1,60 +1,46 @@
-
 // Define the Feathers schema for service `tasks`.
-
-
 
 // Define the model using JSON-schema
 let schema = {
-
   title: 'Tasks',
   description: 'Tasks database.',
 
-
   fakeRecords: 50,
 
-
   // Required fields.
-  required: [
-
-  ],
+  required: [],
   // Fields with unique values.
-  uniqueItemProperties: [
-
-  ],
+  uniqueItemProperties: [],
 
   // Fields in the model.
   properties: {
-
     name: {
       type: 'string',
-      faker: 'lorem.words'
+      faker: 'lorem.words',
     },
     ownerIds: {
       type: 'array',
       maxItems: 2,
       items: {
         type: 'ID',
-        faker: { fk: 'users:random' }
-      }
+        faker: { fk: 'users:random' },
+      },
     },
     childTaskIds: {
       type: 'array',
       items: {
         type: 'ID',
         maxItems: 5,
-        faker: { fk: 'tasks:next'}
-      }
-    }
-
+        faker: { fk: 'tasks:next' },
+      },
+    },
   },
-
-}
+};
 
 // Define optional, non-JSON-schema extensions.
 let extensions = {
   // GraphQL generation.
   graphql: {
-
     name: 'Task',
     service: {
       sort: { _id: 1 },
@@ -67,19 +53,12 @@ let extensions = {
     //   },
     // },
 
-    discard: [
-
-    ],
+    discard: [],
     add: {
-
       // __author__: { type: '__User__!', args: false, relation: { ourTable: '__authorId__', otherTable: '_id' } },
-
     },
-
   },
-}
-
-
+};
 
 let moduleExports = {
   schema,
@@ -92,7 +71,7 @@ let moduleExports = {
       keyHere: 'ownerIds',
       keyThere: '_id',
       asArray: true,
-      params: {}
+      params: {},
     },
     childTasks: {
       service: 'tasks',
@@ -100,15 +79,9 @@ let moduleExports = {
       keyHere: 'childTaskIds',
       keyThere: '_id',
       asArray: true,
-      params: {}
+      params: {},
     },
+  },
+};
 
-  }
-
-}
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;

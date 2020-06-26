@@ -1,13 +1,19 @@
-
 // Hooks for service `comments`.
-const commonHooks = require('feathers-hooks-common')
-const { populates } = require('./comments.schema')
-const { populate } = require('../../../lib/index')
+const commonHooks = require('feathers-hooks-common');
+const { populates } = require('./comments.schema');
+const { populate } = require('../../../lib/index');
 
-// eslint-disable-next-line no-unused-vars
-const { iff } = commonHooks
-// eslint-disable-next-line no-unused-vars
-const { create, update, patch, validateCreate, validateUpdate, validatePatch } = require('./comments.validate')
+/* eslint no-unused-vars:0 */
+const { iff } = commonHooks;
+/* eslint no-unused-vars:0 */
+const {
+  create,
+  update,
+  patch,
+  validateCreate,
+  validateUpdate,
+  validatePatch,
+} = require('./comments.validate');
 
 let moduleExports = {
   before: {
@@ -17,19 +23,17 @@ let moduleExports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   },
 
   after: {
     all: [],
-    find: [
-      populate({ populates })
-    ],
+    find: [populate({ populates })],
     get: [],
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   },
 
   error: {
@@ -39,8 +43,8 @@ let moduleExports = {
     create: [],
     update: [],
     patch: [],
-    remove: []
+    remove: [],
   },
-}
+};
 
-module.exports = moduleExports
+module.exports = moduleExports;

@@ -1,57 +1,41 @@
-
 // Application hooks that run for every service.
-const commonHooks = require('feathers-hooks-common')
+const commonHooks = require('feathers-hooks-common');
 
-const log = require('./hooks/log')
+const log = require('./hooks/log');
 
-
-
-// eslint-disable-next-line no-unused-vars
-const { iff } = commonHooks
-
-
+/* eslint no-unused-vars:0 */
+const { iff } = commonHooks;
 
 let moduleExports = {
   before: {
-
-    all: [ log() ],
+    all: [log()],
     find: [],
     get: [],
     create: [],
     update: [],
     patch: [],
-    remove: []
-
+    remove: [],
   },
 
   after: {
-
-    all: [ log() ],
+    all: [log()],
     find: [],
     get: [],
     create: [],
     update: [],
     patch: [],
-    remove: []
-
+    remove: [],
   },
 
   error: {
-
-    all: [ log() ],
+    all: [log()],
     find: [],
     get: [],
     create: [],
     update: [],
     patch: [],
-    remove: []
-
+    remove: [],
   },
+};
 
-}
-
-
-module.exports = moduleExports
-
-
-
+module.exports = moduleExports;
