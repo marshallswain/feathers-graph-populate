@@ -1,7 +1,7 @@
 <img 
   src="https://feathers-graph-populate.netlify.app/img/graph-populate-logo.png" 
   alt="Feathers Graph Populate"
-  style="margin: 0 auto;"
+  style="margin: 0 auto; max-width: 60%"
 />
 
 # feathers-graph-populate
