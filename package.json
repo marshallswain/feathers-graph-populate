@@ -38,8 +38,8 @@
     "docs:build": "vuepress build docs"
   },
   "dependencies": {
-    "feathers-shallow-populate": "^2.0.3",
-    "lodash": "^4.17.15"
+    "feathers-shallow-populate": "^2.0.4",
+    "lodash": "^4.17.19"
   },
   "devDependencies": {
     "@feathers-plus/test-utils": "^0.3.6",
@@ -51,7 +51,7 @@
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
-    "eslint": "^7.3.1",
+    "eslint": "^7.5.0",
     "feathers-hooks-common": "^5.0.3",
     "feathers-nedb": "^5.1.0",
     "helmet": "^3.23.2",
@@ -63,7 +63,7 @@
     "request-promise": "^4.2.5",
     "serve-favicon": "^2.5.0",
     "vuepress": "^1.5.2",
-    "vuepress-theme-default-prefers-color-scheme": "^1.0.9",
+    "vuepress-theme-default-prefers-color-scheme": "^1.1.0",
     "winston": "^3.3.3"
   }
 }
