@@ -8,9 +8,17 @@ sidebarDepth: 3
 [![Dependency Status](https://img.shields.io/david/marshallswain/feathers-graph-populate.svg?style=flat-square)](https://david-dm.org/marshallswain/feathers-graph-populate)
 [![Download Status](https://img.shields.io/npm/dm/feathers-graph-populate.svg?style=flat-square)](https://www.npmjs.com/package/feathers-graph-populate)
 
-![feathers-graph-populate logo](/img/graph-populate-logo.png)
+<p align="center">
+  <img 
+    src="https://feathers-graph-populate.netlify.app/img/graph-populate-logo.png" 
+    alt="Feathers Graph Populate"
+    style="margin: 0 auto; max-width: 400px"
+  />
+</p>
 
 ## About
+
+Add lightning fast, GraphQL-like populates to your FeathersJS API. `feathers-graph-populate` heavily depends on [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate).
 
 This project is built for [FeathersJS](http://feathersjs.com). An open source web framework for building modern real-time applications.
 
@@ -30,22 +38,6 @@ The first step is to create a `populates` object.  It's recommended that you mak
 
 ```js
 const populates = {
-  orgMemberships: {
-    service: 'org-users',
-    nameAs: 'orgMemberships',
-    keyHere: '_id',
-    keyThere: 'userId',
-    asArray: true,
-    params: {}
-  },
-  groupMemberships: {
-    service: 'group-users',
-    nameAs: 'groupMemberships',
-    keyHere: '_id',
-    keyThere: 'userId',
-    asArray: true,
-    params: {}
-  },
   posts: {
     service: 'posts',
     nameAs: 'posts',
@@ -69,9 +61,42 @@ const populates = {
     keyThere: 'ownerIds',
     asArray: true,
     params: {}
+  },
+  openTasks: {
+    service: 'tasks',
+    nameAs: 'openTasks',
+    keyHere: '_id',
+    keyThere: 'ownerIds',
+    asArray: true,
+    params: {
+      query: {
+        completedAt: null
+      }
+    }
+  },
+  role: {
+    service: 'roles',
+    nameAs: 'role',
+    keyHere: 'roleId',
+    keyThere: '_id',
+    asArray: false,
+    params: {}
   }
 }
 ```
+
+### Options for each relationship
+
+Each populate object must/can have the following properties. Also check out [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate). It has the same structure.
+
+| **Option** | **Description** |
+|------------|-----------------|
+| `service`  | The service for the relationship<br><br>**required**<br>**Type:** `{String}` |
+| `nameAs`   | The property to be assigned to on this entry. It's recommended that you make the populate object key name match the `nameAs` property.<br><br>**required**<br>**Type:** `{String}` |
+| `keyHere`  | The primary or secondary key for the current entry<br><br>**required**<br>**Type:** `{String}` |
+| `keyThere` | The primary or secondary key for the referenced entry/entries<br><br>**required**<br>**Type:** `{String}` |
+| `asArray`  | Is the referenced item a single entry or an array of entries?<br><br>**optional - default:** `true`<br>**Type:** `{Boolean}`
+| `params`   | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged deeply <br>Merged deeply after the params are generated internally.<br><quote>**ProTip:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss</quote><br><br>**optional - default:** `{}`<br>**Type:** `{Object | Function(params, context): undefined|params}` |
 
 ### Create Named Queries
 
