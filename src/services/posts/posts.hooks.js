@@ -1,7 +1,7 @@
 // Hooks for service `posts`.
 const commonHooks = require('feathers-hooks-common');
 
-const { populates } = require('./posts.schema');
+const graphPopulateOptions = require('./posts.graph-populate');
 const { populate } = require('../../../lib/index');
 
 /* eslint no-unused-vars:0 */
@@ -16,8 +16,6 @@ const {
   validatePatch,
 } = require('./posts.validate');
 
-const namedQueries = {};
-
 let moduleExports = {
   before: {
     all: [],
@@ -31,7 +29,7 @@ let moduleExports = {
 
   after: {
     all: [],
-    find: [populate({ populates, namedQueries })],
+    find: [populate(graphPopulateOptions)],
     get: [],
     create: [],
     update: [],

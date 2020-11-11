@@ -2,6 +2,7 @@
 const createService = require('feathers-nedb');
 const createModel = require('../../models/users.model');
 const hooks = require('./users.hooks');
+const graphPopulate = require('./users.graph-populate')
 
 let moduleExports = function (app) {
   let Model = createModel(app);
@@ -11,6 +12,7 @@ let moduleExports = function (app) {
     Model,
     paginate,
     multi: true,
+    graphPopulate
   };
 
   app.use('/users', createService(options));
