@@ -244,7 +244,7 @@ app.service('users').find({
 })
 ```
 
-You can also define additional custom query parameter per service. For example if you want to query for posts with `published: true` or comments with `createdAt: { $gt: { 1605971642 } }`. To make this possible you have to `whitelist` these properties per service. `feathers-graph-populate` looks up this array at `service.options.whitelist`. You can setup this as following:
+You can also define additional custom query parameter per service. For example if you want to query for posts with `published: true` or comments with `createdAt: { $gt: { 1605971642 } }`. To make this possible you have to `whitelist` these properties per service. `feathers-graph-populate` looks up this array at `service.options.graphPopulate.whitelist`. You can setup this as following:
 
 ```js
 // posts.service.js
