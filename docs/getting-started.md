@@ -89,14 +89,16 @@ const populates = {
 
 Each populate object must/can have the following properties. Also check out [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate). It has the same structure.
 
-| **Option** | **Description** |
-|------------|-----------------|
-| `service`  | The service for the relationship<br><br>**required**<br>**Type:** `{String}` |
-| `nameAs`   | The property to be assigned to on this entry. It's recommended that you make the populate object key name match the `nameAs` property.<br><br>**required**<br>**Type:** `{String}` |
-| `keyHere`  | The primary or secondary key for the current entry<br><br>**required**<br>**Type:** `{String}` |
-| `keyThere` | The primary or secondary key for the referenced entry/entries<br><br>**required**<br>**Type:** `{String}` |
-| `asArray`  | Is the referenced item a single entry or an array of entries?<br><br>**optional - default:** `true`<br>**Type:** `{Boolean}`
-| `params`   | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged deeply <br>Merged deeply after the params are generated internally.<br><quote>**ProTip:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss</quote><br><br>**optional - default:** `{}`<br>**Type:** `{Object | Function(params, context): undefined|params}` |
+| **Option**       | **Description** |
+|------------------|-----------------|
+| `service`        | The service to reference<br><br>**required**<br>**Type:** `{String}` |
+| `nameAs`         | The property to be assigned to on this entry<br><br>**required**<br>**Type:** `{String}` |
+| `keyHere`        | The primary or secondary key for this entry<br><br>**required if `params` is not complex (most of the time)**<br>**Type:** `{String}` |
+| `keyThere`       | The primary or secondary key for the referenced entry/entries<br><br>**required if `keyHere` is defined**<br>**Type:** `{String}` |
+| `asArray`        | Is the referenced item a single entry or an array of entries?<br><br>**optional - default:** `true`<br>**Type:** `{Boolean}`
+| `requestPerItem` | Decided wether your `params` object/function runs against each item individually or bundled. Most of the time you don't need this.<br><br>**optional - default:<br>- `false`** (if `keyHere` and `keyThere` are defined)<br>- **`true`** (if `keyHere` and `keyThere` are not defined)<br>**Type:** `{String}`
+| `catchOnError`   | Wether the hook continues populating, if an error occurs (e.g. because of missing authentication) or throws. Also can be set on the prior options<br><br>**optional - default:** `false`<br>**Type:**: `{Boolean}` |
+| `params`         | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged deeply <br>Merged deeply after the params are generated internally.<br><quote>**ProTip #1:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss</quote><br><quote>**ProTip #2:** If you don't define `keyHere` and `keyThere` or set `requestPerItem` to `true` the function has access to the _`this` keyword_ being the individual item the request will be made for.</quote><br><quote>**ProTip #3**: You can skip a `requestPerItem` if it returns `undefined`.</quote><br><quote>**ProTip #4**: The hook whats for async functions!</quote><br><br>**optional - default:** `{}`<br>**Possible types:**<br>- `{Object}`: _will be merged with params - simple requests_<br>- `{Function(params, context)}: params`: _needs to return the `params` or a new one which gets merged deeply - more complex_<br>- `{Function(params, context)}: Promise<params>`<br>- `{[Object|Function]}` |
 
 ### Create Named Queries
 
@@ -147,6 +149,11 @@ const hooks = {
 }
 ```
 
+The `option` object for the hook can have the following properties:
+- `populates {Object}` (**required**) the possible relations (see above).
+- `namedQueries {Object}` (__optional__) makes queries simpler - required for external queries, highly recommended for internal queries (see above).
+- `defaultQueryName {String}` - (__optional__) You can set a default `namedQuery`. If set, it has to be one of the defined `namedQueries`.
+
 ### Enable Custom Client-Side Params
 
 Since FeathersJS only supports passing `params.query` from client to server, by default, we need to let it know about the new `$populateParams` object.  We can do this using the `paramsForServer` and `paramsFromClient` hooks:
@@ -192,7 +199,9 @@ feathersClient.service('users').find({
 
 > Notice that the `$populateParams` is a custom `param`, so it is outside of the `query` object.
 
-For internal requests, in addition to supporting named queries, you can directly provide a query object.  This allows custom, unnamed queries like the following:
+### Unnamed Queries (internal only)
+
+For internal requests, in addition to supporting named queries, you can directly provide a query object. This allows custom, unnamed queries like the following:
 
 ```js
 app.service('users').find({
@@ -208,6 +217,85 @@ app.service('users').find({
   }
 })
 ```
+
+### Custom Querying
+
+In addition to the `params` object that can be defined in the relations object, you can also make a custom query within the named/unnamed queries. The filters `$select`, `$limit`, `$skip` and `$sort` are working by default. This can be used to narrow down the populated data for, for example:
+
+```js
+app.service('users').find({
+  query: {},
+  $populateParams: {
+    query: {
+      posts: {
+        $select: ["id", "title"]
+        comments: {
+          $select: ["id", "userId", "createdAt"],
+          $sort: {
+            createdat: -1
+          },
+          user:{
+            $select: ["id", "nickname"]
+          }
+        }
+      }
+    }
+  }
+})
+```
+
+You can also define additional custom query parameter per service. For example if you want to query for posts with `published: true` or comments with `createdAt: { $gt: { 1605971642 } }`. To make this possible you have to `whitelist` these properties per service. `feathers-graph-populate` looks up this array at `service.options.whitelist`. You can setup this as following:
+
+```js
+// posts.service.js
+const createService = ...
+const createModel = ...
+const hooks = ...
+const graphPopulate = require('./posts.graph-populate') // containing `populates`, `namedQueries`, `defaultQueryName` and `whitelist`
+
+module.exports = function (app) {
+  let Model = createModel(app);
+  let paginate = app.get('paginate');
+
+  let options = {
+    Model,
+    paginate,
+    graphPopulate
+  };
+
+  /* // alternatively:
+    let options = {
+      Model,
+      paginate,
+      graphPopulate: {
+        whiteliste: ["published"]
+      }
+    }
+  */
+
+  app.use('/posts', createService(options));
+};
+```
+
+Now you can perform queries like this:
+
+```js
+app.service('users').find({
+  query: {},
+  $populateParams: {
+    query: {
+      posts: {
+        published: true,
+        $select: ["id", "title"]
+        comments: {
+          $select: ["id"]
+        }
+      }
+    }
+  }
+})
+```
+
 
 ## Testing
 
