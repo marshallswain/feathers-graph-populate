@@ -1,6 +1,6 @@
 // Hooks for service `users`.
 const commonHooks = require('feathers-hooks-common');
-const { populates } = require('./users.schema');
+const graphPopulateOptions = require('./users.graph-populate');
 const { populate } = require('../../../lib/index');
 
 /* eslint no-unused-vars:0 */
@@ -13,24 +13,6 @@ const {
   validateUpdate,
   validatePatch,
 } = require('./users.validate');
-
-const namedQueries = {
-  withPosts: {
-    posts: {},
-  },
-  postsWithComments: {
-    posts: {
-      comments: {},
-    },
-  },
-  postsWithCommentsWithUser: {
-    posts: {
-      comments: {
-        user: {},
-      },
-    },
-  },
-};
 
 let moduleExports = {
   before: {
@@ -45,7 +27,7 @@ let moduleExports = {
 
   after: {
     all: [],
-    find: [populate({ populates, namedQueries })],
+    find: [populate(graphPopulateOptions)],
     get: [],
     create: [],
     update: [],

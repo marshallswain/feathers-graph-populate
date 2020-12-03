@@ -3,9 +3,10 @@ const assert = require('assert')
 const { readJsonFileSync } = require('@feathers-plus/test-utils')
 const app = require('../../../src/app')
 const { populateUtil } = require('../../../lib/index')
+const { omit, orderBy } = require('lodash')
 const userPopulates = require('../../../src/services/users/users.schema').populates
 
-const fakeData = readJsonFileSync([__dirname, '../../../seeds/fake-data.json']) || {}
+const fakeData = readJsonFileSync(app.get('seeds').fakeData) || {}
 
 describe('Test users/users.service.server.test.js', () => {
   before(async () => {
@@ -94,6 +95,198 @@ describe('Test users/users.service.server.test.js', () => {
         })
       })
 
+      it('populates supports `$limit` in $populateParams by default', async () => {
+        const user1 = (await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {}
+            }
+          },
+          paginate: false
+        }))[0]
+
+        const user2 = (await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {
+                $limit: 1
+              }
+            }
+          },
+          paginate: false
+        }))[0]
+
+        assert(user1.posts.length > 1, 'reference user has more than 1 post')
+        assert(user2.posts.length === 1, 'user has only one post')
+      })
+
+      it('populates supports `$select` in $populateParams by default', async () => {
+        const users = await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {
+                $select: ['_id', 'authorId']
+              }
+            }
+          },
+          paginate: false
+        })
+
+        const user = users[0]
+
+        assert(user.posts.length, 'user has posts')
+        user.posts.forEach(post => {
+          assert.deepStrictEqual(omit(post, ['_id', 'authorId']), {}, 'post only has `_id` and `authorId`')
+          assert.strictEqual(post.authorId, user._id, 'post was added to the correct user')
+        })
+      })
+
+      it('populates supports `$skip` in $populateParams by default', async () => {
+        const user1 = (await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {}
+            }
+          },
+          paginate: false
+        }))[0]
+
+        const user2 = (await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {
+                $skip: 1
+              }
+            }
+          },
+          paginate: false
+        }))[0]
+
+        assert(user1.posts.length - 1 === user2.posts.length, 'skipped one post for second user')
+      })
+
+      it('populates supports `$sort` in $populateParams by default', async () => {
+        const user1 = (await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {
+                $sort: {
+                  title: 1
+                }
+              }
+            }
+          },
+          paginate: false
+        }))[0]
+
+        const user2 = (await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {
+                $sort: {
+                  title: -1
+                }
+              }
+            }
+          },
+          paginate: false
+        }))[0]
+
+        const posts1 = user1.posts
+        const posts2 = user2.posts
+
+        assert(posts1.length > 1, 'has at least some posts')
+        assert.notDeepStrictEqual(posts1, posts2, 'arrays differ')
+        assert.deepStrictEqual(orderBy(posts1, 'title'), orderBy(posts2, 'title'), 'same entries')
+        assert.deepStrictEqual(posts1, orderBy(posts1, 'title', 'asc'), 'sorted alphabetically ascending')
+        assert.deepStrictEqual(posts2, orderBy(posts2, 'title', 'desc'), 'sorted alphabetically descending')
+      })
+
+      it('ignore custom query for $populateParams', async () => {
+        const users1 = await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {}
+            }
+          },
+          paginate: false
+        })
+
+        const users2 = await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {
+                test: {}
+              }
+            }
+          },
+          paginate: false
+        })
+
+        assert.deepStrictEqual(users1, users2, 'custom query doesnt matter')
+      })
+
+      it('custom query in `service.options.graphPopulate.whitelist` for $populateParams', async () => {
+        const title = 'ipsam modi minima'
+
+        const user1 = (await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {}
+            }
+          },
+          paginate: false
+        }))[0]
+
+        const user2 = (await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {
+                title,
+                $select: ['title']
+              }
+            }
+          },
+          paginate: false
+        }))[0]
+
+        assert(user1.posts.some(post => post.title !== title), 'reference user has other posts')
+        assert(user2.posts.length > 0 && user2.posts.every(post => post.title === title), 'only posts with given title')
+      })
+
+      it('custom query in $populateParams works with complex relation defined by `requestPerItem`', async () => {
+        const usersWithOrgNames = (await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              organizations: {
+                $select: ['name']
+              }
+            }
+          },
+          paginate: false
+        }))
+
+        const everyUserHasOrganizations = usersWithOrgNames.every(user => user.organizations.length !== undefined)
+
+        assert(everyUserHasOrganizations, 'populated organizations')
+        usersWithOrgNames.forEach(user => {
+          user.organizations.forEach(org => {
+            assert.deepStrictEqual(omit(org, ['name']), {}, 'org only has `name` property')
+          })
+        })
+      })
     })
     describe('Two Levels Deep', () => {
       it('populates external, by name', async () => {
@@ -263,6 +456,13 @@ describe('Test users/users.service.server.test.js', () => {
           app.service('group-users').remove(null),
           app.service('groups').remove(null),
           app.service('tasks').remove(null),
+        ])
+        await Promise.all([
+          app.service('org-users').create(fakeData.orgUsers),
+          app.service('orgs').create(fakeData.orgs),
+          app.service('group-users').create(fakeData.groupUsers),
+          app.service('groups').create(fakeData.groups),
+          app.service('tasks').create(fakeData.tasks)
         ])
       })
 

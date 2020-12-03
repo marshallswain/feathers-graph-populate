@@ -1,4 +1,5 @@
 // Define the Feathers schema for service `users`.
+const { populates, namedQueries } = require('./users.graph-populate')
 
 // Define the model using JSON-schema
 let schema = {
@@ -45,51 +46,9 @@ let extensions = {
   },
 };
 
-let moduleExports = {
+module.exports = {
   schema,
   extensions,
-  populates: {
-    orgMemberships: {
-      service: 'org-users',
-      nameAs: 'orgMemberships',
-      keyHere: '_id',
-      keyThere: 'userId',
-      asArray: true,
-      params: {},
-    },
-    groupMemberships: {
-      service: 'group-users',
-      nameAs: 'groupMemberships',
-      keyHere: '_id',
-      keyThere: 'userId',
-      asArray: true,
-      params: {},
-    },
-    posts: {
-      service: 'posts',
-      nameAs: 'posts',
-      keyHere: '_id',
-      keyThere: 'authorId',
-      asArray: true,
-      params: {},
-    },
-    comments: {
-      service: 'comments',
-      nameAs: 'comments',
-      keyHere: '_id',
-      keyThere: 'userId',
-      asArray: true,
-      params: {},
-    },
-    tasks: {
-      service: 'tasks',
-      nameAs: 'tasks',
-      keyHere: '_id',
-      keyThere: 'ownerIds',
-      asArray: true,
-      params: {},
-    },
-  },
+  populates,
+  namedQueries
 };
-
-module.exports = moduleExports;
