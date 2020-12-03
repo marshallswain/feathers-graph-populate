@@ -1,6 +1,5 @@
 
 const assert = require('assert')
-const { readJsonFileSync } = require('@feathers-plus/test-utils')
 const app = require('../../../src/app')
 const { populateUtil } = require('../../../lib/index')
 const { omit, orderBy } = require('lodash')
