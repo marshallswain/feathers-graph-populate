@@ -6,7 +6,7 @@ const { populateUtil } = require('../../../lib/index')
 const { omit, orderBy } = require('lodash')
 const userPopulates = require('../../../src/services/users/users.schema').populates
 
-const fakeData = readJsonFileSync(app.get('seeds').fakeData) || {}
+const fakeData = require('../../../seeds/fake-data.json')
 
 describe('Test users/users.service.server.test.js', () => {
   before(async () => {
