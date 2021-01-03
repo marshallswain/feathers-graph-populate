@@ -1,6 +1,7 @@
+import { HookContext } from '@feathersjs/feathers'
 
-module.exports = function(...whitelist) {
-  return context => {
+export default function(...whitelist: string[]): ((context: HookContext) => HookContext) {
+  return (context: HookContext): HookContext => {
     const params = context.params
 
     if (params && params.query && params.query._$client && typeof params.query._$client === 'object') {

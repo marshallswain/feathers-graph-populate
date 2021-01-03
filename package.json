@@ -1,9 +1,11 @@
 {
   "name": "feathers-graph-populate",
   "description": "Add lightning fast, GraphQL-like populates to your FeathersJS API.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "homepage": "https://www.npmjs.com/package/feathers-graph-populate",
-  "main": "lib/index.js",
+  "main": "dist/",
+  "module": "dist/",
+  "types": "dist/",
   "files": [
     "lib/*"
   ],
@@ -21,6 +23,7 @@
     "test": "test/"
   },
   "scripts": {
+    "compile": "shx rm -rf dist/ && tsc",
     "test": "yarn run eslint && yarn run mocha",
     "test:all": "yarn run eslint && cross-env NODE_ENV=test npm run mocha",
     "release:pre": "npm version prerelease && npm publish --tag pre",
@@ -33,7 +36,7 @@
     "dev:seed": "nodemon src/ --seed",
     "start": "node src/",
     "start:seed": "cross-env NODE_ENV=test node src/ --seed",
-    "mocha": "mocha test/ --recursive --exit --timeout 10000",
+    "mocha": "cross-env NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' mocha 'test/**/*.test.ts' --require ts-node/register --exit --timeout 10000",
     "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },
@@ -46,7 +49,11 @@
     "@feathersjs/configuration": "^4.5.8",
     "@feathersjs/errors": "^4.5.8",
     "@feathersjs/express": "^4.5.8",
-    "@feathersjs/feathers": "^4.5.8",
+    "@feathersjs/feathers": "^4.5.11",
+    "@types/lodash": "^4.14.167",
+    "@types/mocha": "^8.2.0",
+    "@typescript-eslint/eslint-plugin": "^4.11.1",
+    "@typescript-eslint/parser": "^4.11.1",
     "ajv": "6.12.5",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
@@ -62,6 +69,9 @@
     "request": "^2.88.2",
     "request-promise": "^4.2.5",
     "serve-favicon": "^2.5.0",
+    "shx": "^0.3.3",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.1.3",
     "vuepress": "^1.6.0",
     "vuepress-theme-default-prefers-color-scheme": "^1.1.1",
     "winston": "^3.3.3"

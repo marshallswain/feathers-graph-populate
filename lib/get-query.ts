@@ -1,4 +1,7 @@
-const { get, unset } = require('lodash')
+import { Query } from '@feathersjs/feathers'
+import _get from 'lodash/get'
+import _unset from 'lodash/unset'
+import { GetPopulateQueryOptions } from './types'
 
 /**
  * getPopulateQuery is a helper utility for the populate hook, which performs the following:
@@ -7,18 +10,19 @@ const { get, unset } = require('lodash')
  * 2. Consistency - it makes sure the the $populateParams.query is always available to the populate hook,
  *    whenever applicable.
  */
-module.exports = function getPopulateQuery({ context, namedQueries, defaultQueryName }) {
-  let query = get(context, 'params.$populateParams.query')
+export default function getPopulateQuery(options: GetPopulateQueryOptions): Query {
+  const { context, namedQueries, defaultQueryName } = options
+  let query = _get(context, 'params.$populateParams.query')
 
   // Remove any possible $populateParams.query passed from the outside
   if (context.params.provider) {
-    unset(context, 'params.$populateParams.query')
+    _unset(context, 'params.$populateParams.query')
   }
 
   if (!query || context.params.provider) {
     // Set the query based on any $populateParams.name passed from the outside
-    const paramsName = get(context, 'params.$populateParams.name') || defaultQueryName
-    query = get(namedQueries, `${paramsName}.query`) || namedQueries[paramsName]
+    const paramsName = _get(context, 'params.$populateParams.name') || defaultQueryName
+    query = _get(namedQueries, `${paramsName}.query`) || namedQueries[paramsName]
   }
   return query
 }
