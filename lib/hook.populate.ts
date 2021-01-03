@@ -2,12 +2,12 @@ import graphPopulate from './graph-populate'
 import getQuery from './get-query'
 import _set from 'lodash/set'
 import { HookContext } from '@feathersjs/feathers'
-import { PopulateOptions } from './types'
+import { PopulateHookOptions, GraphPopulateHookOptions } from './types'
 /**
  * $populateParams.name can be passed from the outside.
  * $populateParams.query can be directly used, internally.
  */
-export default function setupPopulateHook(options: PopulateOptions): ((context: HookContext) => Promise<HookContext>) {
+export default function setupPopulateHook(options: PopulateHookOptions): ((context: HookContext) => Promise<HookContext>) {
   const { namedQueries, defaultQueryName, populates } = options
 
   return async function populateFormFeedback(context: HookContext): Promise<HookContext> {
@@ -23,6 +23,6 @@ export default function setupPopulateHook(options: PopulateOptions): ((context: 
     /**
      * The graphPopulate hook expects to find a query at params.$populateParams.query
      */
-    return graphPopulate({ populates })(context)
+    return graphPopulate({ populates } as GraphPopulateHookOptions)(context)
   }
 }

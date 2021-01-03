@@ -28,7 +28,11 @@ export type NestedQuery = Record<string, Record<string, unknown>>
 
 export type Populates = Record<string, PopulateObject>
 
-export interface PopulateOptions {
+export interface GraphPopulateHookOptions {
+  populates: Populates
+}
+
+export interface PopulateHookOptions {
   populates: Populates
   namedQueries?: Record<string, unknown>
   defaultQueryName?: string
