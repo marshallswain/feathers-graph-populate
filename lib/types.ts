@@ -54,6 +54,8 @@ export type GraphPopulateHook =
   ((params?: Params, context?: HookContext) => void | Params) |
   ((params?: Params, context?: HookContext) => void | Promise<Params>)
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface InitOptions {}
 
 export type Method = 'find' | 'get' | 'create' | 'update' | 'patch' | 'remove'
 export type Type = 'before' | 'after' | 'error'

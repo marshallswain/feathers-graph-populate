@@ -8,7 +8,7 @@ import populate from '../../lib/hooks/populate.hook'
 
 const mockApp = () => {
   const app = feathers()
-  app.configure(configureGraphPopulate)
+  app.configure(configureGraphPopulate())
 
   app.use('users', new Service({ multi: true, startId: 1 }))
   app.use('companies', new Service({ multi: true, startId: 1 }))
