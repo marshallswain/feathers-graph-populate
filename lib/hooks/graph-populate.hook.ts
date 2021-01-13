@@ -1,10 +1,11 @@
 import { HookContext, Query } from '@feathersjs/feathers'
-import { GraphPopulateHookOptions } from './types'
+import { GraphPopulateHookOptions } from '../types'
 
 import { shallowPopulate as makeShallowPopulate } from 'feathers-shallow-populate'
 import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
 import _merge from 'lodash/merge'
+import { GraphPopulateApplication } from '../app/graph-populate.class'
 
 const FILTERS = ['$limit', '$select', '$skip', '$sort']
 
@@ -28,6 +29,10 @@ export default function setupDeepPopulateHook(options: GraphPopulateHookOptions)
 
     if (!populateQuery) return context
 
+    const { app } = context
+    const graphPopulateApp: GraphPopulateApplication| undefined = app.graphPopulate
+
+
     // Get the populate data based on the query keys
     const keys = Object.keys(populateQuery)
 
@@ -35,16 +40,20 @@ export default function setupDeepPopulateHook(options: GraphPopulateHookOptions)
       if (!populates[key]) return currentPopulates
 
       const currentQuery = Object.assign({}, populateQuery[key])
-      const data = populates[key]
-      let params = data.params || []
-      if (Array.isArray(params)) {
-        params = [...params]
-      } else {
-        params = [params]
+
+      const populate = populates[key]
+      const service = app.service(populate.service)
+
+      let params = []
+      if (populate.params) {
+        if (Array.isArray(populate.params)) {
+          params.push(...populate.params)
+        } else {
+          params.push(populate.params)
+        }
       }
 
       if (!_isEmpty(currentQuery)) {
-        const service = context.app.service(data.service)
         const customKeysForQuery: string[]|undefined = _get(service, 'options.graphPopulate.whitelist')
         const extractKeys = [...FILTERS]
         if (customKeysForQuery) {
@@ -69,7 +78,11 @@ export default function setupDeepPopulateHook(options: GraphPopulateHookOptions)
         })
       }
 
-      currentPopulates.push(Object.assign({}, data, { params }))
+      if (graphPopulateApp) {
+        params = graphPopulateApp.withAppParams(params, context.method, service)
+      }
+
+      currentPopulates.push(Object.assign({}, populate, { params }))
 
       return currentPopulates
     }, [])

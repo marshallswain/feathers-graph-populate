@@ -1,7 +1,7 @@
 import { Query } from '@feathersjs/feathers'
 import _get from 'lodash/get'
 import _unset from 'lodash/unset'
-import { GetPopulateQueryOptions } from './types'
+import { GetPopulateQueryOptions } from '../types'
 
 /**
  * getPopulateQuery is a helper utility for the populate hook, which performs the following:

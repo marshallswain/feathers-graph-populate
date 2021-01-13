@@ -1,9 +1,9 @@
-import { Application, HookContext, Params } from '@feathersjs/feathers'
+import { Application, HookContext, Params, Service } from '@feathersjs/feathers'
 
-type SingleGraphPopulateParams =
+export type SingleGraphPopulateParams =
   Params|
-  ((params: Params, context: HookContext) => Params)|
-  ((params: Params, context: HookContext) => Promise<Params>)
+  ((params?: Params, context?: HookContext) => void | Params) |
+  ((params?: Params, context?: HookContext) => void | Promise<Params>)
 
 export type GraphPopulateParams =
   SingleGraphPopulateParams|SingleGraphPopulateParams[]
@@ -48,4 +48,28 @@ export interface PopulateUtilOptions {
   app: Application
   params: Params
   populates: Populates
+}
+
+export type GraphPopulateHook =
+  ((params?: Params, context?: HookContext) => void | Params) |
+  ((params?: Params, context?: HookContext) => void | Promise<Params>)
+
+
+export type Method = 'find' | 'get' | 'create' | 'update' | 'patch' | 'remove'
+export type Type = 'before' | 'after' | 'error'
+
+export interface GraphPopulateHookMap {
+  all: SingleGraphPopulateParams[];
+  find: SingleGraphPopulateParams[];
+  get: SingleGraphPopulateParams[];
+  create: SingleGraphPopulateParams[];
+  update: SingleGraphPopulateParams[];
+  patch: SingleGraphPopulateParams[];
+  remove: SingleGraphPopulateParams[];
+}
+
+export interface GraphPopulateHooksObject {
+  before: GraphPopulateHookMap;
+  after: GraphPopulateHookMap;
+  error: GraphPopulateHookMap;
 }
