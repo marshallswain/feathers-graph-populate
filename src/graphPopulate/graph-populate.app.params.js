@@ -17,15 +17,5 @@ module.exports = {
     update: [],
     patch: [],
     remove: [],
-  },
-
-  error: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: [],
-  },
+  }
 };

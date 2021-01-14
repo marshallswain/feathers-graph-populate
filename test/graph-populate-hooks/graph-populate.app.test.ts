@@ -531,4 +531,136 @@ describe('graph-populate.app', () => {
     assert(usersAfterCalledI === 2, 'called usersService after hook twice')
     assert.deepStrictEqual(result, expected, 'populated correctly')
   })
+
+  it('app hooks work with \'all\' for app and service', async () => {
+    const {
+      app,
+      usersService,
+      companiesService,
+      postsService
+    } = mockApp()
+
+    const graphPopulateApp = app.graphPopulate
+
+    const company = await companiesService.create({ name: 'company' })
+    const user = await usersService.create({ companyId: company.id })
+    await postsService.create([ { userId: user.id, }, { userId: user.id }])
+
+    let companiesAfterCalledI = 0
+    let postsAfterCalledI = 0
+    let usersAfterCalledI = 0
+
+    companiesService.hooks({
+      after: {
+        all: [
+          context => {
+            assert(companiesAfterCalledI === 0, 'companiesService not called before')
+            companiesAfterCalledI++
+            assert(context.params.test === true, 'params.test was set')
+            assert(context.params['before:all'] === true, '\'before:all\' was called')
+            assert(context.params['after:all'] === true, '\'after:all\' was called')
+          }
+        ]
+      }
+    })
+
+    postsService.hooks({
+      after: {
+        all: [
+          context => {
+            assert(postsAfterCalledI === 0, 'companiesService not called before')
+            postsAfterCalledI++
+            assert(context.params.test === true, 'params.test was set')
+            assert(context.params['before:all'] === true, '\'before:all\' was called')
+            assert(context.params['after:all'] === true, '\'after:all\' was called')
+          }
+        ]
+      }
+    })
+
+    usersService.hooks({
+      after: {
+        find: [
+          context => {
+            assert(usersAfterCalledI < 2, 'usersService just called twice')
+            usersAfterCalledI++
+            assert(context.params.test === true, 'params.test was set')
+            if (usersAfterCalledI === 1) {
+              assert(context.params['before:all'] === true, '\'before:all\' was called')
+              assert(context.params['after:all'] === true, '\'after:all\' was called')
+            }
+          }
+        ]
+      }
+    })
+
+    let calledBefore = 0
+    let calledAfter = 0
+
+    graphPopulateApp.hooks({
+      before: {
+        all: [
+          function(params, context) {
+            calledBefore++
+            if (context.params?.test !== undefined) {
+              params.test = context.params.test
+            }
+            params['before:all'] = true
+          }
+        ],
+        find: [],
+        get: [],
+        create: [],
+        update: [],
+        patch: [],
+        remove: []
+      },
+      after: {
+        all: [
+          function(params) {
+            calledAfter++
+            assert(params.test === true, 'passed from \'before:all\' to \'after:all\'')
+            params['after:all'] = true
+          }
+        ],
+        find: [],
+        get: [],
+        create: [],
+        update: [],
+        patch: [],
+        remove: []
+      }
+    })
+
+    const [result] = await usersService.find({
+      query: {},
+      test: true,
+      $populateParams: {
+        name: 'complete'
+      }
+    })
+
+    const expected = {
+      id: 1,
+      companyId: 1,
+      company: {
+        id: 1,
+        name: 'company',
+        users: [
+          { id: 1, companyId: 1 }
+        ]
+      },
+      posts: [
+        { id: 1, userId: 1 },
+        { id: 2, userId: 1 }
+      ]
+    }
+
+    assert.strictEqual(calledBefore, 3, 'called \'before:all\' 3 times')
+    assert.strictEqual(calledAfter, 3, 'called \'after:all\' 3 times')
+    assert(companiesAfterCalledI === 1, 'called companiesService after hook')
+    assert(postsAfterCalledI === 1, 'called postsService after hook')
+    assert(usersAfterCalledI === 2, 'called usersService after hook twice')
+    assert.deepStrictEqual(result, expected, 'populated correctly')
+  })
 })
