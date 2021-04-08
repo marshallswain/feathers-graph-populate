@@ -1,11 +1,13 @@
+import { HookContext} from '@feathersjs/feathers'
+
 /**
  * paramsForServer('$populateParams')
  *
  * In the request, the provided keys will be prepended with an underscore to prevent
  * requiring to add them to the feathers whitelist.
  */
-module.exports = function paramsForServer(...whitelist) {
-  return context => {
+export default function paramsForServer(...whitelist: string[]) {
+  return (context: HookContext): void => {
     // Prevent directly modifying the params, which would break the find getters.
     const params = JSON.parse(JSON.stringify(context.params))
 

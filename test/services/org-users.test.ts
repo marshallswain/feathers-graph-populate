@@ -1,5 +1,5 @@
-const assert = require('assert')
-const app = require('../../src/app')
+import assert from 'assert'
+import app from '../../src/app'
 
 describe('\'orgUsers\' service', () => {
   it('registered the service', () => {

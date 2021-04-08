@@ -1,13 +1,10 @@
 {
+  "root": true,
   "env": {
     "es6": true,
     "node": true,
     "mocha": true
   },
-  "parserOptions": {
-    "ecmaVersion": 2017
-  },
-  "extends": "eslint:recommended",
   "rules": {
     "indent": [
       "error",
@@ -21,5 +18,36 @@
       "error",
       "single"
     ]
-  }
+  },
+  "overrides": [
+    {
+      "parserOptions": {
+        "ecmaVersion": 2017
+      },
+      "extends": "eslint:recommended",
+      "files": ["**/*.js?(x)"]
+    },
+    {
+      "files": ["**/*.ts?(x)"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": [
+        "@typescript-eslint"
+      ],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/quotes": [
+          "error",
+          "single"
+        ],
+        "@typescript-eslint/semi": [
+          "error",
+          "never"
+        ]
+      }
+    }
+  ]
 }

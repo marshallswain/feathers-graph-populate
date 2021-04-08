@@ -1,11 +1,11 @@
 
-const assert = require('assert')
-const app = require('../../../src/app')
-const { populateUtil } = require('../../../lib/index')
-const { omit, orderBy } = require('lodash')
-const userPopulates = require('../../../src/services/users/users.schema').populates
+import assert from 'assert'
+import app from '../../../src/app'
+import { populateUtil } from '../../../lib/index'
+import { omit, orderBy } from 'lodash'
+import { populates as userPopulates } from '../../../src/services/users/users.schema'
 
-const fakeData = require('../../../seeds/fake-data.json')
+import fakeData from '../../../seeds/fake-data.json'
 
 describe('Test users/users.service.server.test.js', () => {
   before(async () => {

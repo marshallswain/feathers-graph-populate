@@ -10,17 +10,18 @@
       "name": "Mocha Tests",
       "program": "${workspaceFolder}/node_modules/mocha/bin/_mocha",
       "args": [
-        "-u",
-        "bdd",
+        "--require",
+        "ts-node/register",
         "--timeout",
         "999999",
         "--colors",
-        "--exit",
-        "${workspaceRoot}/{test,src}/**/*.test.js"
+        "--recursive",
+        "${workspaceRoot}/{test,src}/**/*.test.ts"
       ],
       "internalConsoleOptions": "openOnSessionStart",
       "env": {
-        "NODE_ENV": "test"
+        "NODE_ENV": "test",
+        "TS_NODE_PROJECT": "tsconfig.test.json"
       }
     },
     {

@@ -115,3 +115,5 @@ compiled/
 data/
 /nedb:/no-connection-string-config-test/*
 /nedb:
+
+/dist
