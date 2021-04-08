@@ -32,9 +32,19 @@ yarn add feathers-graph-populate
 
 ## Getting Started
 
+### Setup feathers-graph-populate
+
+Configuring `feathers-shallow-populate` in the `app.js` file, allows the global use of `graph-populate-hooks`.
+
+```js
+// src/app.js
+const graphPopulate = require('feathers-graph-populate')
+app.configure(graphPopulate())
+```
+
 ### Define the Relationships
 
-The first step is to create a `populates` object.  It's recommended that you make the first-level key names match the `nameAs` property.  Doing so will reduce cognitive overhead required when building queries, later.  Each item represents a populate object and will be passed directly to [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate).
+The first step is to create a `populates` object. It's recommended that you make the first-level key names match the `nameAs` property. Doing so will reduce cognitive overhead required when building queries, later. Each item represents a populate object and will be passed directly to [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate).
 
 ```js
 const populates = {
@@ -91,14 +101,14 @@ Each populate object must/can have the following properties. Also check out [fea
 
 | **Option**       | **Description** |
 |------------------|-----------------|
-| `service`        | The service to reference<br><br>**required**<br>**Type:** `{String}` |
-| `nameAs`         | The property to be assigned to on this entry<br><br>**required**<br>**Type:** `{String}` |
-| `keyHere`        | The primary or secondary key for this entry<br><br>**required if `params` is not complex (most of the time)**<br>**Type:** `{String}` |
-| `keyThere`       | The primary or secondary key for the referenced entry/entries<br><br>**required if `keyHere` is defined**<br>**Type:** `{String}` |
-| `asArray`        | Is the referenced item a single entry or an array of entries?<br><br>**optional - default:** `true`<br>**Type:** `{Boolean}`
-| `requestPerItem` | Decided wether your `params` object/function runs against each item individually or bundled. Most of the time you don't need this.<br><br>**optional - default:<br>- `false`** (if `keyHere` and `keyThere` are defined)<br>- **`true`** (if `keyHere` and `keyThere` are not defined)<br>**Type:** `{String}`
-| `catchOnError`   | Wether the hook continues populating, if an error occurs (e.g. because of missing authentication) or throws. Also can be set on the prior options<br><br>**optional - default:** `false`<br>**Type:**: `{Boolean}` |
-| `params`         | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged deeply <br>Merged deeply after the params are generated internally.<br><quote>**ProTip #1:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss</quote><br><quote>**ProTip #2:** If you don't define `keyHere` and `keyThere` or set `requestPerItem` to `true` the function has access to the _`this` keyword_ being the individual item the request will be made for.</quote><br><quote>**ProTip #3**: You can skip a `requestPerItem` if it returns `undefined`.</quote><br><quote>**ProTip #4**: The hook whats for async functions!</quote><br><br>**optional - default:** `{}`<br>**Possible types:**<br>- `{Object}`: _will be merged with params - simple requests_<br>- `{Function(params, context)}: params`: _needs to return the `params` or a new one which gets merged deeply - more complex_<br>- `{Function(params, context)}: Promise<params>`<br>- `{[Object|Function]}` |
+| `service`        | The service to reference<br><br>**required**<br>**Type:** `String` |
+| `nameAs`         | The property to be assigned to on this entry<br><br>**required**<br>**Type:** `String` |
+| `keyHere`        | The primary or secondary key for this entry<br><br>**required if `params` is not complex (most of the time)**<br>**Type:** `String` |
+| `keyThere`       | The primary or secondary key for the referenced entry/entries<br><br>**required if `keyHere` is defined**<br>**Type:** `String` |
+| `asArray`        | Is the referenced item a single entry or an array of entries?<br><br>**optional - default:** `true`<br>**Type:** `Boolean`
+| `requestPerItem` | Decided wether your `params` object/function runs against each item individually or bundled. Most of the time you don't need this.<br><br>**optional - default:<br>- `false`** (if `keyHere` and `keyThere` are defined)<br>- **`true`** (if `keyHere` and `keyThere` are not defined)<br>**Type:** `String`
+| `catchOnError`   | Wether the hook continues populating, if an error occurs (e.g. because of missing authentication) or throws. Also can be set on the prior options<br><br>**optional - default:** `false`<br>**Type:**: `Boolean` |
+| `params`         | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged deeply <br>Merged deeply after the params are generated internally.<br><quote>**ProTip #1:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss</quote><br><quote>**ProTip #2:** If you don't define `keyHere` and `keyThere` or set `requestPerItem` to `true` the function has access to the _`this` keyword_ being the individual item the request will be made for.</quote><br><quote>**ProTip #3**: You can skip a `requestPerItem` if it returns `undefined`.</quote><br><quote>**ProTip #4**: The hook whats for async functions!</quote><br><br>**optional - default:** `{}`<br>**Possible types:**<br>- `Object`: _will be merged with params - simple requests_<br>- `Function(params, context, { path, service }) => params`: _needs to return the `params` or a new one which gets merged deeply - more complex_<br>- `Function(params, context, { path, service }) => Promise<params>`<br>- `[Object | Function]` |
 
 ### Create Named Queries
 
@@ -124,15 +134,15 @@ const namedQueries = {
 }
 ```
 
-The first level of keys in the `namedQueries` object contains the names of each query.  So, the first query above is called `withPosts`.  Its query is `{ posts: {} }`.  It tells `feathers-graph-populate` to load all records on the `posts` relationship that was defined in the previous step.  All records are populated with a single query.
+The first level of keys in the `namedQueries` object contains the names of each query. So, the first query above is called `withPosts`.  Its query is `{ posts: {} }`. It tells `feathers-graph-populate` to load all records on the `posts` relationship that was defined in the previous step. All records are populated with a single query.
 
-The second query, above, is called `postsWithComments`. The query is `{ posts: { comments: {} } }`.  This tells `feathers-graph-populate` to pull in the `posts` relationship.  The posts are populated with a single query, then the `comments` are populated onto the posts with one additional query.
+The second query, above, is called `postsWithComments`. The query is `{ posts: { comments: {} } }`. This tells `feathers-graph-populate` to pull in the `posts` relationship. The posts are populated with a single query, then the `comments` are populated onto the posts with one additional query.
 
-The last query, above, is called `postsWithCommentsWithUser`.  The query is `{ posts: { comments: { user: {} } } }`, which tells `feathers-graph-populate` to perform three queries, one at each level.
+The last query, above, is called `postsWithCommentsWithUser`. The query is `{ posts: { comments: { user: {} } } }`, which tells `feathers-graph-populate` to perform three queries, one at each level.
 
 ### Register the Populate Hook
 
-The populate hook will need to be registered on all services on which you wish to populate data AND their target populates.  For the query examples, above, the `posts`, `comments`, and `users` services will all require the hook to be registered as an "after all" hook:
+The populate hook will need to be registered on all services on which you wish to populate data AND their target populates. For the query examples, above, the `posts`, `comments`, and `users` services will all require the hook to be registered as an "after all" hook:
 
 ```js
 const { populate } = require('feathers-graph-populate')
@@ -156,7 +166,7 @@ The `option` object for the hook can have the following properties:
 
 ### Enable Custom Client-Side Params
 
-Since FeathersJS only supports passing `params.query` from client to server, by default, we need to let it know about the new `$populateParams` object.  We can do this using the `paramsForServer` and `paramsFromClient` hooks:
+Since FeathersJS only supports passing `params.query` from client to server, by default, we need to let it know about the new `$populateParams` object. We can do this using the `paramsForServer` and `paramsFromClient` hooks:
 
 ```js
 const { paramsForServer } = require('feathers-graph-populate')

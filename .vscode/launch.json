@@ -16,6 +16,7 @@
         "999999",
         "--colors",
         "--recursive",
+        "--exit",
         "${workspaceRoot}/{test,src}/**/*.test.ts"
       ],
       "internalConsoleOptions": "openOnSessionStart",

@@ -41,6 +41,7 @@
     "docs:build": "vuepress build docs"
   },
   "dependencies": {
+    "@feathersjs/commons": "^4.5.11",
     "feathers-shallow-populate": "^2.5.0",
     "lodash": "^4.17.20"
   },
@@ -59,6 +60,7 @@
     "cors": "^2.8.5",
     "cross-env": "^7.0.2",
     "eslint": "^7.10.0",
+    "feathers-memory": "^4.1.0",
     "feathers-hooks-common": "^5.0.5",
     "feathers-nedb": "^5.1.0",
     "helmet": "^4.1.1",
