@@ -21,11 +21,11 @@
   },
   "overrides": [
     {
+      "files": ["**/*.js?(x)"],
       "parserOptions": {
         "ecmaVersion": 2017
       },
-      "extends": "eslint:recommended",
-      "files": ["**/*.js?(x)"]
+      "extends": "eslint:recommended"
     },
     {
       "files": ["**/*.ts?(x)"],
@@ -46,6 +46,14 @@
         "@typescript-eslint/semi": [
           "error",
           "never"
+        ]
+      }
+    },
+    {
+      "files": ["test/**/*.test.ts?(x)"],
+      "rules": {
+        "@typescript-eslint/ban-ts-comment": [
+          "off"
         ]
       }
     }

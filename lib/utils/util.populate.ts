@@ -1,9 +1,9 @@
-import setupDeepPopulate from './graph-populate'
+import setupDeepPopulate from '../hooks/graph-populate.hook'
 import _isObject from 'lodash/isObject'
 
 import { HookContext } from '@feathersjs/feathers'
 
-import { PopulateParams, PopulateUtilOptions } from './types'
+import { PopulateParams, PopulateUtilOptions } from '../types'
 /**
  * This is a utility (not a hook) which performs similar to the graph-populate hook.  It
  * is meant to be used INSIDE of a hook, because it requires the `context` object.

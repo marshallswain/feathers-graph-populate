@@ -1,10 +1,14 @@
-import graphPopulate from './graph-populate'
-import getQuery from './get-query'
-import populate from './hook.populate'
-import populateUtil from './util.populate'
+import graphPopulate from './hooks/graph-populate.hook'
+import populate from './hooks/populate.hook'
+import getQuery from './utils/get-query'
+import populateUtil from './utils/util.populate'
 
-import paramsForServer from './params-for-server'
-import paramsFromClient from './params-from-client'
+import paramsForServer from './hooks/params-for-server.hook'
+import paramsFromClient from './hooks/params-from-client.hook'
+
+import initApp from './app/graph-populate.app'
+
+export default initApp
 
 export {
   getQuery,

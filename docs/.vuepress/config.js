@@ -8,7 +8,8 @@ module.exports = {
     docsDir: 'docs',
     editLinks: true,
     sidebar: [
-      '/getting-started.md'
+      '/getting-started.md',
+      '/graph-populate-hooks.md'
     ],
     serviceWorker: {
       updatePopup: true
