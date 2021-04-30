@@ -4193,10 +4193,10 @@ feathers-nedb@^5.1.0:
     "@feathersjs/commons" "^4.3.0"
     "@feathersjs/errors" "^4.3.4"
 
-feathers-shallow-populate@^2.5.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/feathers-shallow-populate/-/feathers-shallow-populate-2.5.0.tgz#5e9c8b6fc56c094a9f0babf4e8e5c9e22e854f9c"
-  integrity sha512-efTwTRdmY9M8FnavnIpRVwYY/ySUt74vqYKkZX6JdsMKFGeNxNE3PmSpvVngRpQkCIZXKdZXyrzh44dZC66+gw==
+feathers-shallow-populate@^2.5.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/feathers-shallow-populate/-/feathers-shallow-populate-2.5.1.tgz#3d8ed693572061687308f84b8077ed53eb9dc17a"
+  integrity sha512-qjsCCcJ+jcQ33xBeLzwAAjslXOXuoAHexBQWpLtJveOPOzhhOf2Df3MZCzsmDIGeOVK343jWmuWhM2mABc0Tkw==
   dependencies:
     lodash "^4.17.20"
 
