@@ -1,12 +1,10 @@
-import { Application, Service, Hook } from '@feathersjs/feathers'
 import { _ } from '@feathersjs/commons'
 const { each } = _
 import _get from 'lodash/get'
 
 import {
   GraphPopulateHook,
-  GraphPopulateHookMap,
-  GraphPopulateHooksObject
+  GraphPopulateHookMap
 } from '../types'
 
 export function convertHookData (obj: GraphPopulateHook|Record<string, unknown>|unknown[]): Partial<GraphPopulateHookMap> {

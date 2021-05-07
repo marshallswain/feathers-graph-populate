@@ -1,7 +1,7 @@
 import { HookContext, Query } from '@feathersjs/feathers'
 import { GraphPopulateHookOptions } from '../types'
 
-import { shallowPopulate as makeShallowPopulate } from 'feathers-shallow-populate'
+import makeShallowPopulate from './shallow-populate.hook'
 import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
 import _merge from 'lodash/merge'

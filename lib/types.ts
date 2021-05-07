@@ -1,4 +1,4 @@
-import { Application, HookContext, Params, Service } from '@feathersjs/feathers'
+import { Application, HookContext, Params } from '@feathersjs/feathers'
 
 export type SingleGraphPopulateParams =
   Params|
@@ -74,4 +74,20 @@ export interface GraphPopulateHooksObject {
   before: GraphPopulateHookMap;
   after: GraphPopulateHookMap;
   error: GraphPopulateHookMap;
+}
+
+export interface ShallowPopulateOptions {
+  include: PopulateObject | PopulateObject[]
+  catchOnError?: boolean
+}
+
+export interface ChainedParamsOptions {
+  thisKey?: Record<string, unknown> | undefined
+  skipWhenUndefined?: boolean
+}
+
+export interface CumulatedRequestResult {
+  include: PopulateObject,
+  params?: Params,
+  response?: { data: Record<string, unknown>[] } | Record<string, unknown>[]
 }

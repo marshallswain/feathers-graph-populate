@@ -3,6 +3,8 @@ import populate from './hooks/populate.hook'
 import getQuery from './utils/get-query'
 import populateUtil from './utils/util.populate'
 
+import shallowPopulate from './hooks/shallow-populate.hook'
+
 import paramsForServer from './hooks/params-for-server.hook'
 import paramsFromClient from './hooks/params-from-client.hook'
 
@@ -15,6 +17,7 @@ export {
   graphPopulate,
   populate,
   populateUtil,
+  shallowPopulate,
   paramsForServer,
   paramsFromClient
 }
