@@ -12,5 +12,8 @@
       "development"
     ]
   },
-  "nedb": "../data"
+  "nedb": "../data",
+  "seeds": {
+    "fakeData": "../seeds/fake-data.json"
+  }
 }

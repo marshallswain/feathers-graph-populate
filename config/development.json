@@ -1,7 +1,7 @@
 {
   "mongodb": "mongodb://no-connection-string-config-development",
   "mysql": "mysql://root:@no-connection-string-config-development",
-  "nedb": "nedb://no-connection-string-config-development",
+  "nedb": "../data",
   "postgres": "postgres://postgres:@no-connection-string-config-development",
   "rethinkdb": "rethinkdb://no-connection-string-config-development",
   "sqlite": "sqlite://no-connection-string-config-development",
