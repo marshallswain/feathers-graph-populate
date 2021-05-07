@@ -18,7 +18,7 @@ sidebarDepth: 3
 
 ## About
 
-Add lightning fast, GraphQL-like populates to your FeathersJS API. `feathers-graph-populate` heavily depends on [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate).
+Add lightning fast, GraphQL-like populates to your FeathersJS API.
 
 This project is built for [FeathersJS](http://feathersjs.com). An open source web framework for building modern real-time applications.
 
@@ -34,7 +34,7 @@ yarn add feathers-graph-populate
 
 ### Setup feathers-graph-populate
 
-Configuring `feathers-shallow-populate` in the `app.js` file, allows the global use of `graph-populate-hooks`.
+Configuring `feathers-graph-populate` in the `app.js` file, allows the global use of `graph-populate-hooks`.
 
 ```js
 // src/app.js
@@ -44,7 +44,7 @@ app.configure(graphPopulate())
 
 ### Define the Relationships
 
-The first step is to create a `populates` object. It's recommended that you make the first-level key names match the `nameAs` property. Doing so will reduce cognitive overhead required when building queries, later. Each item represents a populate object and will be passed directly to [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate).
+The first step is to create a `populates` object. It's recommended that you make the first-level key names match the `nameAs` property. Doing so will reduce cognitive overhead required when building queries, later. Each item represents a populate object and will be passed directly to shallow-populate hook.
 
 ```js
 const populates = {
@@ -97,7 +97,7 @@ const populates = {
 
 ### Options for each relationship
 
-Each populate object must/can have the following properties. Also check out [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate). It has the same structure.
+Each populate object must/can have the following properties:
 
 | **Option**       | **Description** |
 |------------------|-----------------|
