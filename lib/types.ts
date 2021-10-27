@@ -61,17 +61,9 @@ export type Method = 'find' | 'get' | 'create' | 'update' | 'patch' | 'remove'
 export type Type = 'before' | 'after' | 'error'
 
 export interface GraphPopulateHookMap {
-  all: SingleGraphPopulateParams[];
-  find: SingleGraphPopulateParams[];
-  get: SingleGraphPopulateParams[];
-  create: SingleGraphPopulateParams[];
-  update: SingleGraphPopulateParams[];
-  patch: SingleGraphPopulateParams[];
-  remove: SingleGraphPopulateParams[];
+  [key in Method | 'all']: SingleGraphPopulateParams[];
 }
 
 export interface GraphPopulateHooksObject {
-  before: GraphPopulateHookMap;
-  after: GraphPopulateHookMap;
-  error: GraphPopulateHookMap;
+  [key in Type]: GraphPopulateHookMap;
 }
