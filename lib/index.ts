@@ -12,6 +12,8 @@ import initApp from './app/graph-populate.app'
 
 export default initApp
 
+export { definePopulates } from './utils/define-populates'
+
 export {
   getQuery,
   graphPopulate,

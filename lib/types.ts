@@ -8,8 +8,8 @@ export type SingleGraphPopulateParams =
 export type GraphPopulateParams =
   SingleGraphPopulateParams|SingleGraphPopulateParams[]
 
-export interface PopulateObject {
-  service: string
+export interface PopulateObject<S = string> {
+  service: S
   nameAs: string
   keyHere?: string
   keyThere?: string
@@ -26,14 +26,14 @@ export interface PopulateParams {
 
 export type NestedQuery = Record<string, Record<string, unknown>>
 
-export type Populates = Record<string, PopulateObject>
+export type Populates<S = string> = Record<string, PopulateObject<S>>
 
-export interface GraphPopulateHookOptions {
-  populates: Populates
+export interface GraphPopulateHookOptions<S = string> {
+  populates: Populates<S>
 }
 
-export interface PopulateHookOptions {
-  populates: Populates
+export interface PopulateHookOptions<S = string> {
+  populates: Populates<S>
   namedQueries?: Record<string, unknown>
   defaultQueryName?: string
 }
@@ -44,10 +44,10 @@ export interface GetPopulateQueryOptions {
   defaultQueryName: string
 }
 
-export interface PopulateUtilOptions {
+export interface PopulateUtilOptions<S = string> {
   app: Application
   params: Params
-  populates: Populates
+  populates: Populates<S>
 }
 
 export type GraphPopulateHook =
