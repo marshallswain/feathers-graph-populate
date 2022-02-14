@@ -7,7 +7,11 @@
   "module": "dist/",
   "types": "dist/",
   "keywords": [
-    "feathers"
+    "feathers",
+    "feathers.js",
+    "feathers-plugin",
+    "hooks",
+    "populate"
   ],
   "author": {
     "name": "Marshall Thompson",
@@ -16,7 +20,7 @@
   "contributors": [],
   "bugs": {},
   "directories": {
-    "lib": "src",
+    "lib": "lib",
     "test": "test/"
   },
   "files": [
