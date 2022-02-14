@@ -1,4 +1,4 @@
-import { Application, HookContext, Params } from '@feathersjs/feathers'
+import type { Application, HookContext, Params } from '@feathersjs/feathers'
 import _get from 'lodash/get'
 import _has from 'lodash/has'
 import _isEmpty from 'lodash/isEmpty'
@@ -7,7 +7,8 @@ import _isFunction from 'lodash/isFunction'
 import _merge from 'lodash/merge'
 import _set from 'lodash/set'
 import _uniqBy from 'lodash/uniqBy'
-import {
+import type {
+  AnyData,
   ChainedParamsOptions,
   CumulatedRequestResult,
   GraphPopulateParams,
@@ -117,7 +118,7 @@ export const chainedParams = async (
 export async function makeCumulatedRequest (
   app: Application,
   include: PopulateObject,
-  dataMap: Record<string, unknown>,
+  dataMap: AnyData,
   context: HookContext
 ): Promise<CumulatedRequestResult> {
   const { keyHere, keyThere } = include
@@ -170,7 +171,7 @@ export async function makeCumulatedRequest (
 }
 
 export async function makeRequestPerItem (
-  item: Record<string, unknown>,
+  item: AnyData,
   app: Application,
   include: PopulateObject,
   context: HookContext
@@ -212,10 +213,10 @@ export async function makeRequestPerItem (
 }
 
 export function setItems (
-  data: Record<string, unknown>[],
+  data: AnyData[],
   include: PopulateObject,
   params: Params,
-  response: { data: Record<string, unknown>[] } | Record<string, unknown>[]
+  response: { data: AnyData[] } | AnyData[]
 ): void {
   const relatedItems = (Array.isArray(response)) ? response : response.data
   const { nameAs, keyThere, asArray } = include
@@ -245,11 +246,11 @@ export function setItems (
   }
 }
 
-type GetRelatedItemsResult = Record<string, unknown> | Record<string, unknown>[] | undefined
+type GetRelatedItemsResult = AnyData | AnyData[] | undefined
 
 export function getRelatedItems (
   ids: (string | number) | (string | number)[],
-  relatedItems: Record<string, unknown>[],
+  relatedItems: AnyData[],
   include: PopulateObject,
   params: Params
 ): GetRelatedItemsResult {
@@ -278,7 +279,7 @@ export function getRelatedItems (
         // The rest will be handed to getByDot as the path to the prop
         const nestedProp = keyThere.slice(keyThere.indexOf('.') + 1)
         // Map over the array to grab each nestedProp's value.
-        currentId = (currentItem[arrayName] as Record<string, unknown>[]).map(nestedItem => {
+        currentId = (currentItem[arrayName] as AnyData[]).map(nestedItem => {
           const keyThereVal = _get(nestedItem, nestedProp)
           return keyThereVal
         })
@@ -292,7 +293,7 @@ export function getRelatedItems (
             skipped++
             continue
           }
-          (itemOrItems as Record<string, unknown>[]).push(currentItem)
+          (itemOrItems as AnyData[]).push(currentItem)
           if (itemOrItems.length >= limit) {
             isDone = true
             break
@@ -315,11 +316,11 @@ export function getRelatedItems (
   return itemOrItems
 }
 
-export function mapDataWithId<T extends Record<string, unknown>>(
+export function mapDataWithId<T extends AnyData>(
   byKeyHere: T,
   key: string,
   keyHere: string,
-  current: Record<string, unknown>
+  current: AnyData
 ): T {
   byKeyHere[key][keyHere] = byKeyHere[key][keyHere] || {
     key: keyHere,

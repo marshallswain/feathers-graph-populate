@@ -1,5 +1,6 @@
-import { Service } from '@feathersjs/feathers'
 import { enableHooks } from './hooks.commons'
+
+import type { Service } from '@feathersjs/feathers'
 
 export default (service: Service<unknown>): void => {
   if (!service.graphPopulate) {

@@ -1,6 +1,6 @@
-import { HookContext } from '@feathersjs/feathers'
+import type { HookContext } from '@feathersjs/feathers'
 
-export default function(...whitelist: string[]): ((context: HookContext) => HookContext) {
+export function paramsFromClient(...whitelist: string[]): ((context: HookContext) => HookContext) {
   return (context: HookContext): HookContext => {
     const params = context.params
 

@@ -1,20 +1,22 @@
-import { Application, Service } from '@feathersjs/feathers'
-import { Method } from '../types'
 import {
   enableHooks,
   getHooks
 } from './hooks.commons'
 
-import {
+import type { Application, Service } from '@feathersjs/feathers'
+
+import type {
+  Method,
   GraphPopulateHook,
-  SingleGraphPopulateParams
+  SingleGraphPopulateParams,
+  AnyData
 } from '../types'
 
 export class GraphPopulateApplication {
   private _app: Application
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   __hooks: any
-  hooks: (hooks: GraphPopulateHook|Record<string, unknown>|unknown[]) => void
+  hooks: (hooks: GraphPopulateHook|AnyData|unknown[]) => void
 
   constructor(app: Application) {
     this._app = app

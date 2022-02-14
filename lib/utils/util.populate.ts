@@ -1,9 +1,9 @@
-import setupDeepPopulate from '../hooks/graph-populate.hook'
+import { graphPopulate } from '../hooks/graph-populate.hook'
 import _isObject from 'lodash/isObject'
 
-import { HookContext } from '@feathersjs/feathers'
+import type { HookContext } from '@feathersjs/feathers'
 
-import { PopulateParams, PopulateUtilOptions } from '../types'
+import type { PopulateParams, PopulateUtilOptions } from '../types'
 /**
  * This is a utility (not a hook) which performs similar to the graph-populate hook.  It
  * is meant to be used INSIDE of a hook, because it requires the `context` object.
@@ -11,7 +11,7 @@ import { PopulateParams, PopulateUtilOptions } from '../types'
  * Just kidding, the real difference is that it is not a hook.  It can be used inside of
  * a hook to populate data a GraphQL-like query onto a record or array of records.
  */
-export default async function populateUtil(records: unknown[], options: PopulateUtilOptions): Promise<unknown[]> {
+export async function populateUtil(records: unknown[], options: PopulateUtilOptions): Promise<unknown[]> {
   const { app, params, populates } = options
   if (!app) {
     throw new Error('The app object must be provided in the populateUtil options.')
@@ -33,7 +33,7 @@ export default async function populateUtil(records: unknown[], options: Populate
     result: records,
     params
   }
-  const deepPopulate = setupDeepPopulate({ populates })
+  const deepPopulate = graphPopulate({ populates })
   const populated = await deepPopulate(miniContext as HookContext)
 
   return populated.result

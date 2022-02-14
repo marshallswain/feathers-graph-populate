@@ -3,8 +3,7 @@ import assert from 'assert'
 import feathers from '@feathersjs/feathers'
 import { Service } from 'feathers-memory'
 
-import configureGraphPopulate from '../../lib/app/graph-populate.app'
-import populate from '../../lib/hooks/populate.hook'
+import configureGraphPopulate, { populate } from '../../lib'
 
 const mockApp = () => {
   const app = feathers()
@@ -118,7 +117,6 @@ describe('graph-populate.app', () => {
 
     const graphPopulateApp = app.graphPopulate
 
-    /* eslint-disable @typescript-eslint/no-empty-function */
     graphPopulateApp.hooks({
       before: {
         all: [() => {}],
@@ -139,7 +137,6 @@ describe('graph-populate.app', () => {
         remove: [() => {}],
       }
     })
-    /* eslint-enable @typescript-eslint/no-empty-function */
 
     const types = ['before', 'after']
     const methods = ['find', 'get', 'create', 'update', 'patch', 'remove']
@@ -156,7 +153,6 @@ describe('graph-populate.app', () => {
       usersService
     } = mockApp()
 
-    /* eslint-disable @typescript-eslint/no-empty-function */
     usersService.graphPopulate.hooks({
       before: {
         all: [() => {}],
@@ -177,7 +173,6 @@ describe('graph-populate.app', () => {
         remove: [() => {}],
       }
     })
-    /* eslint-enable @typescript-eslint/no-empty-function */
 
     const types = ['before', 'after']
     const methods = ['find', 'get', 'create', 'update', 'patch', 'remove']

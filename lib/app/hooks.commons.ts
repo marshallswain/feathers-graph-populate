@@ -2,12 +2,13 @@ import { _ } from '@feathersjs/commons'
 const { each } = _
 import _get from 'lodash/get'
 
-import {
+import type {
+  AnyData,
   GraphPopulateHook,
   GraphPopulateHookMap
 } from '../types'
 
-export function convertHookData (obj: GraphPopulateHook|Record<string, unknown>|unknown[]): Partial<GraphPopulateHookMap> {
+export function convertHookData (obj: GraphPopulateHook|AnyData|unknown[]): Partial<GraphPopulateHookMap> {
   let hook: Partial<GraphPopulateHookMap> = {}
 
   if (Array.isArray(obj)) {
@@ -40,7 +41,7 @@ export function getHooks (app: any, service: any, type: string, method: string, 
 }
 
 // eslint-disable-next-line
-export function enableHooks (obj: any, methods: string[], types: string[]): Record<string, unknown> {
+export function enableHooks (obj: any, methods: string[], types: string[]): AnyData {
   if (typeof obj.hooks === 'function') {
     return obj
   }
@@ -61,7 +62,7 @@ export function enableHooks (obj: any, methods: string[], types: string[]): Reco
 
   return Object.assign(obj, {
     hooks (allHooks: Partial<{before: Partial<GraphPopulateHookMap>, after: Partial<GraphPopulateHookMap>, error: Partial<GraphPopulateHookMap> }> | GraphPopulateHook | GraphPopulateHook[]) {
-      each(allHooks, (current: GraphPopulateHook|Record<string, unknown>|unknown[], type) => {
+      each(allHooks, (current: GraphPopulateHook|AnyData|unknown[], type) => {
         if (!this.__hooks[type]) {
           throw new Error(`'${type}' is not a valid hook type`)
         }

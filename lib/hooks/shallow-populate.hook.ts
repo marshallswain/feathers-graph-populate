@@ -1,7 +1,6 @@
 import _get from 'lodash/get'
 import _set from 'lodash/set'
 import _has from 'lodash/has'
-import { HookContext } from '@feathersjs/feathers'
 
 import {
   assertIncludes,
@@ -12,7 +11,10 @@ import {
   shouldCatchOnError
 } from '../utils/shallow-populate.utils'
 
-import {
+import type { HookContext } from '@feathersjs/feathers'
+
+import type {
+  AnyData,
   CumulatedRequestResult,
   PopulateObject,
   ShallowPopulateOptions
@@ -23,7 +25,7 @@ const defaults: ShallowPopulateOptions = {
   catchOnError: false
 }
 
-export default function (
+export function shallowPopulate(
   options: Partial<ShallowPopulateOptions> & Pick<ShallowPopulateOptions, 'include'>
 ): ((context: HookContext) => Promise<HookContext>) {
   options = Object.assign({}, defaults, options)
@@ -54,7 +56,7 @@ export default function (
     context: HookContext
   ): Promise<HookContext> {
     const { app, type } = context
-    let data: Record<string, unknown>[] = type === 'before'
+    let data: AnyData[] = type === 'before'
       ? context.data
       : context.method === 'find'
         ? (context.result.data || context.result)
@@ -66,9 +68,9 @@ export default function (
       return context
     }
 
-    const dataMap: Record<string, unknown> = data.reduce((
-      byKeyHere: Record<string, unknown>,
-      current: Record<string, unknown>
+    const dataMap: AnyData = data.reduce((
+      byKeyHere: AnyData,
+      current: AnyData
     ) => {
       keysHere.forEach(key => {
         byKeyHere[key] = byKeyHere[key] || {}

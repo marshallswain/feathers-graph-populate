@@ -1,9 +1,0 @@
-{
-  "env": {
-    "NODE_ENV": "development"
-  },
-  "events": {
-    "start": "eslint src/. test/. --config .eslintrc.json",
-    "restart": "eslint src/. test/. --config .eslintrc.json"
-  }
-}

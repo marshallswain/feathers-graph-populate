@@ -1,9 +1,9 @@
 import assert from 'assert'
-import makePopulate from '../lib/hooks/shallow-populate.hook'
+import { shallowPopulate as makePopulate } from '../lib'
 import memory from 'feathers-memory'
 import sift from 'sift'
-import { HookContext, Params } from '@feathersjs/feathers'
-import { ShallowPopulateOptions } from '../lib/types'
+import type { HookContext, Params } from '@feathersjs/feathers'
+import type { ShallowPopulateOptions } from '../lib'
 
 const services = {
   posts: memory({
@@ -523,7 +523,6 @@ describe('populating thing', () => {
 
           assert(result.posts.length, `${type}: posts should have been populated`)
           result.posts.forEach(post => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { name, ...rest } = post
             assert.deepStrictEqual(rest, {}, `${type}: only has name property`)
           })
@@ -740,8 +739,7 @@ describe('populating thing', () => {
         })
       })
 
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      it.skip('handles missing _id on create', async () => {})
+      it.skip('handles missing id on create', async () => {})
     })
 
     describe('Single data/result - Multiple Relationship:', () => {
@@ -1063,7 +1061,6 @@ describe('populating thing', () => {
           const result = response[dataResult]
           assert(result.users.length, 'posts should have been populated')
           result.users.forEach(user => {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { name, ...rest } = user
             assert.deepStrictEqual(rest, {}, 'only has name property')
           })
@@ -1395,8 +1392,7 @@ describe('populating thing', () => {
         })
       })
 
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      it.skip('handles missing _id on create', async () => {})
+      it.skip('handles missing id on create', async () => {})
     })
   })
 
@@ -1739,7 +1735,6 @@ describe('populating thing', () => {
           result.forEach(user => {
             assert(user.posts.length, `${type}: posts should have been populated`)
             user.posts.forEach(post => {
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               const { name, ...rest } = post
               assert.deepStrictEqual(rest, {}, `${type}: only has name property`)
             })
@@ -2023,8 +2018,7 @@ describe('populating thing', () => {
         })
       })
 
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      it.skip('handles missing _id on create', async () => {})
+      it.skip('handles missing id on create', async () => {})
     })
 
     describe('Multiple data/result - Multiple Relationship:', () => {
@@ -2376,7 +2370,6 @@ describe('populating thing', () => {
           result.forEach((post, i) => {
             assert(post.users.length, 'posts should have been populated')
             post.users.forEach(user => {
-              // eslint-disable-next-line @typescript-eslint/no-unused-vars
               const { name, ...rest } = user
               assert.deepStrictEqual(rest, {}, 'only has name property')
             })
@@ -2777,8 +2770,7 @@ describe('populating thing', () => {
         })
       })
 
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      it.skip('handles missing _id on create', async () => {})
+      it.skip('handles missing id on create', async () => {})
     })
   })
 })

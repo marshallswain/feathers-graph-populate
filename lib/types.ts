@@ -1,4 +1,7 @@
-import { Application, HookContext, Params } from '@feathersjs/feathers'
+import type { Application, HookContext, Params } from '@feathersjs/feathers'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyData = Record<string, any>
 
 export type SingleGraphPopulateParams =
   Params|
@@ -24,7 +27,7 @@ export interface PopulateParams {
   query?: NestedQuery
 }
 
-export type NestedQuery = Record<string, Record<string, unknown>>
+export type NestedQuery = Record<string, AnyData>
 
 export type Populates<S = string> = Record<string, PopulateObject<S>>
 
@@ -34,13 +37,13 @@ export interface GraphPopulateHookOptions<S = string> {
 
 export interface PopulateHookOptions<S = string> {
   populates: Populates<S>
-  namedQueries?: Record<string, unknown>
+  namedQueries?: AnyData
   defaultQueryName?: string
 }
 
 export interface GetPopulateQueryOptions {
   context: HookContext
-  namedQueries: Record<string, unknown>
+  namedQueries: AnyData
   defaultQueryName: string
 }
 
@@ -82,12 +85,12 @@ export interface ShallowPopulateOptions {
 }
 
 export interface ChainedParamsOptions {
-  thisKey?: Record<string, unknown> | undefined
+  thisKey?: AnyData | undefined
   skipWhenUndefined?: boolean
 }
 
 export interface CumulatedRequestResult {
   include: PopulateObject,
   params?: Params,
-  response?: { data: Record<string, unknown>[] } | Record<string, unknown>[]
+  response?: { data: AnyData[] } | AnyData[]
 }

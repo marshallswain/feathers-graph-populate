@@ -1,11 +1,13 @@
-import { HookContext, Query } from '@feathersjs/feathers'
-import { GraphPopulateHookOptions } from '../types'
-
-import makeShallowPopulate from './shallow-populate.hook'
 import _get from 'lodash/get'
 import _isEmpty from 'lodash/isEmpty'
 import _merge from 'lodash/merge'
-import { GraphPopulateApplication } from '../app/graph-populate.class'
+
+import { shallowPopulate as makeShallowPopulate } from './shallow-populate.hook'
+
+import type { HookContext, Query } from '@feathersjs/feathers'
+
+import type { GraphPopulateHookOptions } from '../types'
+import type { GraphPopulateApplication } from '../app/graph-populate.class'
 
 const FILTERS = ['$limit', '$select', '$skip', '$sort']
 
@@ -18,7 +20,7 @@ const FILTERS = ['$limit', '$select', '$skip', '$sort']
  * GraphQL-like syntax to populate data between services.  It expects to find a query
  * object at `params.$populateParams.query`.
  */
-export default function setupDeepPopulateHook(options: GraphPopulateHookOptions): ((context: HookContext) => Promise<HookContext>) {
+export function graphPopulate(options: GraphPopulateHookOptions): ((context: HookContext) => Promise<HookContext>) {
   if (!options.populates) {
     throw new Error('options.populates must be provided to the feathers-graph-populate hook')
   }

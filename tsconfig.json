@@ -11,8 +11,6 @@
   },
   "include": ["lib/**/*"],
   "exclude": [
-    "node_modules",
-    "src/**/*",
-    "**/*.test.js"
+    "node_modules"
   ]
 }

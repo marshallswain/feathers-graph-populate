@@ -1,10 +1,10 @@
 import assert from 'assert'
-import makePopulate from '../lib/hooks/shallow-populate.hook'
 import memory from 'feathers-memory'
 import sift from 'sift'
 import { NotAuthenticated } from '@feathersjs/errors'
-import { ShallowPopulateOptions } from '../lib/types'
-import { HookContext, Params } from '@feathersjs/feathers'
+import { shallowPopulate as makePopulate } from '../lib'
+import type { ShallowPopulateOptions } from '../lib'
+import type { HookContext, Params } from '@feathersjs/feathers'
 
 const services = {
   posts: memory({
@@ -1175,7 +1175,6 @@ describe('general', () => {
           // from: 'users',
             service: 'posts',
             nameAs: 'posts',
-            // eslint-disable-next-line @typescript-eslint/no-empty-function
             params: () => {}
           }
         }

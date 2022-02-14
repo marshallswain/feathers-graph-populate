@@ -3,5 +3,12 @@
     "activityBar.background": "#5F0A0A",
     "titleBar.activeBackground": "#850E0E",
     "titleBar.activeForeground": "#FFFBFB"
+  },
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/package-lock.json": true,
+    "**/yarn.lock": true
   }
 }
