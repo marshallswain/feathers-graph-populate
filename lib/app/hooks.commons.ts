@@ -1,24 +1,21 @@
-import { Application, Service, Hook } from '@feathersjs/feathers'
 import { _ } from '@feathersjs/commons'
 const { each } = _
 import _get from 'lodash/get'
 
-import {
-  GraphPopulateHook,
-  GraphPopulateHookMap,
-  GraphPopulateHooksObject
-} from '../types'
+import type { AnyData, GraphPopulateHook, GraphPopulateHookMap } from '../types'
 
-export function convertHookData (obj: GraphPopulateHook|Record<string, unknown>|unknown[]): Partial<GraphPopulateHookMap> {
+export function convertHookData(
+  obj: GraphPopulateHook | AnyData | unknown[],
+): Partial<GraphPopulateHookMap> {
   let hook: Partial<GraphPopulateHookMap> = {}
 
   if (Array.isArray(obj)) {
     hook = { all: obj }
   } else if (typeof obj !== 'object') {
-    hook = { all: [ obj ] }
+    hook = { all: [obj] }
   } else {
     each(obj, function (value, key) {
-      hook[key] = !Array.isArray(value) ? [ value ] : value
+      hook[key] = !Array.isArray(value) ? [value] : value
     })
   }
 
@@ -26,30 +23,35 @@ export function convertHookData (obj: GraphPopulateHook|Record<string, unknown>|
 }
 
 // eslint-disable-next-line
-export function getHooks (app: any, service: any, type: string, method: string, appLast: boolean = false): any[] {
+export function getHooks(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  app: any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  service: any,
+  type: string,
+  method: string,
+  appLast = false,
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+): any[] {
   const appHooks = _get(app, ['__hooks', type, method]) || []
   const serviceHooks = _get(service, ['__hooks', type, method]) || []
 
-  return (appLast)
-    ? [
-      ...serviceHooks,
-      ...appHooks
-    ]
-    : [
-      ...appHooks,
-      ...serviceHooks
-    ]
+  return appLast ? [...serviceHooks, ...appHooks] : [...appHooks, ...serviceHooks]
 }
 
 // eslint-disable-next-line
-export function enableHooks (obj: any, methods: string[], types: string[]): Record<string, unknown> {
+export function enableHooks(obj: any, methods: string[], types: string[]): AnyData {
   if (typeof obj.hooks === 'function') {
     return obj
   }
 
-  const hookData: Partial<{ before: Partial<GraphPopulateHookMap>, after: Partial<GraphPopulateHookMap>, error: Partial<GraphPopulateHookMap> }> = {}
+  const hookData: Partial<{
+    before: Partial<GraphPopulateHookMap>
+    after: Partial<GraphPopulateHookMap>
+    error: Partial<GraphPopulateHookMap>
+  }> = {}
 
-  types.forEach(type => {
+  types.forEach((type) => {
     // Initialize properties where hook functions are stored
     hookData[type] = {}
   })
@@ -58,12 +60,21 @@ export function enableHooks (obj: any, methods: string[], types: string[]): Reco
   Object.defineProperty(obj, '__hooks', {
     configurable: true,
     value: hookData,
-    writable: true
+    writable: true,
   })
 
   return Object.assign(obj, {
-    hooks (allHooks: Partial<{before: Partial<GraphPopulateHookMap>, after: Partial<GraphPopulateHookMap>, error: Partial<GraphPopulateHookMap> }> | GraphPopulateHook | GraphPopulateHook[]) {
-      each(allHooks, (current: GraphPopulateHook|Record<string, unknown>|unknown[], type) => {
+    hooks(
+      allHooks:
+        | Partial<{
+            before: Partial<GraphPopulateHookMap>
+            after: Partial<GraphPopulateHookMap>
+            error: Partial<GraphPopulateHookMap>
+          }>
+        | GraphPopulateHook
+        | GraphPopulateHook[],
+    ) {
+      each(allHooks, (current: GraphPopulateHook | AnyData | unknown[], type) => {
         if (!this.__hooks[type]) {
           throw new Error(`'${type}' is not a valid hook type`)
         }
@@ -76,7 +87,7 @@ export function enableHooks (obj: any, methods: string[], types: string[]): Reco
           }
         })*/
 
-        methods.forEach(method => {
+        methods.forEach((method) => {
           const currentHooks = this.__hooks[type][method] || (this.__hooks[type][method] = [])
 
           if (hooks.all) {
@@ -90,6 +101,6 @@ export function enableHooks (obj: any, methods: string[], types: string[]): Reco
       })
 
       return this
-    }
+    },
   })
 }

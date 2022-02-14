@@ -7,12 +7,9 @@ module.exports = {
     repo: 'marshallswain/feathers-graph-populate',
     docsDir: 'docs',
     editLinks: true,
-    sidebar: [
-      '/getting-started.md',
-      '/graph-populate-hooks.md'
-    ],
+    sidebar: ['/getting-started.md', '/graph-populate-hooks.md'],
     serviceWorker: {
-      updatePopup: true
-    }
-  }
+      updatePopup: true,
+    },
+  },
 }

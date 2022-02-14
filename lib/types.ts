@@ -1,15 +1,17 @@
-import { Application, HookContext, Params, Service } from '@feathersjs/feathers'
+import type { Application, HookContext, Params } from '@feathersjs/feathers'
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type AnyData = Record<string, any>
 
 export type SingleGraphPopulateParams =
-  Params|
-  ((params?: Params, context?: HookContext) => void | Params) |
-  ((params?: Params, context?: HookContext) => void | Promise<Params>)
+  | Params
+  | ((params?: Params, context?: HookContext) => void | Params)
+  | ((params?: Params, context?: HookContext) => void | Promise<Params>)
 
-export type GraphPopulateParams =
-  SingleGraphPopulateParams|SingleGraphPopulateParams[]
+export type GraphPopulateParams = SingleGraphPopulateParams | SingleGraphPopulateParams[]
 
-export interface PopulateObject {
-  service: string
+export interface PopulateObject<S = string> {
+  service: S
   nameAs: string
   keyHere?: string
   keyThere?: string
@@ -24,35 +26,35 @@ export interface PopulateParams {
   query?: NestedQuery
 }
 
-export type NestedQuery = Record<string, Record<string, unknown>>
+export type NestedQuery = Record<string, AnyData>
 
-export type Populates = Record<string, PopulateObject>
+export type Populates<S = string> = Record<string, PopulateObject<S>>
 
-export interface GraphPopulateHookOptions {
-  populates: Populates
+export interface GraphPopulateHookOptions<S = string> {
+  populates: Populates<S>
 }
 
-export interface PopulateHookOptions {
-  populates: Populates
-  namedQueries?: Record<string, unknown>
+export interface PopulateHookOptions<S = string> {
+  populates: Populates<S>
+  namedQueries?: AnyData
   defaultQueryName?: string
 }
 
 export interface GetPopulateQueryOptions {
   context: HookContext
-  namedQueries: Record<string, unknown>
+  namedQueries: AnyData
   defaultQueryName: string
 }
 
-export interface PopulateUtilOptions {
+export interface PopulateUtilOptions<S = string> {
   app: Application
   params: Params
-  populates: Populates
+  populates: Populates<S>
 }
 
 export type GraphPopulateHook =
-  ((params?: Params, context?: HookContext) => void | Params) |
-  ((params?: Params, context?: HookContext) => void | Promise<Params>)
+  | ((params?: Params, context?: HookContext) => void | Params)
+  | ((params?: Params, context?: HookContext) => void | Promise<Params>)
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface InitOptions {}
@@ -61,17 +63,33 @@ export type Method = 'find' | 'get' | 'create' | 'update' | 'patch' | 'remove'
 export type Type = 'before' | 'after' | 'error'
 
 export interface GraphPopulateHookMap {
-  all: SingleGraphPopulateParams[];
-  find: SingleGraphPopulateParams[];
-  get: SingleGraphPopulateParams[];
-  create: SingleGraphPopulateParams[];
-  update: SingleGraphPopulateParams[];
-  patch: SingleGraphPopulateParams[];
-  remove: SingleGraphPopulateParams[];
+  all: SingleGraphPopulateParams[]
+  find: SingleGraphPopulateParams[]
+  get: SingleGraphPopulateParams[]
+  create: SingleGraphPopulateParams[]
+  update: SingleGraphPopulateParams[]
+  patch: SingleGraphPopulateParams[]
+  remove: SingleGraphPopulateParams[]
 }
 
 export interface GraphPopulateHooksObject {
-  before: GraphPopulateHookMap;
-  after: GraphPopulateHookMap;
-  error: GraphPopulateHookMap;
+  before: GraphPopulateHookMap
+  after: GraphPopulateHookMap
+  error: GraphPopulateHookMap
+}
+
+export interface ShallowPopulateOptions {
+  include: PopulateObject | PopulateObject[]
+  catchOnError?: boolean
+}
+
+export interface ChainedParamsOptions {
+  thisKey?: AnyData | undefined
+  skipWhenUndefined?: boolean
+}
+
+export interface CumulatedRequestResult {
+  include: PopulateObject
+  params?: Params
+  response?: { data: AnyData[] } | AnyData[]
 }

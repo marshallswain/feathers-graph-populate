@@ -1,20 +1,14 @@
-import { Application, Service } from '@feathersjs/feathers'
-import { Method } from '../types'
-import {
-  enableHooks,
-  getHooks
-} from './hooks.commons'
+import { enableHooks, getHooks } from './hooks.commons'
 
-import {
-  GraphPopulateHook,
-  SingleGraphPopulateParams
-} from '../types'
+import type { Application, Service } from '@feathersjs/feathers'
+
+import type { Method, GraphPopulateHook, SingleGraphPopulateParams, AnyData } from '../types'
 
 export class GraphPopulateApplication {
   private _app: Application
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   __hooks: any
-  hooks: (hooks: GraphPopulateHook|Record<string, unknown>|unknown[]) => void
+  hooks: (hooks: GraphPopulateHook | AnyData | unknown[]) => void
 
   constructor(app: Application) {
     this._app = app
@@ -26,10 +20,16 @@ export class GraphPopulateApplication {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  withAppParams(params: SingleGraphPopulateParams|SingleGraphPopulateParams[], method: Method, service: Service<unknown>): SingleGraphPopulateParams[]  {
+  withAppParams(
+    params: SingleGraphPopulateParams | SingleGraphPopulateParams[],
+    method: Method,
+    service: Service<unknown>,
+  ): SingleGraphPopulateParams[] {
     const serviceHooks = service?.graphPopulate?.__hooks
     if (!this.__hooks && !serviceHooks) {
-      if (!params) { return [] }
+      if (!params) {
+        return []
+      }
       if (Array.isArray(params)) {
         return params
       } else {
@@ -56,7 +56,6 @@ export class GraphPopulateApplication {
     if (after.length > 0) {
       currentParams.push(...after)
     }
-
 
     return currentParams
   }

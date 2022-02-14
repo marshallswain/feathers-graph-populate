@@ -10,9 +10,5 @@
     "declaration": true
   },
   "include": ["lib/**/*"],
-  "exclude": [
-    "node_modules",
-    "src/**/*",
-    "**/*.test.js"
-  ]
+  "exclude": ["node_modules"]
 }

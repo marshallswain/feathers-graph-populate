@@ -5,56 +5,26 @@
     "node": true,
     "mocha": true
   },
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
   "rules": {
-    "indent": [
-      "error",
-      2
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ]
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+    "@typescript-eslint/consistent-type-imports": ["warn", { "prefer": "type-imports" }]
   },
   "overrides": [
     {
-      "files": ["**/*.js?(x)"],
-      "parserOptions": {
-        "ecmaVersion": 2017
-      },
-      "extends": "eslint:recommended"
-    },
-    {
-      "files": ["**/*.ts?(x)"],
-      "parser": "@typescript-eslint/parser",
-      "plugins": [
-        "@typescript-eslint"
-      ],
-      "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/eslint-recommended",
-        "plugin:@typescript-eslint/recommended"
-      ],
+      "files": ["test/**/*.ts"],
       "rules": {
-        "@typescript-eslint/quotes": [
-          "error",
-          "single"
-        ],
-        "@typescript-eslint/semi": [
-          "error",
-          "never"
-        ]
-      }
-    },
-    {
-      "files": ["test/**/*.test.ts?(x)"],
-      "rules": {
-        "@typescript-eslint/ban-ts-comment": [
-          "off"
-        ]
+        "@typescript-eslint/ban-ts-comment": ["off"],
+        "@typescript-eslint/no-explicit-any": ["off"],
+        "@typescript-eslint/no-unused-vars": ["off"],
+        "@typescript-eslint/no-empty-function": ["off"]
       }
     }
   ]

@@ -12,7 +12,7 @@
   />
 </p>
 
-Add lightning fast, GraphQL-like populates to your FeathersJS API. `feathers-graph-populate` heavily depends on [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate).
+Add lightning fast, GraphQL-like populates to your FeathersJS API.
 
 This project is built for [FeathersJS](http://feathersjs.com). An open source web framework for building modern real-time applications. 
 
@@ -69,7 +69,7 @@ const populates = {
 
 ### Options for each relationship
 
-Each populate object must/can have the following properties. Also check out [feathers-shallow-populate](https://www.npmjs.com/package/feathers-shallow-populate). It has the same structure.
+Each populate object must/can have the following properties:
 
 | **Option** | **Description** |
 |------------|-----------------|
