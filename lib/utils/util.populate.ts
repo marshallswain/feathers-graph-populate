@@ -11,7 +11,10 @@ import type { PopulateParams, PopulateUtilOptions } from '../types'
  * Just kidding, the real difference is that it is not a hook.  It can be used inside of
  * a hook to populate data a GraphQL-like query onto a record or array of records.
  */
-export async function populateUtil(records: unknown[], options: PopulateUtilOptions): Promise<unknown[]> {
+export async function populateUtil(
+  records: unknown[],
+  options: PopulateUtilOptions,
+): Promise<unknown[]> {
   const { app, params, populates } = options
   if (!app) {
     throw new Error('The app object must be provided in the populateUtil options.')
@@ -31,7 +34,7 @@ export async function populateUtil(records: unknown[], options: PopulateUtilOpti
     method: 'find',
     type: 'after',
     result: records,
-    params
+    params,
   }
   const deepPopulate = graphPopulate({ populates })
   const populated = await deepPopulate(miniContext as HookContext)

@@ -36,6 +36,7 @@
     "release:major": "npm version major && npm publish",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "mocha": "cross-env NODE_ENV=test TS_NODE_PROJECT='tsconfig.test.json' mocha --timeout 10000",
+    "format": "prettier -w .",
     "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs"
   },

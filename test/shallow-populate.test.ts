@@ -13,23 +13,23 @@ const services = {
       333: { id: '333', name: 'If I were a banana...', userId: '22' },
       444: { id: 444, name: 'One, two, three, one, two, three, drink', userId: '33' },
       555: { id: 555, name: 'Im gonna live like tomorrow doesnt exist', userId: 44 },
-      666: { id: 666, name: 'I feel the love, feel the love', userId: 44 }
-    }
+      666: { id: 666, name: 'I feel the love, feel the love', userId: 44 },
+    },
   }),
   users: memory({
     store: {
       11: { id: '11', name: 'Joe Bloggs', postsId: ['111'], orgId: 'org1' },
       22: { id: '22', name: 'Jane Bloggs', postsId: '333', orgId: 'org2' },
       33: { id: '33', name: 'John Smith', postsId: ['111', '222'], orgId: 3 },
-      44: { id: 44, name: 'Muhammad Li', postsId: [444, '555'], orgId: 4 }
+      44: { id: 44, name: 'Muhammad Li', postsId: [444, '555'], orgId: 4 },
     },
-    matcher: query => {
-      return items => {
+    matcher: (query) => {
+      return (items) => {
         const s = Object.assign({}, query)
         items = [].concat(items || [])
         return !!sift(s, items).length
       }
-    }
+    },
   }),
   taskSets: memory({
     store: {
@@ -39,37 +39,77 @@ const services = {
       ts3: { id: 'ts3', name: 'Task Set 3' },
       4: { id: 4, name: 'Task Set 4' },
       5: { id: 5, name: 'Task Set 5' },
-      ts6: { id: 'ts6', name: 'Task Set 6' }
-    }
+      ts6: { id: 'ts6', name: 'Task Set 6' },
+    },
   }),
   tasks: memory({
     store: {
       //@ts-ignore
-      task1: { id: 'task1', name: 'Task 1 - belongs with TaskSet1', taskSet: { taskSetId: 'ts1' }, userId: '11' },
-      task2: { id: 'task2', name: 'Task 2 - belongs with TaskSet2', taskSet: { taskSetId: 'ts2' }, userId: '22' },
-      task3: { id: 'task3', name: 'Task 3 - belongs with TaskSet2', taskSet: { taskSetId: 'ts2' }, userId: '11' },
-      task4: { id: 'task4', name: 'Task 4 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: 44 },
-      task5: { id: 'task5', name: 'Task 5 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: 44 },
-      task6: { id: 'task6', name: 'Task 6 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: '33' },
+      task1: {
+        id: 'task1',
+        name: 'Task 1 - belongs with TaskSet1',
+        taskSet: { taskSetId: 'ts1' },
+        userId: '11',
+      },
+      task2: {
+        id: 'task2',
+        name: 'Task 2 - belongs with TaskSet2',
+        taskSet: { taskSetId: 'ts2' },
+        userId: '22',
+      },
+      task3: {
+        id: 'task3',
+        name: 'Task 3 - belongs with TaskSet2',
+        taskSet: { taskSetId: 'ts2' },
+        userId: '11',
+      },
+      task4: {
+        id: 'task4',
+        name: 'Task 4 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: 44,
+      },
+      task5: {
+        id: 'task5',
+        name: 'Task 5 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: 44,
+      },
+      task6: {
+        id: 'task6',
+        name: 'Task 6 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: '33',
+      },
       7: { id: 7, name: 'Task 7 - belongs with TaskSet4', taskSet: { taskSetId: 4 } },
       task8: { id: 'task8', name: 'Task 8 - belongs with TaskSet5', taskSet: { taskSetId: 5 } },
-      9: { id: 9, name: 'Task 9 - belongs with TaskSet6', taskSet: { taskSetId: 'ts6' } }
-    }
+      9: { id: 9, name: 'Task 9 - belongs with TaskSet6', taskSet: { taskSetId: 'ts6' } },
+    },
   }),
   comments: memory({
     store: {
       11111: { id: '11111', name: 'The Best Sounds This Summer', postsId: ['222'], userId: '11' },
       22222: { id: '22222', name: 'Chillstation', postsId: ['333'], userId: '22' },
-      33333: { id: '33333', name: 'Hard Hitting Bass', postsId: ['111', '222', '333'], userId: '33' },
-      44444: { id: 44444, name: 'As long as skies are blue', postsId: ['111', 444, '555'], userId: 44 }
+      33333: {
+        id: '33333',
+        name: 'Hard Hitting Bass',
+        postsId: ['111', '222', '333'],
+        userId: '33',
+      },
+      44444: {
+        id: 44444,
+        name: 'As long as skies are blue',
+        postsId: ['111', 444, '555'],
+        userId: 44,
+      },
     },
-    matcher: query => {
-      return items => {
+    matcher: (query) => {
+      return (items) => {
         const s = Object.assign({}, query)
         items = [].concat(items || [])
         return !!sift(s, items).length
       }
-    }
+    },
   }),
   tags: memory({
     store: {
@@ -77,8 +117,8 @@ const services = {
       2222: { id: '2222', name: 'Trumpets', userId: '11' },
       3333: { id: '3333', name: 'Drums', userId: '22' },
       4444: { id: 4444, name: 'Guitars', userId: '33' },
-      5555: { id: 5555, name: 'Violins', userId: 44 }
-    }
+      5555: { id: 5555, name: 'Violins', userId: 44 },
+    },
   }),
   orgs: memory({
     store: {
@@ -86,8 +126,8 @@ const services = {
       org1: { id: 'org1', name: 'Southern Utah', memberCount: 21 },
       org2: { id: 'org2', name: 'Northern Utah', memberCount: 99 },
       3: { id: 3, name: 'Northern Arizona', memberCount: 42 },
-      4: { id: 4, name: 'Southern Arizona', memberCount: 23 }
-    }
+      4: { id: 4, name: 'Southern Arizona', memberCount: 23 },
+    },
   }),
   environments: memory({
     store: {
@@ -95,72 +135,93 @@ const services = {
       env1: {
         id: 'env1',
         name: 'Bryce Canyon National Park',
-        orgs: [
-          { orgId: 'org1', orgName: 'Southern Utah' }
-        ]
+        orgs: [{ orgId: 'org1', orgName: 'Southern Utah' }],
       },
       env2: {
         id: 'env2',
         name: 'Zion National Park',
-        orgs: [
-          { orgId: 'org1', orgName: 'Southern Utah' }
-        ]
+        orgs: [{ orgId: 'org1', orgName: 'Southern Utah' }],
       },
       env3: {
         id: 'env3',
         name: 'Canyonlands National Park',
-        orgs: [
-          { orgId: 'org2', orgName: 'Northern Utah' }
-        ]
+        orgs: [{ orgId: 'org2', orgName: 'Northern Utah' }],
       },
       4: {
         id: 4,
         name: 'Grand Canyon National Park',
-        orgs: [
-          { orgId: 3, orgName: 'Northern Arizona' }
-        ]
+        orgs: [{ orgId: 3, orgName: 'Northern Arizona' }],
       },
       5: {
         id: '5',
         name: 'Organ Pipe Cactus National Monument',
-        orgs: [
-          { orgId: 4, orgName: 'Southern Arizona' }
-        ]
+        orgs: [{ orgId: 4, orgName: 'Southern Arizona' }],
       },
       6: {
         id: 6,
         name: 'Antelope Canyon',
-        orgs: [
-          { orgId: 'org1', orgName: 'Southern Utah' }
-        ]
-      }
-    }
+        orgs: [{ orgId: 'org1', orgName: 'Southern Utah' }],
+      },
+    },
   }),
   authenticatedService: memory({
     store: {
       //@ts-ignore
-      task1: { id: 'task1', name: 'Task 1 - belongs with TaskSet1', taskSet: { taskSetId: 'ts1' }, userId: '11' },
-      task2: { id: 'task2', name: 'Task 2 - belongs with TaskSet2', taskSet: { taskSetId: 'ts2' }, userId: '22' },
-      task3: { id: 'task3', name: 'Task 3 - belongs with TaskSet2', taskSet: { taskSetId: 'ts2' }, userId: '11' },
-      task4: { id: 'task4', name: 'Task 4 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: 44 },
-      task5: { id: 'task5', name: 'Task 5 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: 44 },
-      task6: { id: 'task6', name: 'Task 6 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: '33' },
+      task1: {
+        id: 'task1',
+        name: 'Task 1 - belongs with TaskSet1',
+        taskSet: { taskSetId: 'ts1' },
+        userId: '11',
+      },
+      task2: {
+        id: 'task2',
+        name: 'Task 2 - belongs with TaskSet2',
+        taskSet: { taskSetId: 'ts2' },
+        userId: '22',
+      },
+      task3: {
+        id: 'task3',
+        name: 'Task 3 - belongs with TaskSet2',
+        taskSet: { taskSetId: 'ts2' },
+        userId: '11',
+      },
+      task4: {
+        id: 'task4',
+        name: 'Task 4 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: 44,
+      },
+      task5: {
+        id: 'task5',
+        name: 'Task 5 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: 44,
+      },
+      task6: {
+        id: 'task6',
+        name: 'Task 6 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: '33',
+      },
       7: { id: 7, name: 'Task 7 - belongs with TaskSet4', taskSet: { taskSetId: 4 } },
       task8: { id: 'task8', name: 'Task 8 - belongs with TaskSet5', taskSet: { taskSetId: 5 } },
-      9: { id: 9, name: 'Task 9 - belongs with TaskSet6', taskSet: { taskSetId: 'ts6' } }
-    }
-  })
+      9: { id: 9, name: 'Task 9 - belongs with TaskSet6', taskSet: { taskSetId: 'ts6' } },
+    },
+  }),
 }
 
-const beforeAfter: [{ type: 'before', dataResult: 'data' }, {type: 'after', dataResult: 'result'}] = [
+const beforeAfter: [
+  { type: 'before'; dataResult: 'data' },
+  { type: 'after'; dataResult: 'result' },
+] = [
   {
     type: 'before',
-    dataResult: 'data'
+    dataResult: 'data',
   },
   {
     type: 'after',
-    dataResult: 'result'
-  }
+    dataResult: 'result',
+  },
 ]
 
 describe('populating thing', () => {
@@ -173,19 +234,19 @@ describe('populating thing', () => {
           nameAs: 'post',
           keyHere: 'postIds',
           keyThere: 'id',
-          asArray: false
-        }
+          asArray: false,
+        },
       }
       const context = {
         app: {
-          service (path) {
+          service(path) {
             return services[path]
-          }
+          },
         },
         method: 'create',
         type,
         params: {},
-        [dataResult]: {}
+        [dataResult]: {},
       } as unknown as HookContext
 
       const shallowPopulate = makePopulate(options)
@@ -207,14 +268,14 @@ describe('populating thing', () => {
               nameAs: 'post',
               keyHere: 'postIds',
               keyThere: 'id',
-              asArray: false
-            }
+              asArray: false,
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -222,8 +283,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postIds: '111'
-            }
+              postIds: '111',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -246,14 +307,14 @@ describe('populating thing', () => {
               nameAs: 'post',
               keyHere: 'postIds',
               keyThere: 'id',
-              asArray: false
-            }
+              asArray: false,
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -261,8 +322,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postIds: ['111', '222', 444, '555']
-            }
+              postIds: ['111', '222', 444, '555'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -285,22 +346,22 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              asArray: false
-            }
+              asArray: false,
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
             params: {},
             [dataResult]: {
               id: '11',
-              name: 'Dumb Stuff'
-            }
+              name: 'Dumb Stuff',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -321,14 +382,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              asArray: false
-            }
+              asArray: false,
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -336,8 +397,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: null
-            }
+              postsId: null,
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -345,7 +406,10 @@ describe('populating thing', () => {
           const response = await shallowPopulate(context)
           const result = response[dataResult]
 
-          assert(!Object.prototype.hasOwnProperty.call(result, 'posts'), `${type}: post should have not been populated`)
+          assert(
+            !Object.prototype.hasOwnProperty.call(result, 'posts'),
+            `${type}: post should have not been populated`,
+          )
         }
       })
 
@@ -357,14 +421,14 @@ describe('populating thing', () => {
               service: 'posts',
               nameAs: 'meta.posts',
               keyHere: 'meta.postsId',
-              keyThere: 'id'
-            }
+              keyThere: 'id',
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -373,9 +437,9 @@ describe('populating thing', () => {
               id: '11',
               name: 'Dumb Stuff',
               meta: {
-                postsId: ['111', 444]
-              }
-            }
+                postsId: ['111', 444],
+              },
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -394,14 +458,14 @@ describe('populating thing', () => {
               service: 'posts',
               nameAs: 'posts',
               keyHere: 'postsId',
-              keyThere: 'id'
-            }
+              keyThere: 'id',
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -409,8 +473,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: ['111', '222', '333', 444, 555, '666']
-            }
+              postsId: ['111', '222', '333', 444, 555, '666'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -429,22 +493,22 @@ describe('populating thing', () => {
               service: 'posts',
               nameAs: 'posts',
               keyHere: 'postsId',
-              keyThere: 'id'
-            }
+              keyThere: 'id',
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
             params: {},
             [dataResult]: {
               id: '11',
-              name: 'Dumb Stuff'
-            }
+              name: 'Dumb Stuff',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -463,22 +527,22 @@ describe('populating thing', () => {
               service: 'users',
               nameAs: 'users',
               keyHere: 'id',
-              keyThere: 'postsId'
-            }
+              keyThere: 'postsId',
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
             params: {},
             [dataResult]: {
               id: '111',
-              name: 'My Monkey and Me'
-            }
+              name: 'My Monkey and Me',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -498,14 +562,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { $select: ['name'] } }
-            }
+              params: { query: { $select: ['name'] } },
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -513,8 +577,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: ['111', '222', '333', 444, 555, '666']
-            }
+              postsId: ['111', '222', '333', 444, 555, '666'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -522,7 +586,7 @@ describe('populating thing', () => {
           const result = response[dataResult]
 
           assert(result.posts.length, `${type}: posts should have been populated`)
-          result.posts.forEach(post => {
+          result.posts.forEach((post) => {
             const { name, ...rest } = post
             assert.deepStrictEqual(rest, {}, `${type}: only has name property`)
           })
@@ -538,14 +602,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { } }
-            }
+              params: { query: {} },
+            },
           }
           const context1 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -553,8 +617,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: ['111', '222', '333', 444, 555, '666']
-            }
+              postsId: ['111', '222', '333', 444, 555, '666'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate1 = makePopulate(options1)
@@ -568,14 +632,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { $skip: 1 } }
-            }
+              params: { query: { $skip: 1 } },
+            },
           }
           const context2 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -583,8 +647,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: ['111', '222', '333', 444, 555, '666']
-            }
+              postsId: ['111', '222', '333', 444, 555, '666'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate2 = makePopulate(options2)
@@ -604,14 +668,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { } }
-            }
+              params: { query: {} },
+            },
           }
           const context1 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -619,8 +683,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: ['111', '222', '333', 444, 555, '666']
-            }
+              postsId: ['111', '222', '333', 444, 555, '666'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate1 = makePopulate(options1)
@@ -634,14 +698,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { $limit: 2 } }
-            }
+              params: { query: { $limit: 2 } },
+            },
           }
           const context2 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -649,15 +713,18 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: ['111', '222', '333', 444, 555, '666']
-            }
+              postsId: ['111', '222', '333', 444, 555, '666'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate2 = makePopulate(options2)
           const response2 = await shallowPopulate2(context2)
           const user2 = response2[dataResult]
 
-          assert(user1.posts.length > user2.posts.length, `${type}: user1 has more posts than user2`)
+          assert(
+            user1.posts.length > user2.posts.length,
+            `${type}: user1 has more posts than user2`,
+          )
           assert(user2.posts.length === 2, `${type}: limited posts for user2`)
         }
       })
@@ -672,14 +739,14 @@ describe('populating thing', () => {
                 nameAs: 'tasks',
                 params: () => {
                   return { query: { $select: ['id'] } }
-                }
-              }
+                },
+              },
             }
             const context = {
               app: {
-                service (path) {
+                service(path) {
                   return services[path]
-                }
+                },
               },
               method: 'create',
               type,
@@ -687,16 +754,22 @@ describe('populating thing', () => {
               // Data for a single track
               [dataResult]: {
                 id: '111',
-                name: 'My Monkey and Me'
-              }
+                name: 'My Monkey and Me',
+              },
             } as unknown as HookContext
 
             const shallowPopulate = makePopulate(options)
             const response = await shallowPopulate(context)
             const result = response[dataResult]
 
-            const expected = Object.values(services.tasks.store).map(x => { return { id: x.id } })
-            assert.deepStrictEqual(result.tasks, expected, `${type}: populated all tasks with only 'id' attribute`)
+            const expected = Object.values(services.tasks.store).map((x) => {
+              return { id: x.id }
+            })
+            assert.deepStrictEqual(
+              result.tasks,
+              expected,
+              `${type}: populated all tasks with only 'id' attribute`,
+            )
           }
         })
 
@@ -709,14 +782,14 @@ describe('populating thing', () => {
                 nameAs: 'tasks',
                 params: function () {
                   return { query: { userId: this.userId } }
-                }
-              }
+                },
+              },
             }
             const context = {
               app: {
-                service (path) {
+                service(path) {
                   return services[path]
-                }
+                },
               },
               method: 'create',
               type,
@@ -725,16 +798,22 @@ describe('populating thing', () => {
               [dataResult]: {
                 id: '111',
                 name: 'My Monkey and Me',
-                userId: '11'
-              }
+                userId: '11',
+              },
             } as unknown as HookContext
 
             const shallowPopulate = makePopulate(options)
             const response = await shallowPopulate(context)
             const result = response[dataResult]
 
-            const expectedTasks = Object.values(services.tasks.store).filter(x => x.userId === '11')
-            assert.deepStrictEqual(result.tasks, expectedTasks, `${type}: tasks populated correctly`)
+            const expectedTasks = Object.values(services.tasks.store).filter(
+              (x) => x.userId === '11',
+            )
+            assert.deepStrictEqual(
+              result.tasks,
+              expectedTasks,
+              `${type}: tasks populated correctly`,
+            )
           }
         })
       })
@@ -752,7 +831,7 @@ describe('populating thing', () => {
                 service: 'tags',
                 nameAs: 'tags',
                 keyHere: 'tagIds',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 // from: 'users',
@@ -760,15 +839,15 @@ describe('populating thing', () => {
                 nameAs: 'post',
                 keyHere: 'postIds',
                 keyThere: 'id',
-                asArray: false
-              }
-            ]
+                asArray: false,
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -777,8 +856,8 @@ describe('populating thing', () => {
               id: '11',
               name: 'Dumb Stuff',
               postIds: '111',
-              tagIds: ['1111', 4444]
-            }
+              tagIds: ['1111', 4444],
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -801,7 +880,7 @@ describe('populating thing', () => {
                 service: 'tags',
                 nameAs: 'tags',
                 keyHere: 'tagIds',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 // from: 'users',
@@ -809,15 +888,15 @@ describe('populating thing', () => {
                 nameAs: 'post',
                 keyHere: 'postIds',
                 keyThere: 'id',
-                asArray: false
-              }
-            ]
+                asArray: false,
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -826,8 +905,8 @@ describe('populating thing', () => {
               id: '11',
               name: 'Dumb Stuff',
               postIds: ['111', '222', 444],
-              tagIds: ['1111', '3333', 4444]
-            }
+              tagIds: ['1111', '3333', 4444],
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -850,22 +929,22 @@ describe('populating thing', () => {
                 service: 'posts',
                 nameAs: 'posts',
                 keyHere: 'postsId',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 // from: 'users',
                 service: 'tags',
                 nameAs: 'tags',
                 keyHere: 'tagIds',
-                keyThere: 'id'
-              }
-            ]
+                keyThere: 'id',
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -873,8 +952,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              tagIds: ['1111', '3333', 4444]
-            }
+              tagIds: ['1111', '3333', 4444],
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -895,22 +974,22 @@ describe('populating thing', () => {
                 service: 'posts',
                 nameAs: 'meta.posts',
                 keyHere: 'meta.postsId',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 // from: 'users',
                 service: 'tags',
                 nameAs: 'meta.tags',
                 keyHere: 'meta.tagIds',
-                keyThere: 'id'
-              }
-            ]
+                keyThere: 'id',
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -920,9 +999,9 @@ describe('populating thing', () => {
               name: 'Dumb Stuff',
               meta: {
                 postsId: ['111', '222', '333', 444],
-                tagIds: ['1111', '3333', 4444]
-              }
-            }
+                tagIds: ['1111', '3333', 4444],
+              },
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -943,22 +1022,22 @@ describe('populating thing', () => {
                 service: 'posts',
                 nameAs: 'posts',
                 keyHere: 'postsId',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 // from: 'users',
                 service: 'tags',
                 nameAs: 'tags',
                 keyHere: 'tagIds',
-                keyThere: 'id'
-              }
-            ]
+                keyThere: 'id',
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -967,8 +1046,8 @@ describe('populating thing', () => {
               id: '11',
               name: 'Dumb Stuff',
               postsId: ['111', '222', '333', 444],
-              tagIds: ['1111', '3333', 4444]
-            }
+              tagIds: ['1111', '3333', 4444],
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -987,29 +1066,29 @@ describe('populating thing', () => {
                 service: 'users',
                 nameAs: 'users',
                 keyHere: 'id',
-                keyThere: 'postsId'
+                keyThere: 'postsId',
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'postsId'
-              }
-            ]
+                keyThere: 'postsId',
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
             params: {},
             [dataResult]: {
               id: '333',
-              name: 'If I were a banana...'
-            }
+              name: 'If I were a banana...',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -1030,29 +1109,29 @@ describe('populating thing', () => {
                 nameAs: 'users',
                 keyHere: 'id',
                 keyThere: 'postsId',
-                params: { query: { $select: ['name'] } }
+                params: { query: { $select: ['name'] } },
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'postsId'
-              }
-            ]
+                keyThere: 'postsId',
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
             params: {},
             [dataResult]: {
               id: '333',
-              name: 'If I were a banana...'
-            }
+              name: 'If I were a banana...',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -1060,15 +1139,21 @@ describe('populating thing', () => {
           const response = await shallowPopulate(context)
           const result = response[dataResult]
           assert(result.users.length, 'posts should have been populated')
-          result.users.forEach(user => {
+          result.users.forEach((user) => {
             const { name, ...rest } = user
             assert.deepStrictEqual(rest, {}, 'only has name property')
           })
 
-          const expectedComments = Object.values(services.comments.store).filter(comment => comment.postsId.includes('333'))
+          const expectedComments = Object.values(services.comments.store).filter((comment) =>
+            comment.postsId.includes('333'),
+          )
 
           assert(result.comments.length === 2, 'data should have correct comments data')
-          assert.deepStrictEqual(result.comments, expectedComments, 'comments are populated complete')
+          assert.deepStrictEqual(
+            result.comments,
+            expectedComments,
+            'comments are populated complete',
+          )
         }
       })
 
@@ -1082,22 +1167,22 @@ describe('populating thing', () => {
                 nameAs: 'posts',
                 keyHere: 'postsId',
                 keyThere: 'id',
-                params: { query: { } }
+                params: { query: {} },
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'userId'
-              }
-            ]
+                keyThere: 'userId',
+              },
+            ],
           }
 
           const context1 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1105,8 +1190,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: ['111', '222', '333', 444, 555, '666']
-            }
+              postsId: ['111', '222', '333', 444, 555, '666'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate1 = makePopulate(options1)
@@ -1121,21 +1206,21 @@ describe('populating thing', () => {
                 nameAs: 'posts',
                 keyHere: 'postsId',
                 keyThere: 'id',
-                params: { query: { $skip: 1 } }
+                params: { query: { $skip: 1 } },
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'userId'
-              }
-            ]
+                keyThere: 'userId',
+              },
+            ],
           }
           const context2 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1143,8 +1228,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: ['111', '222', '333', 444, 555, '666']
-            }
+              postsId: ['111', '222', '333', 444, 555, '666'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate2 = makePopulate(options2)
@@ -1166,21 +1251,21 @@ describe('populating thing', () => {
                 service: 'posts',
                 nameAs: 'posts',
                 keyHere: 'postsId',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'userId'
-              }
-            ]
+                keyThere: 'userId',
+              },
+            ],
           }
           const context1 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1188,8 +1273,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: ['111', '222', '333', 444, 555, '666']
-            }
+              postsId: ['111', '222', '333', 444, 555, '666'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate1 = makePopulate(options1)
@@ -1204,21 +1289,21 @@ describe('populating thing', () => {
                 nameAs: 'posts',
                 keyHere: 'postsId',
                 keyThere: 'id',
-                params: { query: { $limit: 1 } }
+                params: { query: { $limit: 1 } },
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'userId'
-              }
-            ]
+                keyThere: 'userId',
+              },
+            ],
           }
           const context2 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1226,8 +1311,8 @@ describe('populating thing', () => {
             [dataResult]: {
               id: '11',
               name: 'Dumb Stuff',
-              postsId: ['111', '222', '333', 444, 555, '666']
-            }
+              postsId: ['111', '222', '333', 444, 555, '666'],
+            },
           } as unknown as HookContext
 
           const shallowPopulate2 = makePopulate(options2)
@@ -1249,21 +1334,25 @@ describe('populating thing', () => {
                   // from: 'posts',
                   service: 'tasks',
                   nameAs: 'tasks',
-                  params: () => { return { query: { $select: ['id'] } } }
+                  params: () => {
+                    return { query: { $select: ['id'] } }
+                  },
                 },
                 {
                   // from: 'posts',
                   service: 'comments',
                   nameAs: 'comments',
-                  params: () => { return { query: { $select: ['id'] } } }
-                }
-              ]
+                  params: () => {
+                    return { query: { $select: ['id'] } }
+                  },
+                },
+              ],
             }
             const context = {
               app: {
-                service (path) {
+                service(path) {
                   return services[path]
-                }
+                },
               },
               method: 'create',
               type,
@@ -1271,19 +1360,31 @@ describe('populating thing', () => {
               // Data for a single track
               [dataResult]: {
                 id: '111',
-                name: 'My Monkey and Me'
-              }
+                name: 'My Monkey and Me',
+              },
             } as unknown as HookContext
 
             const shallowPopulate = makePopulate(options)
 
             const response = await shallowPopulate(context)
             const result = response[dataResult]
-            const expectedTasks = Object.values(services.tasks.store).map(x => { return { id: x.id } })
-            assert.deepStrictEqual(result.tasks, expectedTasks, 'populated all tasks with only `id` attribute')
+            const expectedTasks = Object.values(services.tasks.store).map((x) => {
+              return { id: x.id }
+            })
+            assert.deepStrictEqual(
+              result.tasks,
+              expectedTasks,
+              'populated all tasks with only `id` attribute',
+            )
 
-            const expectedComments = Object.values(services.comments.store).map(x => { return { id: x.id } })
-            assert.deepStrictEqual(result.comments, expectedComments, 'populated all tasks with only `id` attribute')
+            const expectedComments = Object.values(services.comments.store).map((x) => {
+              return { id: x.id }
+            })
+            assert.deepStrictEqual(
+              result.comments,
+              expectedComments,
+              'populated all tasks with only `id` attribute',
+            )
           }
         })
 
@@ -1297,7 +1398,7 @@ describe('populating thing', () => {
                   nameAs: 'tasks',
                   params: function () {
                     return { query: { userId: this.userId } }
-                  }
+                  },
                 },
                 {
                   // from: 'posts',
@@ -1307,10 +1408,10 @@ describe('populating thing', () => {
                     return {
                       query: {
                         userId: this.userId,
-                        $select: ['id']
-                      }
+                        $select: ['id'],
+                      },
                     }
-                  }
+                  },
                 },
                 {
                   service: 'orgs',
@@ -1319,7 +1420,7 @@ describe('populating thing', () => {
                   params: async function (params, context) {
                     const user = await context.app.service('users').get(this.userId)
                     return { query: { id: user.orgId } }
-                  }
+                  },
                 },
                 {
                   // from: 'posts',
@@ -1330,12 +1431,12 @@ describe('populating thing', () => {
                     function () {
                       return {
                         query: {
-                          userId: this.userId
-                        }
+                          userId: this.userId,
+                        },
                       }
                     },
-                    { query: { $select: ['id'] } }
-                  ]
+                    { query: { $select: ['id'] } },
+                  ],
                 },
                 {
                   // from: 'posts',
@@ -1344,7 +1445,7 @@ describe('populating thing', () => {
                   asArray: false,
                   params: function () {
                     return undefined
-                  }
+                  },
                 },
                 {
                   // from: 'posts',
@@ -1352,15 +1453,15 @@ describe('populating thing', () => {
                   nameAs: 'emptyTasks',
                   params: function () {
                     return undefined
-                  }
-                }
-              ]
+                  },
+                },
+              ],
             }
             const context = {
               app: {
-                service (path) {
+                service(path) {
                   return services[path]
-                }
+                },
               },
               method: 'create',
               type,
@@ -1369,18 +1470,28 @@ describe('populating thing', () => {
               [dataResult]: {
                 id: '111',
                 name: 'My Monkey and Me',
-                userId: '11'
-              }
+                userId: '11',
+              },
             } as unknown as HookContext
 
             const shallowPopulate = makePopulate(options)
 
             const response = await shallowPopulate(context)
             const result = response[dataResult]
-            const expectedTasks = Object.values(services.tasks.store).filter(x => x.userId === '11')
-            const expectedTags = Object.values(services.tags.store).filter(x => x.userId === result.userId).map(x => { return { id: x.id } })
-            const user = Object.values(services.users.store).filter(x => x.id === result.userId)[0]
-            const expectedOrg = Object.values(services.orgs.store).filter(x => x.id === user.orgId)[0]
+            const expectedTasks = Object.values(services.tasks.store).filter(
+              (x) => x.userId === '11',
+            )
+            const expectedTags = Object.values(services.tags.store)
+              .filter((x) => x.userId === result.userId)
+              .map((x) => {
+                return { id: x.id }
+              })
+            const user = Object.values(services.users.store).filter(
+              (x) => x.id === result.userId,
+            )[0]
+            const expectedOrg = Object.values(services.orgs.store).filter(
+              (x) => x.id === user.orgId,
+            )[0]
             const expectedTag = expectedTags[0]
             assert.deepStrictEqual(result.tasks, expectedTasks, 'tasks populated correctly')
             assert.deepStrictEqual(result.tags, expectedTags, 'tags populated correctly')
@@ -1407,14 +1518,14 @@ describe('populating thing', () => {
               nameAs: 'post',
               keyHere: 'postIds',
               keyThere: 'id',
-              asArray: false
-            }
+              asArray: false,
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1423,19 +1534,19 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postIds: ['111', '222', 444]
+                postIds: ['111', '222', 444],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postIds: '222'
+                postIds: '222',
               },
               {
                 id: '33',
                 name: 'Some Stuff',
-                postIds: ['111', 444]
-              }
-            ]
+                postIds: ['111', 444],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -1460,14 +1571,14 @@ describe('populating thing', () => {
               nameAs: 'post',
               keyHere: 'postIds',
               keyThere: 'id',
-              asArray: false
-            }
+              asArray: false,
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1476,19 +1587,19 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postIds: ['111', '222', 444]
+                postIds: ['111', '222', 444],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postIds: ['222', '111', 444]
+                postIds: ['222', '111', 444],
               },
               {
                 id: 44,
                 name: 'Just Stuff',
-                postIds: [444, 111, '222']
-              }
-            ]
+                postIds: [444, 111, '222'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -1512,14 +1623,14 @@ describe('populating thing', () => {
               service: 'tags',
               nameAs: 'tags',
               keyHere: 'tagIds',
-              keyThere: 'id'
-            }
+              keyThere: 'id',
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1528,18 +1639,18 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                tagIds: ['1111', '3333', 4444]
+                tagIds: ['1111', '3333', 4444],
               },
               {
                 id: '22',
-                name: 'Smart Stuff'
+                name: 'Smart Stuff',
               },
               {
                 id: 44,
                 name: 'Just Stuff',
-                tagIds: [4444]
-              }
-            ]
+                tagIds: [4444],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -1558,14 +1669,14 @@ describe('populating thing', () => {
               service: 'posts',
               nameAs: 'meta.posts',
               keyHere: 'meta.postsId',
-              keyThere: 'id'
-            }
+              keyThere: 'id',
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1575,24 +1686,24 @@ describe('populating thing', () => {
                 id: '11',
                 name: 'Dumb Stuff',
                 meta: {
-                  postsId: ['111', '333', 444]
-                }
+                  postsId: ['111', '333', 444],
+                },
               },
               {
                 id: '22',
                 name: 'Dumb Stuff',
                 meta: {
-                  postsId: ['222', '333', '111', 555]
-                }
+                  postsId: ['222', '333', '111', 555],
+                },
               },
               {
                 id: 44,
                 name: 'Integer Stuff',
                 meta: {
-                  postsId: ['222', 555]
-                }
-              }
-            ]
+                  postsId: ['222', 555],
+                },
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -1612,14 +1723,14 @@ describe('populating thing', () => {
               service: 'posts',
               nameAs: 'posts',
               keyHere: 'postsId',
-              keyThere: 'id'
-            }
+              keyThere: 'id',
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1628,14 +1739,14 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postsId: ['111', '222', 444, '555']
+                postsId: ['111', '222', 444, '555'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postsId: ['333', 444, '555']
-              }
-            ]
+                postsId: ['333', 444, '555'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -1655,14 +1766,14 @@ describe('populating thing', () => {
               service: 'users',
               nameAs: 'users',
               keyHere: 'id',
-              keyThere: 'postsId'
-            }
+              keyThere: 'postsId',
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1670,24 +1781,24 @@ describe('populating thing', () => {
             [dataResult]: [
               {
                 id: '111',
-                name: 'My Monkey and Me'
+                name: 'My Monkey and Me',
               },
               {
                 id: '222',
-                name: 'I forgot why I love you'
+                name: 'I forgot why I love you',
               },
               {
                 id: 444,
-                name: 'One, two, three, one, two, three, drink'
-              }
-            ]
+                name: 'One, two, three, one, two, three, drink',
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
 
           const response = await shallowPopulate(context)
           const result = response[dataResult]
-          result.forEach(item => {
+          result.forEach((item) => {
             assert(item.users, 'should have users property')
           })
         }
@@ -1702,14 +1813,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { $select: ['name'] } }
-            }
+              params: { query: { $select: ['name'] } },
+            },
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1718,23 +1829,23 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postsId: ['111', '222', 444, '555']
+                postsId: ['111', '222', 444, '555'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postsId: ['333', 444, '555']
-              }
-            ]
+                postsId: ['333', 444, '555'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
           const response = await shallowPopulate(context)
           const result = response[dataResult]
 
-          result.forEach(user => {
+          result.forEach((user) => {
             assert(user.posts.length, `${type}: posts should have been populated`)
-            user.posts.forEach(post => {
+            user.posts.forEach((post) => {
               const { name, ...rest } = post
               assert.deepStrictEqual(rest, {}, `${type}: only has name property`)
             })
@@ -1751,14 +1862,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { } }
-            }
+              params: { query: {} },
+            },
           }
           const context1 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1767,14 +1878,14 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postsId: ['111', '222', 444, '555']
+                postsId: ['111', '222', 444, '555'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postsId: ['333', 444, '555']
-              }
-            ]
+                postsId: ['333', 444, '555'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate1 = makePopulate(options1)
@@ -1788,14 +1899,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { $skip: 1 } }
-            }
+              params: { query: { $skip: 1 } },
+            },
           }
           const context2 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1804,14 +1915,14 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postsId: ['111', '222', 444, '555']
+                postsId: ['111', '222', 444, '555'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postsId: ['333', 444, '555']
-              }
-            ]
+                postsId: ['333', 444, '555'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate2 = makePopulate(options2)
@@ -1820,7 +1931,10 @@ describe('populating thing', () => {
 
           users1.forEach((user1, i) => {
             const user2 = users2[i]
-            assert(user1.posts.length - 1 === user2.posts.length, `${type}: skipped 1 item for user2`)
+            assert(
+              user1.posts.length - 1 === user2.posts.length,
+              `${type}: skipped 1 item for user2`,
+            )
           })
         }
       })
@@ -1834,14 +1948,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { } }
-            }
+              params: { query: {} },
+            },
           }
           const context1 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1850,14 +1964,14 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postsId: ['111', '222', 444, '555']
+                postsId: ['111', '222', 444, '555'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postsId: ['333', 444, '555']
-              }
-            ]
+                postsId: ['333', 444, '555'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate1 = makePopulate(options1)
@@ -1871,14 +1985,14 @@ describe('populating thing', () => {
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { $limit: 1 } }
-            }
+              params: { query: { $limit: 1 } },
+            },
           }
           const context2 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -1887,14 +2001,14 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postsId: ['111', '222', 444, '555']
+                postsId: ['111', '222', 444, '555'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postsId: ['333', 444, '555']
-              }
-            ]
+                postsId: ['333', 444, '555'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate2 = makePopulate(options2)
@@ -1903,7 +2017,10 @@ describe('populating thing', () => {
 
           users1.forEach((user1, i) => {
             const user2 = users2[i]
-            assert(user1.posts.length > user2.posts.length, `${type}: user1 has more posts than user2`)
+            assert(
+              user1.posts.length > user2.posts.length,
+              `${type}: user1 has more posts than user2`,
+            )
             assert(user2.posts.length === 1, `${type}: limited posts for user2`)
           })
         }
@@ -1915,16 +2032,16 @@ describe('populating thing', () => {
             const posts = [
               {
                 id: '111',
-                name: 'My Monkey and Me'
+                name: 'My Monkey and Me',
               },
               {
                 id: '222',
-                name: 'I forgot why I love you'
+                name: 'I forgot why I love you',
               },
               {
                 id: 444,
-                name: 'One, two, three, one, two, three, drink'
-              }
+                name: 'One, two, three, one, two, three, drink',
+              },
             ]
 
             const options = {
@@ -1934,20 +2051,20 @@ describe('populating thing', () => {
                 nameAs: 'tasks',
                 params: () => {
                   return { query: { $select: ['id'] } }
-                }
-              }
+                },
+              },
             }
             const context = {
               app: {
-                service (path) {
+                service(path) {
                   return services[path]
-                }
+                },
               },
               method: 'create',
               type,
               params: {},
               // Data for a single track
-              [dataResult]: posts
+              [dataResult]: posts,
             } as unknown as HookContext
 
             const shallowPopulate = makePopulate(options)
@@ -1955,9 +2072,15 @@ describe('populating thing', () => {
             const response = await shallowPopulate(context)
             const result = response[dataResult]
 
-            result.forEach(post => {
-              const expectedTasks = Object.values(services.tasks.store).map(x => { return { id: x.id } })
-              assert.deepStrictEqual(post.tasks, expectedTasks, 'populated all tasks with only `id` attribute')
+            result.forEach((post) => {
+              const expectedTasks = Object.values(services.tasks.store).map((x) => {
+                return { id: x.id }
+              })
+              assert.deepStrictEqual(
+                post.tasks,
+                expectedTasks,
+                'populated all tasks with only `id` attribute',
+              )
             })
           }
         })
@@ -1968,18 +2091,18 @@ describe('populating thing', () => {
               {
                 id: '111',
                 name: 'My Monkey and Me',
-                userId: '11'
+                userId: '11',
               },
               {
                 id: '222',
                 name: 'I forgot why I love you',
-                userId: '11'
+                userId: '11',
               },
               {
                 id: 444,
                 name: 'One, two, three, one, two, three, drink',
-                userId: 44
-              }
+                userId: 44,
+              },
             ]
 
             const options = {
@@ -1989,20 +2112,20 @@ describe('populating thing', () => {
                 nameAs: 'tasks',
                 params: function () {
                   return { query: { userId: this.userId } }
-                }
-              }
+                },
+              },
             }
             const context = {
               app: {
-                service (path) {
+                service(path) {
                   return services[path]
-                }
+                },
               },
               method: 'create',
               type,
               params: {},
               // Data for a single track
-              [dataResult]: posts
+              [dataResult]: posts,
             } as unknown as HookContext
 
             const shallowPopulate = makePopulate(options)
@@ -2010,8 +2133,10 @@ describe('populating thing', () => {
             const response = await shallowPopulate(context)
             const result = response[dataResult]
 
-            result.forEach(post => {
-              const expectedTasks = Object.values(services.tasks.store).filter(x => x.userId === post.userId)
+            result.forEach((post) => {
+              const expectedTasks = Object.values(services.tasks.store).filter(
+                (x) => x.userId === post.userId,
+              )
               assert.deepStrictEqual(post.tasks, expectedTasks, 'tasks populated correctly')
             })
           }
@@ -2031,7 +2156,7 @@ describe('populating thing', () => {
                 service: 'tags',
                 nameAs: 'tags',
                 keyHere: 'tagIds',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 // from: 'users',
@@ -2039,15 +2164,15 @@ describe('populating thing', () => {
                 nameAs: 'post',
                 keyHere: 'postIds',
                 keyThere: 'id',
-                asArray: false
-              }
-            ]
+                asArray: false,
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -2057,21 +2182,21 @@ describe('populating thing', () => {
                 id: '11',
                 name: 'Dumb Stuff',
                 postIds: '111',
-                tagIds: ['1111', '3333', 4444]
+                tagIds: ['1111', '3333', 4444],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
                 postIds: '222',
-                tagIds: ['1111']
+                tagIds: ['1111'],
               },
               {
                 id: 33,
                 name: 'Just Stuff',
                 postIds: 444,
-                tagIds: ['1111', 4444]
-              }
-            ]
+                tagIds: ['1111', 4444],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -2101,7 +2226,7 @@ describe('populating thing', () => {
                 service: 'tags',
                 nameAs: 'tags',
                 keyHere: 'tagIds',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 // from: 'users',
@@ -2109,15 +2234,15 @@ describe('populating thing', () => {
                 nameAs: 'post',
                 keyHere: 'postIds',
                 keyThere: 'id',
-                asArray: false
-              }
-            ]
+                asArray: false,
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -2127,15 +2252,15 @@ describe('populating thing', () => {
                 id: '11',
                 name: 'Dumb Stuff',
                 postIds: ['111', '222', 444],
-                tagIds: ['1111', '3333', 4444]
+                tagIds: ['1111', '3333', 4444],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
                 postIds: ['222', 444],
-                tagIds: ['1111']
-              }
-            ]
+                tagIds: ['1111'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -2165,22 +2290,22 @@ describe('populating thing', () => {
                 service: 'tags',
                 nameAs: 'tags',
                 keyHere: 'tagIds',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 // from: 'users',
                 service: 'posts',
                 nameAs: 'posts',
                 keyHere: 'postIds',
-                keyThere: 'id'
-              }
-            ]
+                keyThere: 'id',
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -2189,14 +2314,14 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postIds: ['111', '222', '333', 444]
+                postIds: ['111', '222', '333', 444],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postIds: ['111', '333', 555]
-              }
-            ]
+                postIds: ['111', '333', 555],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -2219,22 +2344,22 @@ describe('populating thing', () => {
                 service: 'posts',
                 nameAs: 'posts',
                 keyHere: 'postsId',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 // from: 'users',
                 service: 'tags',
                 nameAs: 'tags',
                 keyHere: 'tagIds',
-                keyThere: 'id'
-              }
-            ]
+                keyThere: 'id',
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -2244,15 +2369,15 @@ describe('populating thing', () => {
                 id: '11',
                 name: 'Dumb Stuff',
                 postsId: ['111', '222', '333'],
-                tagIds: ['1111', '3333']
+                tagIds: ['1111', '3333'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
                 postsId: ['111', '333'],
-                tagIds: ['3333']
-              }
-            ]
+                tagIds: ['3333'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -2275,21 +2400,21 @@ describe('populating thing', () => {
                 service: 'users',
                 nameAs: 'users',
                 keyHere: 'id',
-                keyThere: 'postsId'
+                keyThere: 'postsId',
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'postsId'
-              }
-            ]
+                keyThere: 'postsId',
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -2297,13 +2422,13 @@ describe('populating thing', () => {
             [dataResult]: [
               {
                 id: '333',
-                name: 'If I were a banana...'
+                name: 'If I were a banana...',
               },
               {
                 id: '111',
-                name: 'My Monkey and Me'
-              }
-            ]
+                name: 'My Monkey and Me',
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -2323,12 +2448,12 @@ describe('populating thing', () => {
           const posts = [
             {
               id: '333',
-              name: 'If I were a banana...'
+              name: 'If I were a banana...',
             },
             {
               id: '111',
-              name: 'My Monkey and Me'
-            }
+              name: 'My Monkey and Me',
+            },
           ]
 
           const options = {
@@ -2339,27 +2464,27 @@ describe('populating thing', () => {
                 nameAs: 'users',
                 keyHere: 'id',
                 keyThere: 'postsId',
-                params: { query: { $select: ['name'] } }
+                params: { query: { $select: ['name'] } },
               },
               {
                 // from posts
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'postsId'
-              }
-            ]
+                keyThere: 'postsId',
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
             params: {},
-            [dataResult]: posts
+            [dataResult]: posts,
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -2369,15 +2494,21 @@ describe('populating thing', () => {
 
           result.forEach((post, i) => {
             assert(post.users.length, 'posts should have been populated')
-            post.users.forEach(user => {
+            post.users.forEach((user) => {
               const { name, ...rest } = user
               assert.deepStrictEqual(rest, {}, 'only has name property')
             })
 
-            const expectedComments = Object.values(services.comments.store).filter(comment => comment.postsId.includes(posts[i].id))
+            const expectedComments = Object.values(services.comments.store).filter((comment) =>
+              comment.postsId.includes(posts[i].id),
+            )
 
             assert(post.comments.length === 2, 'data should have correct comments data')
-            assert.deepStrictEqual(post.comments, expectedComments, 'comments are populated complete')
+            assert.deepStrictEqual(
+              post.comments,
+              expectedComments,
+              'comments are populated complete',
+            )
           })
         }
       })
@@ -2392,22 +2523,22 @@ describe('populating thing', () => {
                 nameAs: 'posts',
                 keyHere: 'postsId',
                 keyThere: 'id',
-                params: { query: { } }
+                params: { query: {} },
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'userId'
-              }
-            ]
+                keyThere: 'userId',
+              },
+            ],
           }
 
           const context1 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -2416,14 +2547,14 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postsId: ['111', '222', 444, '555']
+                postsId: ['111', '222', 444, '555'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postsId: ['333', 444, '555']
-              }
-            ]
+                postsId: ['333', 444, '555'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate1 = makePopulate(options1)
@@ -2438,21 +2569,21 @@ describe('populating thing', () => {
                 nameAs: 'posts',
                 keyHere: 'postsId',
                 keyThere: 'id',
-                params: { query: { $skip: 1 } }
+                params: { query: { $skip: 1 } },
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'userId'
-              }
-            ]
+                keyThere: 'userId',
+              },
+            ],
           }
           const context2 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -2461,14 +2592,14 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postsId: ['111', '222', 444, '555']
+                postsId: ['111', '222', 444, '555'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postsId: ['333', 444, '555']
-              }
-            ]
+                postsId: ['333', 444, '555'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate2 = makePopulate(options2)
@@ -2480,7 +2611,11 @@ describe('populating thing', () => {
 
             assert(user1.posts.length - 1 === user2.posts.length, 'skipped 1 item for user2')
             assert(user1.comments.length > 0, 'at least some comments')
-            assert.deepStrictEqual(user1.comments, user2.comments, 'comments are populated the same')
+            assert.deepStrictEqual(
+              user1.comments,
+              user2.comments,
+              'comments are populated the same',
+            )
           })
         }
       })
@@ -2494,21 +2629,21 @@ describe('populating thing', () => {
                 service: 'posts',
                 nameAs: 'posts',
                 keyHere: 'postsId',
-                keyThere: 'id'
+                keyThere: 'id',
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'userId'
-              }
-            ]
+                keyThere: 'userId',
+              },
+            ],
           }
           const context1 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -2517,14 +2652,14 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postsId: ['111', '222', 444, '555']
+                postsId: ['111', '222', 444, '555'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postsId: ['333', 444, '555']
-              }
-            ]
+                postsId: ['333', 444, '555'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate1 = makePopulate(options1)
@@ -2539,21 +2674,21 @@ describe('populating thing', () => {
                 nameAs: 'posts',
                 keyHere: 'postsId',
                 keyThere: 'id',
-                params: { query: { $limit: 1 } }
+                params: { query: { $limit: 1 } },
               },
               {
                 service: 'comments',
                 nameAs: 'comments',
                 keyHere: 'id',
-                keyThere: 'userId'
-              }
-            ]
+                keyThere: 'userId',
+              },
+            ],
           }
           const context2 = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -2562,14 +2697,14 @@ describe('populating thing', () => {
               {
                 id: '11',
                 name: 'Dumb Stuff',
-                postsId: ['111', '222', 444, '555']
+                postsId: ['111', '222', 444, '555'],
               },
               {
                 id: '22',
                 name: 'Smart Stuff',
-                postsId: ['333', 444, '555']
-              }
-            ]
+                postsId: ['333', 444, '555'],
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate2 = makePopulate(options2)
@@ -2592,16 +2727,16 @@ describe('populating thing', () => {
             const posts = [
               {
                 id: '111',
-                name: 'My Monkey and Me'
+                name: 'My Monkey and Me',
               },
               {
                 id: '222',
-                name: 'I forgot why I love you'
+                name: 'I forgot why I love you',
               },
               {
                 id: 444,
-                name: 'One, two, three, one, two, three, drink'
-              }
+                name: 'One, two, three, one, two, three, drink',
+              },
             ]
 
             const options = {
@@ -2610,27 +2745,31 @@ describe('populating thing', () => {
                   // from: 'posts',
                   service: 'tasks',
                   nameAs: 'tasks',
-                  params: () => { return { query: { $select: ['id'] } } }
+                  params: () => {
+                    return { query: { $select: ['id'] } }
+                  },
                 },
                 {
                   // from: 'posts',
                   service: 'comments',
                   nameAs: 'comments',
-                  params: () => { return { query: { $select: ['id'] } } }
-                }
-              ]
+                  params: () => {
+                    return { query: { $select: ['id'] } }
+                  },
+                },
+              ],
             }
             const context = {
               app: {
-                service (path) {
+                service(path) {
                   return services[path]
-                }
+                },
               },
               method: 'create',
               type,
               params: {},
               // Data for a single track
-              [dataResult]: posts
+              [dataResult]: posts,
             } as unknown as HookContext
 
             const shallowPopulate = makePopulate(options)
@@ -2638,12 +2777,24 @@ describe('populating thing', () => {
             const response = await shallowPopulate(context)
             const result = response[dataResult]
 
-            result.forEach(post => {
-              const expectedTasks = Object.values(services.tasks.store).map(x => { return { id: x.id } })
-              assert.deepStrictEqual(post.tasks, expectedTasks, 'populated all tasks with only `id` attribute')
+            result.forEach((post) => {
+              const expectedTasks = Object.values(services.tasks.store).map((x) => {
+                return { id: x.id }
+              })
+              assert.deepStrictEqual(
+                post.tasks,
+                expectedTasks,
+                'populated all tasks with only `id` attribute',
+              )
 
-              const expectedComments = Object.values(services.comments.store).map(x => { return { id: x.id } })
-              assert.deepStrictEqual(post.comments, expectedComments, 'populated all tasks with only `id` attribute')
+              const expectedComments = Object.values(services.comments.store).map((x) => {
+                return { id: x.id }
+              })
+              assert.deepStrictEqual(
+                post.comments,
+                expectedComments,
+                'populated all tasks with only `id` attribute',
+              )
             })
           }
         })
@@ -2654,18 +2805,18 @@ describe('populating thing', () => {
               {
                 id: '111',
                 name: 'My Monkey and Me',
-                userId: '11'
+                userId: '11',
               },
               {
                 id: '222',
                 name: 'I forgot why I love you',
-                userId: '11'
+                userId: '11',
               },
               {
                 id: 444,
                 name: 'One, two, three, one, two, three, drink',
-                userId: 44
-              }
+                userId: 44,
+              },
             ]
 
             const options = {
@@ -2676,7 +2827,7 @@ describe('populating thing', () => {
                   nameAs: 'tasks',
                   params: function () {
                     return { query: { userId: this.userId } }
-                  }
+                  },
                 },
                 {
                   // from: 'posts',
@@ -2686,10 +2837,10 @@ describe('populating thing', () => {
                     return {
                       query: {
                         userId: this.userId,
-                        $select: ['id']
-                      }
+                        $select: ['id'],
+                      },
                     }
-                  }
+                  },
                 },
                 {
                   service: 'orgs',
@@ -2698,7 +2849,7 @@ describe('populating thing', () => {
                   params: async function (params: Params, context: HookContext) {
                     const user = await context.app.service('users').get(this.userId)
                     return { query: { id: user.orgId } }
-                  }
+                  },
                 },
                 {
                   // from: 'posts',
@@ -2709,12 +2860,12 @@ describe('populating thing', () => {
                     function () {
                       return {
                         query: {
-                          userId: this.userId
-                        }
+                          userId: this.userId,
+                        },
                       }
                     },
-                    { query: { $select: ['id'] } }
-                  ]
+                    { query: { $select: ['id'] } },
+                  ],
                 },
                 {
                   // from: 'posts',
@@ -2723,7 +2874,7 @@ describe('populating thing', () => {
                   asArray: false,
                   params: function () {
                     return undefined
-                  }
+                  },
                 },
                 {
                   // from: 'posts',
@@ -2731,21 +2882,21 @@ describe('populating thing', () => {
                   nameAs: 'emptyTasks',
                   params: function () {
                     return undefined
-                  }
-                }
-              ]
+                  },
+                },
+              ],
             }
             const context = {
               app: {
-                service (path) {
+                service(path) {
                   return services[path]
-                }
+                },
               },
               method: 'create',
               type,
               params: {},
               // Data for a single track
-              [dataResult]: posts
+              [dataResult]: posts,
             } as unknown as HookContext
 
             const shallowPopulate = makePopulate(options)
@@ -2753,11 +2904,21 @@ describe('populating thing', () => {
             const response = await shallowPopulate(context)
             const result = response[dataResult]
 
-            result.forEach(post => {
-              const expectedTasks = Object.values(services.tasks.store).filter(x => x.userId === post.userId)
-              const expectedTags = Object.values(services.tags.store).filter(x => x.userId === post.userId).map(x => { return { id: x.id } })
-              const user = Object.values(services.users.store).filter(x => x.id === post.userId)[0]
-              const expectedOrg = Object.values(services.orgs.store).filter(x => x.id === user.orgId)[0]
+            result.forEach((post) => {
+              const expectedTasks = Object.values(services.tasks.store).filter(
+                (x) => x.userId === post.userId,
+              )
+              const expectedTags = Object.values(services.tags.store)
+                .filter((x) => x.userId === post.userId)
+                .map((x) => {
+                  return { id: x.id }
+                })
+              const user = Object.values(services.users.store).filter(
+                (x) => x.id === post.userId,
+              )[0]
+              const expectedOrg = Object.values(services.orgs.store).filter(
+                (x) => x.id === user.orgId,
+              )[0]
               const expectedTag = expectedTags[0]
               assert.deepStrictEqual(post.tasks, expectedTasks, 'tasks populated correctly')
               assert.deepStrictEqual(post.tags, expectedTags, 'tags populated correctly')

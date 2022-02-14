@@ -10,17 +10,19 @@ import type { GetPopulateQueryOptions } from '../types'
  */
 export function getQuery(options: GetPopulateQueryOptions): Query {
   const { context, namedQueries, defaultQueryName } = options
-  let query = context.params?.$populateParams?.query;
+  let query = context.params?.$populateParams?.query
 
   // Remove any possible $populateParams.query passed from the outside
   if (context.params.provider && query) {
-    delete context.params.$populateParams.query;
+    delete context.params.$populateParams.query
   }
 
   if (!query || context.params.provider) {
     // Set the query based on any $populateParams.name passed from the outside
     const paramsName = context.params?.$populateParams?.name || defaultQueryName
-    if (!paramsName) { return undefined }
+    if (!paramsName) {
+      return undefined
+    }
 
     query = namedQueries?.[paramsName]?.query || namedQueries[paramsName]
   }

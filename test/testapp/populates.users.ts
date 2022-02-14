@@ -45,23 +45,23 @@ export const populates = {
     service: 'orgs',
     nameAs: 'organizations',
     asArray: true,
-    params: async function(params: Params, context: HookContext): Promise<Params> {
+    params: async function (params: Params, context: HookContext): Promise<Params> {
       const orgUsers = await context.app.service('org-users').find({
         query: {
-          userId: this.id
+          userId: this.id,
         },
-        paginate: false
+        paginate: false,
       })
-      const ids = [...new Set(orgUsers.map(x => x.orgId))]
+      const ids = [...new Set(orgUsers.map((x) => x.orgId))]
       return {
         query: {
           id: {
-            $in: ids
-          }
-        }
+            $in: ids,
+          },
+        },
       }
-    }
-  }
+    },
+  },
 }
 
 export const namedQueries = {
@@ -82,7 +82,7 @@ export const namedQueries = {
   },
   withPostIds: {
     posts: {
-      $select: ['id']
-    }
-  }
+      $select: ['id'],
+    },
+  },
 }

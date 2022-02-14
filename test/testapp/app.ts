@@ -1,4 +1,4 @@
-import type { Application } from '@feathersjs/feathers';
+import type { Application } from '@feathersjs/feathers'
 import feathers from '@feathersjs/feathers'
 import { Service } from 'feathers-memory'
 import * as usersGraphPopulate from './populates.users'
@@ -51,7 +51,7 @@ function createService(opts: any = {}): Service {
 function usePopulateHook(app: Application, serviceName: string, gp: any) {
   app.service(serviceName).hooks({
     after: {
-      all: [populate(gp)]
-    }
+      all: [populate(gp)],
+    },
   })
 }

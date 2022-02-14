@@ -14,23 +14,23 @@ const services = {
       333: { id: '333', name: 'If I were a banana...', userId: '22' },
       444: { id: 444, name: 'One, two, three, one, two, three, drink', userId: '33' },
       555: { id: 555, name: 'Im gonna live like tomorrow doesnt exist', userId: 44 },
-      666: { id: 666, name: 'I feel the love, feel the love', userId: 44 }
-    }
+      666: { id: 666, name: 'I feel the love, feel the love', userId: 44 },
+    },
   }),
   users: memory({
     store: {
       11: { id: '11', name: 'Joe Bloggs', postsId: ['111'], orgId: 'org1' },
       22: { id: '22', name: 'Jane Bloggs', postsId: '333', orgId: 'org2' },
       33: { id: '33', name: 'John Smith', postsId: ['111', '222'], orgId: 3 },
-      44: { id: 44, name: 'Muhammad Li', postsId: [444, '555'], orgId: 4 }
+      44: { id: 44, name: 'Muhammad Li', postsId: [444, '555'], orgId: 4 },
     },
-    matcher: query => {
-      return items => {
+    matcher: (query) => {
+      return (items) => {
         const s = Object.assign({}, query)
         items = [].concat(items || [])
         return !!sift(s, items).length
       }
-    }
+    },
   }),
   taskSets: memory({
     store: {
@@ -40,37 +40,77 @@ const services = {
       ts3: { id: 'ts3', name: 'Task Set 3' },
       4: { id: 4, name: 'Task Set 4' },
       5: { id: 5, name: 'Task Set 5' },
-      ts6: { id: 'ts6', name: 'Task Set 6' }
-    }
+      ts6: { id: 'ts6', name: 'Task Set 6' },
+    },
   }),
   tasks: memory({
     store: {
       //@ts-ignore
-      task1: { id: 'task1', name: 'Task 1 - belongs with TaskSet1', taskSet: { taskSetId: 'ts1' }, userId: '11' },
-      task2: { id: 'task2', name: 'Task 2 - belongs with TaskSet2', taskSet: { taskSetId: 'ts2' }, userId: '22' },
-      task3: { id: 'task3', name: 'Task 3 - belongs with TaskSet2', taskSet: { taskSetId: 'ts2' }, userId: '11' },
-      task4: { id: 'task4', name: 'Task 4 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: 44 },
-      task5: { id: 'task5', name: 'Task 5 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: 44 },
-      task6: { id: 'task6', name: 'Task 6 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: '33' },
+      task1: {
+        id: 'task1',
+        name: 'Task 1 - belongs with TaskSet1',
+        taskSet: { taskSetId: 'ts1' },
+        userId: '11',
+      },
+      task2: {
+        id: 'task2',
+        name: 'Task 2 - belongs with TaskSet2',
+        taskSet: { taskSetId: 'ts2' },
+        userId: '22',
+      },
+      task3: {
+        id: 'task3',
+        name: 'Task 3 - belongs with TaskSet2',
+        taskSet: { taskSetId: 'ts2' },
+        userId: '11',
+      },
+      task4: {
+        id: 'task4',
+        name: 'Task 4 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: 44,
+      },
+      task5: {
+        id: 'task5',
+        name: 'Task 5 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: 44,
+      },
+      task6: {
+        id: 'task6',
+        name: 'Task 6 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: '33',
+      },
       7: { id: 7, name: 'Task 7 - belongs with TaskSet4', taskSet: { taskSetId: 4 } },
       task8: { id: 'task8', name: 'Task 8 - belongs with TaskSet5', taskSet: { taskSetId: 5 } },
-      9: { id: 9, name: 'Task 9 - belongs with TaskSet6', taskSet: { taskSetId: 'ts6' } }
-    }
+      9: { id: 9, name: 'Task 9 - belongs with TaskSet6', taskSet: { taskSetId: 'ts6' } },
+    },
   }),
   comments: memory({
     store: {
       11111: { id: '11111', name: 'The Best Sounds This Summer', postsId: ['222'], userId: '11' },
       22222: { id: '22222', name: 'Chillstation', postsId: ['333'], userId: '22' },
-      33333: { id: '33333', name: 'Hard Hitting Bass', postsId: ['111', '222', '333'], userId: '33' },
-      44444: { id: 44444, name: 'As long as skies are blue', postsId: ['111', 444, '555'], userId: 44 }
+      33333: {
+        id: '33333',
+        name: 'Hard Hitting Bass',
+        postsId: ['111', '222', '333'],
+        userId: '33',
+      },
+      44444: {
+        id: 44444,
+        name: 'As long as skies are blue',
+        postsId: ['111', 444, '555'],
+        userId: 44,
+      },
     },
-    matcher: query => {
-      return items => {
+    matcher: (query) => {
+      return (items) => {
         const s = Object.assign({}, query)
         items = [].concat(items || [])
         return !!sift(s, items).length
       }
-    }
+    },
   }),
   tags: memory({
     store: {
@@ -78,8 +118,8 @@ const services = {
       2222: { id: '2222', name: 'Trumpets', userId: '11' },
       3333: { id: '3333', name: 'Drums', userId: '22' },
       4444: { id: 4444, name: 'Guitars', userId: '33' },
-      5555: { id: 5555, name: 'Violins', userId: 44 }
-    }
+      5555: { id: 5555, name: 'Violins', userId: 44 },
+    },
   }),
   orgs: memory({
     store: {
@@ -87,8 +127,8 @@ const services = {
       org1: { id: 'org1', name: 'Southern Utah', memberCount: 21 },
       org2: { id: 'org2', name: 'Northern Utah', memberCount: 99 },
       3: { id: 3, name: 'Northern Arizona', memberCount: 42 },
-      4: { id: 4, name: 'Southern Arizona', memberCount: 23 }
-    }
+      4: { id: 4, name: 'Southern Arizona', memberCount: 23 },
+    },
   }),
   environments: memory({
     store: {
@@ -96,72 +136,93 @@ const services = {
       env1: {
         id: 'env1',
         name: 'Bryce Canyon National Park',
-        orgs: [
-          { orgId: 'org1', orgName: 'Southern Utah' }
-        ]
+        orgs: [{ orgId: 'org1', orgName: 'Southern Utah' }],
       },
       env2: {
         id: 'env2',
         name: 'Zion National Park',
-        orgs: [
-          { orgId: 'org1', orgName: 'Southern Utah' }
-        ]
+        orgs: [{ orgId: 'org1', orgName: 'Southern Utah' }],
       },
       env3: {
         id: 'env3',
         name: 'Canyonlands National Park',
-        orgs: [
-          { orgId: 'org2', orgName: 'Northern Utah' }
-        ]
+        orgs: [{ orgId: 'org2', orgName: 'Northern Utah' }],
       },
       4: {
         id: 4,
         name: 'Grand Canyon National Park',
-        orgs: [
-          { orgId: 3, orgName: 'Northern Arizona' }
-        ]
+        orgs: [{ orgId: 3, orgName: 'Northern Arizona' }],
       },
       5: {
         id: '5',
         name: 'Organ Pipe Cactus National Monument',
-        orgs: [
-          { orgId: 4, orgName: 'Southern Arizona' }
-        ]
+        orgs: [{ orgId: 4, orgName: 'Southern Arizona' }],
       },
       6: {
         id: 6,
         name: 'Antelope Canyon',
-        orgs: [
-          { orgId: 'org1', orgName: 'Southern Utah' }
-        ]
-      }
-    }
+        orgs: [{ orgId: 'org1', orgName: 'Southern Utah' }],
+      },
+    },
   }),
   authenticatedService: memory({
     store: {
       //@ts-ignore
-      task1: { id: 'task1', name: 'Task 1 - belongs with TaskSet1', taskSet: { taskSetId: 'ts1' }, userId: '11' },
-      task2: { id: 'task2', name: 'Task 2 - belongs with TaskSet2', taskSet: { taskSetId: 'ts2' }, userId: '22' },
-      task3: { id: 'task3', name: 'Task 3 - belongs with TaskSet2', taskSet: { taskSetId: 'ts2' }, userId: '11' },
-      task4: { id: 'task4', name: 'Task 4 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: 44 },
-      task5: { id: 'task5', name: 'Task 5 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: 44 },
-      task6: { id: 'task6', name: 'Task 6 - belongs with TaskSet3', taskSet: { taskSetId: 'ts3' }, userId: '33' },
+      task1: {
+        id: 'task1',
+        name: 'Task 1 - belongs with TaskSet1',
+        taskSet: { taskSetId: 'ts1' },
+        userId: '11',
+      },
+      task2: {
+        id: 'task2',
+        name: 'Task 2 - belongs with TaskSet2',
+        taskSet: { taskSetId: 'ts2' },
+        userId: '22',
+      },
+      task3: {
+        id: 'task3',
+        name: 'Task 3 - belongs with TaskSet2',
+        taskSet: { taskSetId: 'ts2' },
+        userId: '11',
+      },
+      task4: {
+        id: 'task4',
+        name: 'Task 4 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: 44,
+      },
+      task5: {
+        id: 'task5',
+        name: 'Task 5 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: 44,
+      },
+      task6: {
+        id: 'task6',
+        name: 'Task 6 - belongs with TaskSet3',
+        taskSet: { taskSetId: 'ts3' },
+        userId: '33',
+      },
       7: { id: 7, name: 'Task 7 - belongs with TaskSet4', taskSet: { taskSetId: 4 } },
       task8: { id: 'task8', name: 'Task 8 - belongs with TaskSet5', taskSet: { taskSetId: 5 } },
-      9: { id: 9, name: 'Task 9 - belongs with TaskSet6', taskSet: { taskSetId: 'ts6' } }
-    }
-  })
+      9: { id: 9, name: 'Task 9 - belongs with TaskSet6', taskSet: { taskSetId: 'ts6' } },
+    },
+  }),
 }
 
-const beforeAfter: [{ type: 'before', dataResult: 'data' }, {type: 'after', dataResult: 'result'}] = [
+const beforeAfter: [
+  { type: 'before'; dataResult: 'data' },
+  { type: 'after'; dataResult: 'result' },
+] = [
   {
     type: 'before',
-    dataResult: 'data'
+    dataResult: 'data',
   },
   {
     type: 'after',
-    dataResult: 'result'
-  }
+    dataResult: 'result',
+  },
 ]
 
 describe('general', () => {
@@ -175,69 +236,69 @@ describe('general', () => {
   it('throws when an includes array has missing properties', () => {
     const includesOptions = [
       {
-        include: {}
+        include: {},
       },
       {
         include: {
           service: 'posts',
           nameAs: 'posts',
-          keyHere: 'postsId'
-        }
-      },
-      {
-        include: {
-          service: 'posts',
-          nameAs: 'posts',
-          keyThere: 'id'
-        }
+          keyHere: 'postsId',
+        },
       },
       {
         include: {
           service: 'posts',
           nameAs: 'posts',
           keyThere: 'id',
-          params: { test: true }
-        }
-      },
-      {
-        include: {
-          service: 'posts',
-          nameAs: 'posts',
-          keyHere: 'id',
-          params: { test: true }
-        }
+        },
       },
       {
         include: {
           service: 'posts',
           nameAs: 'posts',
           keyThere: 'id',
-          params: () => true
-        }
+          params: { test: true },
+        },
       },
       {
         include: {
           service: 'posts',
           nameAs: 'posts',
           keyHere: 'id',
-          params: () => true
-        }
-      },
-      {
-        include: {
-          service: 'posts',
-          nameAs: 'posts',
-          keyHere: 'id',
-          params: {}
-        }
+          params: { test: true },
+        },
       },
       {
         include: {
           service: 'posts',
           nameAs: 'posts',
           keyThere: 'id',
-          params: {}
-        }
+          params: () => true,
+        },
+      },
+      {
+        include: {
+          service: 'posts',
+          nameAs: 'posts',
+          keyHere: 'id',
+          params: () => true,
+        },
+      },
+      {
+        include: {
+          service: 'posts',
+          nameAs: 'posts',
+          keyHere: 'id',
+          params: {},
+        },
+      },
+      {
+        include: {
+          service: 'posts',
+          nameAs: 'posts',
+          keyThere: 'id',
+          params: {},
+        },
       },
       {
         include: {
@@ -245,12 +306,12 @@ describe('general', () => {
           nameAs: 'posts',
           keyThere: 'id',
           requestPerItem: true,
-          params: {}
-        }
-      }
+          params: {},
+        },
+      },
     ]
 
-    includesOptions.forEach(options => {
+    includesOptions.forEach((options) => {
       assert.throws(() => {
         //@ts-ignore
         makePopulate(options)
@@ -265,15 +326,15 @@ describe('general', () => {
           service: 'posts',
           nameAs: 'posts',
           keyHere: 'postsId',
-          keyThere: 'id'
+          keyThere: 'id',
         },
         {
           service: 'posts',
           nameAs: 'posts',
           keyHere: 'postsId',
-          keyThere: 'id'
-        }
-      ]
+          keyThere: 'id',
+        },
+      ],
     }
 
     assert.throws(() => {
@@ -285,24 +346,24 @@ describe('general', () => {
     for (const { type, dataResult } of beforeAfter) {
       const options: ShallowPopulateOptions = {
         include: {
-        // from: 'users',
+          // from: 'users',
           service: 'posts',
           nameAs: 'posts',
           keyHere: 'postsId',
-          keyThere: 'id'
-        }
+          keyThere: 'id',
+        },
       }
 
       const context = {
         app: {
-          service (path) {
+          service(path) {
             return services[path]
-          }
+          },
         },
         method: 'create',
         type,
         params: {},
-        [dataResult]: {}
+        [dataResult]: {},
       } as unknown as HookContext
 
       const shallowPopulate = makePopulate(options)
@@ -313,37 +374,41 @@ describe('general', () => {
     }
   })
 
-  it('works with falsy \'keyHere: 0\' value', async () => {
+  it('works with falsy "keyHere: 0" value', async () => {
     for (const { type, dataResult } of beforeAfter) {
       const options = {
         include: {
-        // from: 'posts',
+          // from: 'posts',
           service: 'users',
           nameAs: 'user',
           keyHere: 'id',
-          keyThere: 'userId'
-        }
+          keyThere: 'userId',
+        },
       }
 
       let calledFind = false
 
       const context = {
         app: {
-          service () {
+          service() {
             return {
-              find (params: Params) {
+              find(params: Params) {
                 calledFind = true
-                assert.deepStrictEqual(params.query.userId.$in, [0], 'sets \'userId.$in\' accordingly')
-              }
+                assert.deepStrictEqual(
+                  params.query.userId.$in,
+                  [0],
+                  'sets "userId.$in" accordingly',
+                )
+              },
             }
-          }
+          },
         },
         method: 'create',
         type,
         params: {},
         [dataResult]: {
-          id: 0
-        }
+          id: 0,
+        },
       } as unknown as HookContext
 
       const shallowPopulate = makePopulate(options)
@@ -362,25 +427,25 @@ describe('general', () => {
             service: 'tasks',
             nameAs: 'tasks',
             keyHere: 'id',
-            keyThere: 'userId'
-          }
+            keyThere: 'userId',
+          },
         }
         const context = {
           app: {
-            service () {
+            service() {
               return {
-                find () {
+                find() {
                   throw new NotAuthenticated('not authenticated')
-                }
+                },
               }
-            }
+            },
           },
           method: 'create',
           type,
           params: {},
           [dataResult]: {
-            id: '11'
-          }
+            id: '11',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -400,7 +465,7 @@ describe('general', () => {
               service: 'posts',
               nameAs: 'posts',
               keyHere: 'id',
-              keyThere: 'userId'
+              keyThere: 'userId',
             },
             {
               // from: 'users',
@@ -408,29 +473,29 @@ describe('general', () => {
               nameAs: 'post',
               keyHere: 'id',
               keyThere: 'userId',
-              asArray: false
-            }
+              asArray: false,
+            },
           ],
-          catchOnError: true
+          catchOnError: true,
         }
 
         const context = {
           app: {
-            service () {
+            service() {
               return {
-                find () {
+                find() {
                   reachedThrow = true
                   throw new NotAuthenticated('not authenticated')
-                }
+                },
               }
-            }
+            },
           },
           method: 'create',
           type,
           params: {},
           [dataResult]: {
-            id: '11'
-          }
+            id: '11',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -455,7 +520,7 @@ describe('general', () => {
               nameAs: 'posts',
               keyHere: 'id',
               keyThere: 'userId',
-              catchOnError: true
+              catchOnError: true,
             },
             {
               // from: 'users',
@@ -464,28 +529,28 @@ describe('general', () => {
               keyHere: 'id',
               keyThere: 'userId',
               asArray: false,
-              catchOnError: true
-            }
+              catchOnError: true,
+            },
           ],
-          catchOnError: false
+          catchOnError: false,
         }
         const context = {
           app: {
-            service () {
+            service() {
               return {
-                find () {
+                find() {
                   reachedThrow = true
                   throw new NotAuthenticated('not authenticated')
-                }
+                },
               }
-            }
+            },
           },
           method: 'create',
           type,
           params: {},
           [dataResult]: {
-            id: '11'
-          }
+            id: '11',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -503,13 +568,13 @@ describe('general', () => {
         for (const { type, dataResult } of beforeAfter) {
           const options = {
             include: {
-            // from: 'users',
+              // from: 'users',
               service: 'posts',
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { fromCommentsPopulate: true }
-            }
+              params: { fromCommentsPopulate: true },
+            },
           }
 
           let hasCalledFind = false
@@ -518,20 +583,20 @@ describe('general', () => {
             method: 'create',
             type,
             app: {
-              service () {
+              service() {
                 return {
-                  find (params: Params = {}) {
+                  find(params: Params = {}) {
                     assert(params.fromCommentsPopulate === true, 'we have a custom param')
                     hasCalledFind = true
                     return []
-                  }
+                  },
                 }
-              }
+              },
             },
             params: {},
             [dataResult]: {
-              id: '1'
-            }
+              id: '1',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -545,13 +610,13 @@ describe('general', () => {
         for (const { type, dataResult } of beforeAfter) {
           const options = {
             include: {
-            // from: 'users',
+              // from: 'users',
               service: 'posts',
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: { query: { $select: ['id'] } }
-            }
+              params: { query: { $select: ['id'] } },
+            },
           }
 
           let hasCalledFind = false
@@ -560,21 +625,25 @@ describe('general', () => {
             method: 'create',
             type,
             app: {
-              service () {
+              service() {
                 return {
-                  find (params: Params = {}) {
-                    assert.deepStrictEqual(params.query.id.$in, [], 'we have the params from shallow-populate')
+                  find(params: Params = {}) {
+                    assert.deepStrictEqual(
+                      params.query.id.$in,
+                      [],
+                      'we have the params from shallow-populate',
+                    )
                     assert.deepStrictEqual(params.query.$select, ['id'], 'we have a merged query')
                     hasCalledFind = true
                     return []
-                  }
+                  },
                 }
-              }
+              },
             },
             params: {},
             [dataResult]: {
-              id: '1'
-            }
+              id: '1',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -588,16 +657,20 @@ describe('general', () => {
         for (const { type, dataResult } of beforeAfter) {
           const options = {
             include: {
-            // from: 'users',
+              // from: 'users',
               service: 'posts',
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
               params: (params: Params) => {
-                assert.deepStrictEqual(params.query.id.$in, [], 'we have the params from shallow-populate first')
+                assert.deepStrictEqual(
+                  params.query.id.$in,
+                  [],
+                  'we have the params from shallow-populate first',
+                )
                 params.query.$select = ['id']
-              }
-            }
+              },
+            },
           }
 
           let hasCalledFind = false
@@ -606,21 +679,25 @@ describe('general', () => {
             method: 'create',
             type,
             app: {
-              service () {
+              service() {
                 return {
-                  find (params: Params) {
-                    assert.deepStrictEqual(params.query.id.$in, [], 'we have the params from shallow-populate')
+                  find(params: Params) {
+                    assert.deepStrictEqual(
+                      params.query.id.$in,
+                      [],
+                      'we have the params from shallow-populate',
+                    )
                     assert.deepStrictEqual(params.query.$select, ['id'], 'we have a merged query')
                     hasCalledFind = true
                     return []
-                  }
+                  },
                 }
-              }
+              },
             },
             params: {},
             [dataResult]: {
-              id: '1'
-            }
+              id: '1',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -634,13 +711,15 @@ describe('general', () => {
         for (const { type, dataResult } of beforeAfter) {
           const options = {
             include: {
-            // from: 'users',
+              // from: 'users',
               service: 'posts',
               nameAs: 'posts',
               keyHere: 'postsId',
               keyThere: 'id',
-              params: () => { return { query: { $select: ['id'] } } }
-            }
+              params: () => {
+                return { query: { $select: ['id'] } }
+              },
+            },
           }
 
           let hasCalledFind = false
@@ -649,21 +728,25 @@ describe('general', () => {
             method: 'create',
             type,
             app: {
-              service () {
+              service() {
                 return {
-                  find (params: Params) {
-                    assert.deepStrictEqual(params.query.id.$in, [], 'we have the params from shallow-populate')
+                  find(params: Params) {
+                    assert.deepStrictEqual(
+                      params.query.id.$in,
+                      [],
+                      'we have the params from shallow-populate',
+                    )
                     assert.deepStrictEqual(params.query.$select, ['id'], 'we have a merged query')
                     hasCalledFind = true
                     return []
-                  }
+                  },
                 }
-              }
+              },
             },
             params: {},
             [dataResult]: {
-              id: '1'
-            }
+              id: '1',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -687,8 +770,8 @@ describe('general', () => {
                 assert(context.method === 'create', 'we can pass the context to include')
                 params.method = context.method
                 paramsFunctionCalled = true
-              }
-            }
+              },
+            },
           }
 
           let hasCalledFind = false
@@ -697,20 +780,23 @@ describe('general', () => {
             method: 'create',
             type,
             app: {
-              service () {
+              service() {
                 return {
-                  find (params: Params) {
-                    assert(params.method === 'create', 'we can manipulate the params based on the context')
+                  find(params: Params) {
+                    assert(
+                      params.method === 'create',
+                      'we can manipulate the params based on the context',
+                    )
                     hasCalledFind = true
                     return []
-                  }
+                  },
                 }
-              }
+              },
             },
             params: {},
             [dataResult]: {
-              id: '1'
-            }
+              id: '1',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -736,7 +822,7 @@ describe('general', () => {
                 params: () => {
                   assert(!calledIncludeUsersParams, 'not called before -> only called once')
                   calledIncludeUsersParams = true
-                }
+                },
               },
               {
                 service: 'comments',
@@ -746,15 +832,15 @@ describe('general', () => {
                 params: () => {
                   assert(!calledIncludeCommentsParams, 'not called before -> only called once')
                   calledIncludeCommentsParams = true
-                }
-              }
-            ]
+                },
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
@@ -762,17 +848,17 @@ describe('general', () => {
             [dataResult]: [
               {
                 id: '333',
-                name: 'If I were a banana...'
+                name: 'If I were a banana...',
               },
               {
                 id: '111',
-                name: 'My Monkey and Me'
+                name: 'My Monkey and Me',
               },
               {
                 id: 444,
-                name: 'One, two, three, one, two, three, drink'
-              }
-            ]
+                name: 'One, two, three, one, two, three, drink',
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -791,12 +877,14 @@ describe('general', () => {
               service: 'posts',
               nameAs: 'posts',
               params: async (params: Params) => {
-                await new Promise(resolve => { setTimeout(resolve, 200) })
+                await new Promise((resolve) => {
+                  setTimeout(resolve, 200)
+                })
                 params.calledAsyncFunction = true
                 calledAsyncFunction = true
                 return params
-              }
-            }
+              },
+            },
           }
 
           let hasCalledFind = false
@@ -805,20 +893,23 @@ describe('general', () => {
             method: 'create',
             type,
             app: {
-              service () {
+              service() {
                 return {
-                  find (params: Params) {
-                    assert(params.calledAsyncFunction, 'waited for async params function before find')
+                  find(params: Params) {
+                    assert(
+                      params.calledAsyncFunction,
+                      'waited for async params function before find',
+                    )
                     hasCalledFind = true
                     return []
-                  }
+                  },
                 }
-              }
+              },
             },
             params: {},
             [dataResult]: {
-              id: '1'
-            }
+              id: '1',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -837,11 +928,11 @@ describe('general', () => {
             query: {
               postsId: { $in: ['1'] },
               second: true,
-              fourth: true
+              fourth: true,
             },
             third: true,
             fifth: true,
-            sixth: true
+            sixth: true,
           }
 
           const options = {
@@ -864,7 +955,7 @@ describe('general', () => {
                   },
                   async (params) => {
                     assert(params.query.fourth, 'walked through before')
-                    await new Promise(resolve => setTimeout(resolve, 200))
+                    await new Promise((resolve) => setTimeout(resolve, 200))
                     params.fifth = true
                   },
                   (params, context) => {
@@ -876,25 +967,25 @@ describe('general', () => {
                   (params) => {
                     assert.deepStrictEqual(params, expected, 'params object is right')
                     calledLastFunction = true
-                  }
-                ]
-              }
-            ]
+                  },
+                ],
+              },
+            ],
           }
           const context = {
             app: {
-              service (path) {
+              service(path) {
                 return services[path]
-              }
+              },
             },
             method: 'create',
             type,
             params: {},
             [dataResult]: [
               {
-                id: '1'
-              }
-            ]
+                id: '1',
+              },
+            ],
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -904,7 +995,7 @@ describe('general', () => {
         }
       })
 
-      it('params function has third \'target\' object', async () => {
+      it('params function has third "target" object', async () => {
         for (const { type, dataResult } of beforeAfter) {
           let paramsFunctionCalled = false
 
@@ -916,12 +1007,15 @@ describe('general', () => {
               keyThere: 'id',
               params: (params, context, target) => {
                 assert.ok(target, 'target is defined')
-                assert(target.service && typeof target.service.find === 'function', 'target has service')
+                assert(
+                  target.service && typeof target.service.find === 'function',
+                  'target has service',
+                )
                 assert.strictEqual(typeof target.path, 'string', 'target.path is string')
                 params.path = target.path
                 paramsFunctionCalled = true
-              }
-            }
+              },
+            },
           }
 
           let hasCalledFind = false
@@ -930,20 +1024,24 @@ describe('general', () => {
             method: 'create',
             type,
             app: {
-              service () {
+              service() {
                 return {
-                  find (params: Params) {
-                    assert.strictEqual(params.path, 'posts', 'we can manipulate the params based on the target')
+                  find(params: Params) {
+                    assert.strictEqual(
+                      params.path,
+                      'posts',
+                      'we can manipulate the params based on the target',
+                    )
                     hasCalledFind = true
                     return []
-                  }
+                  },
                 }
-              }
+              },
             },
             params: {},
             [dataResult]: {
-              id: '1'
-            }
+              id: '1',
+            },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
@@ -964,25 +1062,25 @@ describe('general', () => {
             // from: 'users',
             service: 'posts',
             nameAs: 'posts',
-            params: { fromCommentsPopulate: true }
-          }
+            params: { fromCommentsPopulate: true },
+          },
         }
         const context = {
           app: {
-            service () {
+            service() {
               return {
-                find () {
+                find() {
                   throw new NotAuthenticated('not authenticated')
-                }
+                },
               }
-            }
+            },
           },
           method: 'create',
           type,
           params: {},
           [dataResult]: {
-            id: '11'
-          }
+            id: '11',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1000,35 +1098,35 @@ describe('general', () => {
               // from: 'users',
               service: 'posts',
               nameAs: 'posts',
-              params: { fromCommentsPopulate: true }
+              params: { fromCommentsPopulate: true },
             },
             {
               // from: 'users',
               service: 'posts',
               nameAs: 'post',
               asArray: false,
-              params: { fromCommentsPopulate: true }
-            }
+              params: { fromCommentsPopulate: true },
+            },
           ],
-          catchOnError: true
+          catchOnError: true,
         }
         const context = {
           app: {
-            service () {
+            service() {
               return {
-                find () {
+                find() {
                   throwReached = true
                   throw new NotAuthenticated('not authenticated')
-                }
+                },
               }
-            }
+            },
           },
           method: 'create',
           type,
           params: {},
           [dataResult]: {
-            id: '11'
-          }
+            id: '11',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1052,7 +1150,7 @@ describe('general', () => {
               service: 'posts',
               nameAs: 'posts',
               params: { fromCommentsPopulate: true },
-              catchOnError: true
+              catchOnError: true,
             },
             {
               // from: 'users',
@@ -1060,28 +1158,28 @@ describe('general', () => {
               nameAs: 'post',
               asArray: false,
               params: { fromCommentsPopulate: true },
-              catchOnError: true
-            }
+              catchOnError: true,
+            },
           ],
-          catchOnError: false
+          catchOnError: false,
         }
         const context = {
           app: {
-            service () {
+            service() {
               return {
-                find () {
+                find() {
                   throwReached = true
                   throw new NotAuthenticated('not authenticated')
-                }
+                },
               }
-            }
+            },
           },
           method: 'create',
           type,
           params: {},
           [dataResult]: {
-            id: '11'
-          }
+            id: '11',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1098,11 +1196,11 @@ describe('general', () => {
       for (const { type, dataResult } of beforeAfter) {
         const options = {
           include: {
-          // from: 'users',
+            // from: 'users',
             service: 'posts',
             nameAs: 'posts',
-            params: { fromCommentsPopulate: true }
-          }
+            params: { fromCommentsPopulate: true },
+          },
         }
 
         let hasCalledFind = false
@@ -1111,20 +1209,20 @@ describe('general', () => {
           method: 'create',
           type,
           app: {
-            service () {
+            service() {
               return {
-                find (params: Params) {
+                find(params: Params) {
                   assert(params.fromCommentsPopulate === true, 'we have a custom param')
                   hasCalledFind = true
                   return []
-                }
+                },
               }
-            }
+            },
           },
           params: {},
           [dataResult]: {
-            id: '1'
-          }
+            id: '1',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1143,8 +1241,8 @@ describe('general', () => {
           params: (params: Params) => {
             assert.deepStrictEqual(params, expected, 'params just have paginate attribute')
             return params
-          }
-        }
+          },
+        },
       }
 
       assert.doesNotThrow(() => {
@@ -1158,9 +1256,9 @@ describe('general', () => {
           service: 'posts',
           nameAs: 'posts',
           params: {
-            test: true
-          }
-        }
+            test: true,
+          },
+        },
       }
 
       assert.doesNotThrow(() => {
@@ -1172,11 +1270,11 @@ describe('general', () => {
       for (const { type, dataResult } of beforeAfter) {
         const options = {
           include: {
-          // from: 'users',
+            // from: 'users',
             service: 'posts',
             nameAs: 'posts',
-            params: () => {}
-          }
+            params: () => {},
+          },
         }
 
         let hasCalledFind = false
@@ -1185,19 +1283,19 @@ describe('general', () => {
           method: 'create',
           type,
           app: {
-            service () {
+            service() {
               return {
-                find () {
+                find() {
                   hasCalledFind = true
                   return []
-                }
+                },
               }
-            }
+            },
           },
           params: {},
           [dataResult]: {
-            id: '1'
-          }
+            id: '1',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1211,14 +1309,14 @@ describe('general', () => {
       for (const { type, dataResult } of beforeAfter) {
         const options = {
           include: {
-          // from: 'users',
+            // from: 'users',
             service: 'posts',
             nameAs: 'posts',
             params: (params: Params) => {
               params.query = { id: 1 }
               return params
-            }
-          }
+            },
+          },
         }
 
         let hasCalledFind = false
@@ -1227,21 +1325,21 @@ describe('general', () => {
           method: 'create',
           type,
           app: {
-            service () {
+            service() {
               return {
-                find (params: Params) {
+                find(params: Params) {
                   assert(params.paginate === false, 'we have the params from shallow-populate')
                   assert(params.query.id === 1, 'we have a merged query')
                   hasCalledFind = true
                   return []
-                }
+                },
               }
-            }
+            },
           },
           params: {},
           [dataResult]: {
-            id: '1'
-          }
+            id: '1',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1255,11 +1353,13 @@ describe('general', () => {
       for (const { type, dataResult } of beforeAfter) {
         const options = {
           include: {
-          // from: 'users',
+            // from: 'users',
             service: 'posts',
             nameAs: 'posts',
-            params: () => { return { query: { $select: ['id'] } } }
-          }
+            params: () => {
+              return { query: { $select: ['id'] } }
+            },
+          },
         }
 
         let hasCalledFind = false
@@ -1268,21 +1368,25 @@ describe('general', () => {
           method: 'create',
           type,
           app: {
-            service () {
+            service() {
               return {
-                find (params: Params) {
+                find(params: Params) {
                   assert(params.paginate === false, 'we have the params from shallow-populate')
-                  assert.deepStrictEqual(params.query, { $select: ['id'] }, 'we have a merged query')
+                  assert.deepStrictEqual(
+                    params.query,
+                    { $select: ['id'] },
+                    'we have a merged query',
+                  )
                   hasCalledFind = true
                   return []
-                }
+                },
               }
-            }
+            },
           },
           params: {},
           [dataResult]: {
-            id: '1'
-          }
+            id: '1',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1305,8 +1409,8 @@ describe('general', () => {
               params.method = context.method
               paramsFunctionCalled = true
               return params
-            }
-          }
+            },
+          },
         }
 
         let hasCalledFind = false
@@ -1315,20 +1419,24 @@ describe('general', () => {
           method: 'create',
           type,
           app: {
-            service () {
+            service() {
               return {
-                find (params: Params) {
-                  assert.strictEqual(params.method, 'create', 'we can manipulate the params based on the context')
+                find(params: Params) {
+                  assert.strictEqual(
+                    params.method,
+                    'create',
+                    'we can manipulate the params based on the context',
+                  )
                   hasCalledFind = true
                   return []
-                }
+                },
               }
-            }
+            },
           },
           params: {},
           [dataResult]: {
-            id: '1'
-          }
+            id: '1',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1347,8 +1455,8 @@ describe('general', () => {
           id: '11',
           name: 'Dumb Stuff',
           meta: {
-            postsId: ['111', '222', '333', 444, 555, '666']
-          }
+            postsId: ['111', '222', '333', 444, 555, '666'],
+          },
         }
 
         const options = {
@@ -1361,8 +1469,8 @@ describe('general', () => {
               params.method = context.method
               paramsFunctionCalled = true
               return params
-            }
-          }
+            },
+          },
         }
 
         let hasCalledFind = false
@@ -1370,18 +1478,21 @@ describe('general', () => {
           method: 'create',
           type,
           app: {
-            service () {
+            service() {
               return {
-                find (params: Params) {
-                  assert(params.method === 'create', 'we can manipulate the params based on the context')
+                find(params: Params) {
+                  assert(
+                    params.method === 'create',
+                    'we can manipulate the params based on the context',
+                  )
                   hasCalledFind = true
                   return []
-                }
+                },
               }
-            }
+            },
           },
           params: {},
-          [dataResult]: item
+          [dataResult]: item,
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1397,16 +1508,16 @@ describe('general', () => {
         const items = [
           {
             id: '333',
-            name: 'If I were a banana...'
+            name: 'If I were a banana...',
           },
           {
             id: '111',
-            name: 'My Monkey and Me'
+            name: 'My Monkey and Me',
           },
           {
             id: 444,
-            name: 'One, two, three, one, two, three, drink'
-          }
+            name: 'One, two, three, one, two, three, drink',
+          },
         ]
 
         let calledUsersParamsNTimes = 0
@@ -1420,7 +1531,7 @@ describe('general', () => {
               params: () => {
                 calledUsersParamsNTimes++
                 return {}
-              }
+              },
             },
             {
               service: 'comments',
@@ -1428,27 +1539,33 @@ describe('general', () => {
               params: () => {
                 calledCommentsParamsNTimes++
                 return {}
-              }
-            }
-          ]
+              },
+            },
+          ],
         }
         const context = {
           app: {
-            service (path) {
+            service(path) {
               return services[path]
-            }
+            },
           },
           method: 'create',
           type,
           params: {},
-          [dataResult]: items
+          [dataResult]: items,
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
 
         await shallowPopulate(context)
-        assert(calledUsersParamsNTimes === items.length, 'params function for users was called n times')
-        assert(calledCommentsParamsNTimes === items.length, 'params function for comments was called n times')
+        assert(
+          calledUsersParamsNTimes === items.length,
+          'params function for users was called n times',
+        )
+        assert(
+          calledCommentsParamsNTimes === items.length,
+          'params function for comments was called n times',
+        )
       }
     })
 
@@ -1460,12 +1577,14 @@ describe('general', () => {
             service: 'posts',
             nameAs: 'posts',
             params: async (params) => {
-              await new Promise(resolve => { setTimeout(resolve, 200) })
+              await new Promise((resolve) => {
+                setTimeout(resolve, 200)
+              })
               params.calledAsyncFunction = true
               calledAsyncFunction = true
               return params
-            }
-          }
+            },
+          },
         }
 
         let hasCalledFind = false
@@ -1474,20 +1593,20 @@ describe('general', () => {
           method: 'create',
           type,
           app: {
-            service () {
+            service() {
               return {
-                find (params: Params) {
+                find(params: Params) {
                   assert(params.calledAsyncFunction, 'waited for async params function before find')
                   hasCalledFind = true
                   return []
-                }
+                },
               }
-            }
+            },
           },
           params: {},
           [dataResult]: {
-            id: '1'
-          }
+            id: '1',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1505,11 +1624,11 @@ describe('general', () => {
           paginate: false,
           query: {
             second: true,
-            fourth: true
+            fourth: true,
           },
           third: true,
           fifth: true,
-          sixth: true
+          sixth: true,
         }
 
         const options = {
@@ -1531,7 +1650,7 @@ describe('general', () => {
                 },
                 async (params) => {
                   assert(params.query.fourth, 'walked through before')
-                  await new Promise(resolve => setTimeout(resolve, 200))
+                  await new Promise((resolve) => setTimeout(resolve, 200))
                   params.fifth = true
                   return params
                 },
@@ -1545,25 +1664,25 @@ describe('general', () => {
                   assert.deepStrictEqual(params, expected, 'params object is right')
                   calledLastFunction = true
                   return params
-                }
-              ]
-            }
-          ]
+                },
+              ],
+            },
+          ],
         }
         const context = {
           app: {
-            service (path) {
+            service(path) {
               return services[path]
-            }
+            },
           },
           method: 'create',
           type,
           params: {},
           [dataResult]: [
             {
-              id: '1'
-            }
-          ]
+              id: '1',
+            },
+          ],
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)
@@ -1573,7 +1692,7 @@ describe('general', () => {
       }
     })
 
-    it('params function has third \'target\' object', async () => {
+    it('params function has third "target" object', async () => {
       for (const { type, dataResult } of beforeAfter) {
         let paramsFunctionCalled = false
 
@@ -1583,13 +1702,16 @@ describe('general', () => {
             nameAs: 'posts',
             params: (params, context, target) => {
               assert.ok(target, 'target is defined')
-              assert(target.service && typeof target.service.find === 'function', 'target has service')
+              assert(
+                target.service && typeof target.service.find === 'function',
+                'target has service',
+              )
               assert.strictEqual(typeof target.path, 'string', 'target.path is string')
               params.path = target.path
               paramsFunctionCalled = true
               return params
-            }
-          }
+            },
+          },
         }
 
         let hasCalledFind = false
@@ -1598,20 +1720,24 @@ describe('general', () => {
           method: 'create',
           type,
           app: {
-            service () {
+            service() {
               return {
-                find (params: Params) {
-                  assert.strictEqual(params.path, 'posts', 'we can manipulate the params based on the target')
+                find(params: Params) {
+                  assert.strictEqual(
+                    params.path,
+                    'posts',
+                    'we can manipulate the params based on the target',
+                  )
                   hasCalledFind = true
                   return []
-                }
+                },
               }
-            }
+            },
           },
           params: {},
           [dataResult]: {
-            id: '1'
-          }
+            id: '1',
+          },
         } as unknown as HookContext
 
         const shallowPopulate = makePopulate(options)

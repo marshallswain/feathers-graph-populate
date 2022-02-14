@@ -1,4 +1,4 @@
-import type { HookContext} from '@feathersjs/feathers'
+import type { HookContext } from '@feathersjs/feathers'
 
 /**
  * paramsForServer('$populateParams')
@@ -14,7 +14,7 @@ export function paramsForServer(...whitelist: string[]) {
     params.query = params.query || {}
     params.query._$client = params.query._$client || {}
 
-    Object.keys(params).forEach(key => {
+    Object.keys(params).forEach((key) => {
       if (key !== 'query') {
         if (whitelist.includes(key)) {
           params.query._$client[`_${key}`] = params[key]
