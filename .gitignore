@@ -115,3 +115,7 @@ compiled/
 data/
 
 /dist
+
+# vuepress
+
+docs/.vuepress/dist
