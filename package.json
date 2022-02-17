@@ -3,9 +3,16 @@
   "description": "Add lightning fast, GraphQL-like populates to your FeathersJS API.",
   "version": "3.0.0",
   "homepage": "https://feathers-graph-populate.netlify.app/",
-  "main": "dist/",
-  "module": "dist/",
-  "types": "dist/",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "keywords": [
     "feathers",
     "feathers.js",
@@ -19,10 +26,6 @@
   },
   "contributors": [],
   "bugs": {},
-  "directories": {
-    "lib": "lib",
-    "test": "test/"
-  },
   "files": [
     "CHANGELOG.md",
     "LICENSE",
@@ -32,7 +35,7 @@
     "dist/**"
   ],
   "scripts": {
-    "compile": "shx rm -rf dist/ && tsc",
+    "compile": "shx rm -rf dist/ && tsup lib/index.ts --format cjs,esm --dts",
     "test": "npm run lint && npm run mocha",
     "release:pre": "npm version prerelease && npm publish --tag pre",
     "release:patch": "npm version patch && npm publish",
@@ -61,6 +64,7 @@
     "mocha": "^9.2.0",
     "shx": "^0.3.4",
     "ts-node": "^10.5.0",
+    "tsup": "^5.11.13",
     "typescript": "^4.5.5",
     "vuepress": "^1.9.7",
     "vuepress-theme-default-prefers-color-scheme": "^2.0.0"
