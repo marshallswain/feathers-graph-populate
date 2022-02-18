@@ -1,7 +1,7 @@
 {
   "name": "feathers-graph-populate",
   "description": "Add lightning fast, GraphQL-like populates to your FeathersJS API.",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "homepage": "https://feathers-graph-populate.netlify.app/",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
