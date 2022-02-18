@@ -37,6 +37,7 @@
   "scripts": {
     "compile": "shx rm -rf dist/ && tsup lib/index.ts --format cjs,esm --dts",
     "test": "npm run lint && npm run mocha",
+    "prepare": "npm run compile",
     "release:pre": "npm version prerelease && npm publish --tag pre",
     "release:patch": "npm version patch && npm publish",
     "release:minor": "npm version minor && npm publish",
