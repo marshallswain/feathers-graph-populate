@@ -62,20 +62,12 @@ export interface InitOptions {}
 export type Method = 'find' | 'get' | 'create' | 'update' | 'patch' | 'remove'
 export type Type = 'before' | 'after' | 'error'
 
-export interface GraphPopulateHookMap {
-  all: SingleGraphPopulateParams[]
-  find: SingleGraphPopulateParams[]
-  get: SingleGraphPopulateParams[]
-  create: SingleGraphPopulateParams[]
-  update: SingleGraphPopulateParams[]
-  patch: SingleGraphPopulateParams[]
-  remove: SingleGraphPopulateParams[]
+export type GraphPopulateHookMap = {
+  [key in Method | 'all']?: SingleGraphPopulateParams[]
 }
 
-export interface GraphPopulateHooksObject {
-  before: GraphPopulateHookMap
-  after: GraphPopulateHookMap
-  error: GraphPopulateHookMap
+export type GraphPopulateHooksObject = {
+  [key in Type]?: GraphPopulateHookMap
 }
 
 export interface ShallowPopulateOptions {
