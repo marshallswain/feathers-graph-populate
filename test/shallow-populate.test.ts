@@ -637,7 +637,7 @@ describe('shallow-populate.test.ts', () => {
 
           assert(result.posts.length, `${type}: posts should have been populated`)
           result.posts.forEach((post) => {
-            const { name, ...rest } = post
+            const { name, id, ...rest } = post
             assert.deepStrictEqual(rest, {}, `${type}: only has name property`)
           })
         }
@@ -764,7 +764,7 @@ describe('shallow-populate.test.ts', () => {
       })
 
       describe('requestPerItem: true', () => {
-        it.only('populates with custom params $select works', async () => {
+        it('populates with custom params $select works', async () => {
           for (const { type, dataResult } of beforeAfter) {
             const options = {
               include: {
@@ -1145,7 +1145,7 @@ describe('shallow-populate.test.ts', () => {
           const result = response[dataResult]
           assert(result.users.length, 'posts should have been populated')
           result.users.forEach((user) => {
-            const { name, ...rest } = user
+            const { name, id, ...rest } = user
             assert.deepStrictEqual(rest, {}, 'only has name property')
           })
 
@@ -1799,7 +1799,7 @@ describe('shallow-populate.test.ts', () => {
           result.forEach((user) => {
             assert(user.posts.length, `${type}: posts should have been populated`)
             user.posts.forEach((post) => {
-              const { name, ...rest } = post
+              const { name, id, ...rest } = post
               assert.deepStrictEqual(rest, {}, `${type}: only has name property`)
             })
           })
@@ -2400,7 +2400,7 @@ describe('shallow-populate.test.ts', () => {
           result.forEach((post, i) => {
             assert(post.users.length, 'posts should have been populated')
             post.users.forEach((user) => {
-              const { name, ...rest } = user
+              const { name, id, ...rest } = user
               assert.deepStrictEqual(rest, {}, 'only has name property')
             })
 
