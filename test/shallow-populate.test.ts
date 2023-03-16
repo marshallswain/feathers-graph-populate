@@ -1,9 +1,9 @@
 import assert from 'assert'
-import { shallowPopulate as makePopulate } from '../lib'
+import { shallowPopulate as makePopulate } from '../src'
 import { memory } from '@feathersjs/memory'
 import { feathers } from '@feathersjs/feathers'
 import type { HookContext, Params } from '@feathersjs/feathers'
-import type { ShallowPopulateOptions } from '../lib'
+import type { ShallowPopulateOptions } from '../src'
 
 async function mockApp() {
   const app = feathers()

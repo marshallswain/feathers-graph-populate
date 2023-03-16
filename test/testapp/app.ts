@@ -9,7 +9,7 @@ import * as groupsGraphPopulate from './populates.groups'
 import * as orgUsersGraphPopulate from './populates.org-users'
 import * as orgsGraphPopulate from './populates.orgs'
 import * as tasksGraphPopulate from './populates.tasks'
-import { populate } from '../../lib'
+import { populate } from '../../src'
 
 export default function makeApp(): Application {
   const app = feathers()

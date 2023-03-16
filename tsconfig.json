@@ -10,6 +10,6 @@
     "declaration": true,
     "types": ["vitest/globals"]
   },
-  "include": ["lib/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }

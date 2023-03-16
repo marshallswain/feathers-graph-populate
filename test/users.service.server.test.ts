@@ -1,5 +1,5 @@
 import assert from 'assert'
-import { populateUtil } from '../lib'
+import { populateUtil } from '../src'
 import _omit from 'lodash/omit.js'
 import _orderBy from 'lodash/orderBy.js'
 import { populates as userPopulates } from './testapp/populates.users'

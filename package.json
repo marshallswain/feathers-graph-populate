@@ -31,11 +31,10 @@
     "LICENSE",
     "README.md",
     "src/**",
-    "lib/**",
     "dist/**"
   ],
   "scripts": {
-    "compile": "shx rm -rf dist/ && tsup lib/index.ts --format cjs,esm --dts",
+    "compile": "shx rm -rf dist/ && tsup src/index.ts --format cjs,esm --dts",
     "version": "npm run compile",
     "release": "np",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
