@@ -1,6 +1,6 @@
-import _get from 'lodash/get'
-import _set from 'lodash/set'
-import _has from 'lodash/has'
+import _get from 'lodash/get.js'
+import _set from 'lodash/set.js'
+import _has from 'lodash/has.js'
 
 import {
   assertIncludes,

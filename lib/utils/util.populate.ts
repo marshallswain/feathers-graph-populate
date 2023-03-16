@@ -1,5 +1,5 @@
 import { graphPopulate } from '../hooks/graph-populate.hook'
-import _isObject from 'lodash/isObject'
+import _isObject from 'lodash/isObject.js'
 
 import type { HookContext } from '@feathersjs/feathers'
 
@@ -20,9 +20,11 @@ export async function populateUtil(
     throw new Error('The app object must be provided in the populateUtil options.')
   }
   // If there's nothing to populate, return.
+  // @ts-expect-error add $populateParams to params
   if (!_isObject(params.$populateParams)) {
     return records
   }
+  // @ts-expect-error add $populateParams to params
   const $populateParams: PopulateParams = params.$populateParams
   const populateQuery = $populateParams.query
   if (!populates || !populateQuery || !Object.keys(populateQuery).length) {

@@ -1,16 +1,23 @@
 import assert from 'assert'
-import feathers from '@feathersjs/feathers'
-import { Service } from 'feathers-memory'
+import type { ServiceAddons, Params } from '@feathersjs/feathers'
+import { feathers } from '@feathersjs/feathers'
+import { MemoryService } from '@feathersjs/memory'
 
 import configureGraphPopulate, { populate } from '../../lib'
 
+type GraphPopulateParams = Params & { $populateParams: any; test: any }
+
 const mockApp = () => {
-  const app = feathers()
+  const app = feathers<{
+    users: MemoryService<any, any, GraphPopulateParams> & { graphPopulate: any }
+    companies: MemoryService<any, any, GraphPopulateParams> & { graphPopulate: any }
+    posts: MemoryService<any, any, GraphPopulateParams> & { graphPopulate: any }
+  }>()
   app.configure(configureGraphPopulate())
 
-  app.use('users', new Service({ multi: true, startId: 1 }))
-  app.use('companies', new Service({ multi: true, startId: 1 }))
-  app.use('posts', new Service({ multi: true, startId: 1 }))
+  app.use('users', new MemoryService({ multi: true, startId: 1 }) as any)
+  app.use('companies', new MemoryService({ multi: true, startId: 1 }) as any)
+  app.use('posts', new MemoryService({ multi: true, startId: 1 }) as any)
 
   const usersService = app.service('users')
 
@@ -81,7 +88,7 @@ const mockApp = () => {
   }
 }
 
-describe('graph-populate.app', () => {
+describe('graph-populate.app.test.ts', () => {
   it('initializes graph-populate with app.configure', () => {
     const { app, usersService, companiesService, postsService } = mockApp()
 
@@ -554,13 +561,13 @@ describe('graph-populate.app', () => {
       },
     })
 
-    const [result] = await usersService.find({
+    const [result] = (await usersService.find({
       query: {},
       test: true,
       $populateParams: {
         name: 'complete',
       },
-    })
+    })) as any
 
     const expected = {
       id: 1,
@@ -679,13 +686,13 @@ describe('graph-populate.app', () => {
       },
     })
 
-    const [result] = await usersService.find({
+    const [result] = (await usersService.find({
       query: {},
       test: true,
       $populateParams: {
         name: 'complete',
       },
-    })
+    })) as any
 
     const expected = {
       id: 1,

@@ -1,12 +1,12 @@
 import type { Application, HookContext, Params } from '@feathersjs/feathers'
-import _get from 'lodash/get'
-import _has from 'lodash/has'
-import _isEmpty from 'lodash/isEmpty'
-import _isEqual from 'lodash/isEqual'
-import _isFunction from 'lodash/isFunction'
-import _merge from 'lodash/merge'
-import _set from 'lodash/set'
-import _uniqBy from 'lodash/uniqBy'
+import _get from 'lodash/get.js'
+import _has from 'lodash/has.js'
+import _isEmpty from 'lodash/isEmpty.js'
+import _isEqual from 'lodash/isEqual.js'
+import _isFunction from 'lodash/isFunction.js'
+import _merge from 'lodash/merge.js'
+import _set from 'lodash/set.js'
+import _uniqBy from 'lodash/uniqBy.js'
 import type {
   AnyData,
   ChainedParamsOptions,
@@ -91,7 +91,7 @@ export const assertIncludes = (includes: PopulateObject[]): void => {
 export const chainedParams = async (
   paramsArr: GraphPopulateParams,
   context: HookContext,
-  target: Params,
+  target: any,
   options: ChainedParamsOptions = {},
 ): Promise<Params> => {
   if (!paramsArr) return undefined
@@ -104,7 +104,8 @@ export const chainedParams = async (
     if (_isFunction(params)) {
       params =
         thisKey == null
-          ? params(resultingParams, context, target)
+          ? // @ts-expect-error todo
+          params(resultingParams, context, target)
           : params.call(thisKey, resultingParams, context, target)
       params = await Promise.resolve(params)
     }
@@ -123,7 +124,7 @@ export async function makeCumulatedRequest(
 ): Promise<CumulatedRequestResult> {
   const { keyHere, keyThere } = include
 
-  let params: Params = { paginate: false }
+  let params = { paginate: false } as Params
 
   if (_has(include, 'keyHere') && _has(include, 'keyThere')) {
     const keyVals = dataMap[keyHere]
@@ -194,7 +195,7 @@ export async function makeRequestPerItem(
   }
 
   const params = await chainedParams(
-    [{ paginate: false }, ...paramsFromInclude],
+    [{ paginate: false } as Params, ...paramsFromInclude],
     context,
     target,
     paramsOptions,

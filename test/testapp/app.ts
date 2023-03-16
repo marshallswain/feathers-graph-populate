@@ -1,6 +1,6 @@
-import type { Application } from '@feathersjs/feathers'
-import feathers from '@feathersjs/feathers'
-import { Service } from 'feathers-memory'
+import type { Application, HookContext } from '@feathersjs/feathers'
+import { feathers } from '@feathersjs/feathers'
+import { MemoryService } from '@feathersjs/memory'
 import * as usersGraphPopulate from './populates.users'
 import * as postsGraphPopulate from './populates.posts'
 import * as commentsGraphPopulate from './populates.comments'
@@ -41,10 +41,10 @@ export default function makeApp(): Application {
   return app
 }
 
-function createService(opts: any = {}): Service {
+function createService(opts: any = {}) {
   opts = Object.assign({ id: 'id', multi: true }, opts)
 
-  return new Service(opts)
+  return new MemoryService(opts)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
