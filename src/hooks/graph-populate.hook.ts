@@ -1,12 +1,12 @@
-import _get from 'lodash/get'
-import _isEmpty from 'lodash/isEmpty'
-import _merge from 'lodash/merge'
+import _get from 'lodash/get.js'
+import _isEmpty from 'lodash/isEmpty.js'
+import _merge from 'lodash/merge.js'
 
 import { shallowPopulate as makeShallowPopulate } from './shallow-populate.hook'
 
 import type { HookContext, Query } from '@feathersjs/feathers'
 
-import type { GraphPopulateHookOptions } from '../types'
+import type { GraphPopulateHookOptions, Method } from '../types'
 import type { GraphPopulateApplication } from '../app/graph-populate.class'
 
 const FILTERS = ['$limit', '$select', '$skip', '$sort']
@@ -87,7 +87,7 @@ export function graphPopulate(
       }
 
       if (graphPopulateApp) {
-        params = graphPopulateApp.withAppParams(params, context.method, service)
+        params = graphPopulateApp.withAppParams(params, context.method as Method, service)
       }
 
       currentPopulates.push(Object.assign({}, populate, { params }))
