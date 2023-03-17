@@ -1,8 +1,10 @@
 # feathers-graph-populate
 
-[![Build Status](https://travis-ci.org/marshallswain/feathers-graph-populate.png?branch=master)](https://travis-ci.org/marshallswain/feathers-graph-populate)
-[![Dependency Status](https://img.shields.io/david/marshallswain/feathers-graph-populate.svg?style=flat-square)](https://david-dm.org/marshallswain/feathers-graph-populate)
+[![Github Actions](https://github.com/marshallswain/feathers-graph-populate/actions/workflows/node.js.yml/badge.svg)](https://github.com/marshallswain/feathers-graph-populate/actions)
+[![libraries.io](https://img.shields.io/librariesio/release/npm/feathers-graph-populate)](https://libraries.io/npm/feathers-graph-populate)
 [![Download Status](https://img.shields.io/npm/dm/feathers-graph-populate.svg?style=flat-square)](https://www.npmjs.com/package/feathers-graph-populate)
+
+> NOTE: This is the version for Feathers v5. For Feathers v4 use [feathers-graph-populate v3](https://github.com/marshallswain/feathers-graph-populate/tree/crow)
 
 <p align="center">
   <img 

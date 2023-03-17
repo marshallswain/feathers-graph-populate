@@ -25,6 +25,7 @@ export class GraphPopulateApplication {
     method: Method,
     service: Service<unknown>,
   ): SingleGraphPopulateParams[] {
+    // @ts-expect-error add graphPopulate to service
     const serviceHooks = service?.graphPopulate?.__hooks
     if (!this.__hooks && !serviceHooks) {
       if (!params) {
@@ -38,19 +39,21 @@ export class GraphPopulateApplication {
     }
     const currentParams = [] as SingleGraphPopulateParams[]
 
+    // @ts-expect-error add graphPopulate to service
     const before = getHooks(this, service.graphPopulate, 'before', method)
     if (before.length > 0) {
       currentParams.push(...before)
     }
 
     if (params) {
-      if (Array.isArray(params) && params.length > 0) {
+      if (Array.isArray(params)) {
         currentParams.push(...params)
       } else {
         currentParams.push(params)
       }
     }
 
+    // @ts-expect-error add graphPopulate to service
     const after = getHooks(this, service.graphPopulate, 'after', method, true)
 
     if (after.length > 0) {

@@ -4,11 +4,12 @@
     "esModuleInterop": true,
     "outDir": "dist",
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "es2018",
     "downlevelIteration": true,
     "sourceMap": false,
-    "declaration": true
+    "declaration": true,
+    "types": ["vitest/globals"]
   },
-  "include": ["lib/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
