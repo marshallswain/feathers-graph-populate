@@ -4,6 +4,8 @@
 [![Dependency Status](https://img.shields.io/david/marshallswain/feathers-graph-populate.svg?style=flat-square)](https://david-dm.org/marshallswain/feathers-graph-populate)
 [![Download Status](https://img.shields.io/npm/dm/feathers-graph-populate.svg?style=flat-square)](https://www.npmjs.com/package/feathers-graph-populate)
 
+> NOTE: This is the version for Feathers v5. For Feathers v4 use [feathers-graph-populate v3](https://github.com/marshallswain/feathers-graph-populate/tree/crow)
+
 <p align="center">
   <img 
     src="https://feathers-graph-populate.netlify.app/img/graph-populate-logo.png" 
