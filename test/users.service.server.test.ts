@@ -1,14 +1,22 @@
 import assert from 'assert'
-import { populateUtil } from '../lib'
-import { omit, orderBy } from 'lodash'
+import { populateUtil } from '../src'
+import _omit from 'lodash/omit.js'
+import _orderBy from 'lodash/orderBy.js'
 import { populates as userPopulates } from './testapp/populates.users'
 import * as fakeData from './testapp/data'
 import makeApp from './testapp/app'
 import type { Application } from '@feathersjs/feathers'
 
-describe('Test users/users.service.server.test.js', () => {
+declare module '@feathersjs/feathers' {
+  interface Params {
+    $populateParams?: any
+    paginate?: boolean
+  }
+}
+
+describe('users.service.server.test.ts', () => {
   let app: Application
-  before(async () => {
+  beforeAll(async () => {
     app = makeApp()
     await Promise.all([
       app.service('users').create(fakeData.users),
@@ -132,7 +140,7 @@ describe('Test users/users.service.server.test.js', () => {
         assert(user.posts.length, 'user has posts')
         user.posts.forEach((post) => {
           assert.deepStrictEqual(
-            omit(post, ['id', 'authorId']),
+            _omit(post, ['id', 'authorId']),
             {},
             'post only has `id` and `authorId`',
           )
@@ -208,15 +216,15 @@ describe('Test users/users.service.server.test.js', () => {
 
         assert(posts1.length > 1, 'has at least some posts')
         assert.notDeepStrictEqual(posts1, posts2, 'arrays differ')
-        assert.deepStrictEqual(orderBy(posts1, 'title'), orderBy(posts2, 'title'), 'same entries')
+        assert.deepStrictEqual(_orderBy(posts1, 'title'), _orderBy(posts2, 'title'), 'same entries')
         assert.deepStrictEqual(
           posts1,
-          orderBy(posts1, 'title', 'asc'),
+          _orderBy(posts1, 'title', 'asc'),
           'sorted alphabetically ascending',
         )
         assert.deepStrictEqual(
           posts2,
-          orderBy(posts2, 'title', 'desc'),
+          _orderBy(posts2, 'title', 'desc'),
           'sorted alphabetically descending',
         )
       })
@@ -307,7 +315,7 @@ describe('Test users/users.service.server.test.js', () => {
         assert(everyUserHasOrganizations, 'populated organizations')
         usersWithOrgNames.forEach((user) => {
           user.organizations.forEach((org) => {
-            assert.deepStrictEqual(omit(org, ['name']), {}, 'org only has `name` property')
+            assert.deepStrictEqual(_omit(org, ['name']), {}, 'org only has `name` property')
           })
         })
       })
@@ -473,7 +481,7 @@ describe('Test users/users.service.server.test.js', () => {
     })
 
     describe('Multiple Populates Per Level', () => {
-      before(async () => {
+      beforeAll(async () => {
         await Promise.all([
           app.service('org-users').remove(null),
           app.service('orgs').remove(null),
@@ -489,7 +497,7 @@ describe('Test users/users.service.server.test.js', () => {
           app.service('tasks').create(fakeData.tasks),
         ])
       })
-      after(async () => {
+      afterAll(async () => {
         await Promise.all([
           app.service('org-users').remove(null),
           app.service('orgs').remove(null),
@@ -576,11 +584,11 @@ describe('Test users/users.service.server.test.js', () => {
     })
 
     describe('Recursive Populates', () => {
-      before(async () => {
+      beforeAll(async () => {
         await Promise.all([app.service('tasks').remove(null)])
         await Promise.all([app.service('tasks').create(fakeData.tasks)])
       })
-      after(async () => {
+      afterAll(async () => {
         await Promise.all([app.service('tasks').remove(null)])
       })
       it('can handle recursive populates', async () => {

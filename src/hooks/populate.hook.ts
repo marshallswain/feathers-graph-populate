@@ -1,4 +1,4 @@
-import _set from 'lodash/set'
+import _set from 'lodash/set.js'
 
 import { graphPopulate } from './graph-populate.hook'
 import { getQuery } from '../utils/get-query'

@@ -1,6 +1,6 @@
 import { _ } from '@feathersjs/commons'
 const { each } = _
-import _get from 'lodash/get'
+import _get from 'lodash/get.js'
 
 import type { AnyData, GraphPopulateHook, GraphPopulateHookMap } from '../types'
 
