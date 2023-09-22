@@ -34,7 +34,7 @@ export function graphPopulate(
     if (!populateQuery) return context
 
     const { app } = context
-    const graphPopulateApp: GraphPopulateApplication | undefined = app.graphPopulate
+    const graphPopulateApp: GraphPopulateApplication | undefined = (app as any).graphPopulate
 
     // Get the populate data based on the query keys
     const keys = Object.keys(populateQuery)
