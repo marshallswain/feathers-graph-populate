@@ -37,6 +37,9 @@
     "src/**",
     "dist/**"
   ],
+  "engines": {
+    "node": ">= 16"
+  },
   "scripts": {
     "compile": "shx rm -rf dist/ && tsup src/index.ts --format cjs,esm --dts",
     "version": "npm run compile",
