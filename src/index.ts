@@ -10,5 +10,6 @@ export { paramsFromClient } from './hooks/params-from-client.hook'
 export { definePopulates } from './utils/define-populates'
 
 export { initApp as default } from './app/graph-populate.app'
+export { type GraphPopulateApplication } from './app/graph-populate.class'
 
 export * from './types'
