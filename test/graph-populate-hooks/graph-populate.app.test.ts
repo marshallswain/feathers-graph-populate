@@ -1,19 +1,26 @@
 import assert from 'assert'
-import type { ServiceAddons, Params } from '@feathersjs/feathers'
+import type { Params } from '@feathersjs/feathers'
 import { feathers } from '@feathersjs/feathers'
 import { MemoryService } from '@feathersjs/memory'
 
 import configureGraphPopulate, { populate } from '../../src'
+import type { InitOptions, PopulateHookOptions } from '../../src'
 
-type GraphPopulateParams = Params & { $populateParams: any; test: any }
+type GraphPopulateParams = Params & { $populateParams: any; test?: any }
 
-const mockApp = () => {
+type MockAppOptions = {
+  appOptions?: InitOptions
+  hookOptions?: Omit<PopulateHookOptions, 'populates' | 'namedQueries' | 'defaultQueryName'>
+}
+
+const mockApp = (options?: MockAppOptions) => {
+  const hookOptions = options?.hookOptions ?? {}
   const app = feathers<{
     users: MemoryService<any, any, GraphPopulateParams> & { graphPopulate: any }
     companies: MemoryService<any, any, GraphPopulateParams> & { graphPopulate: any }
     posts: MemoryService<any, any, GraphPopulateParams> & { graphPopulate: any }
   }>()
-  app.configure(configureGraphPopulate())
+  app.configure(configureGraphPopulate(options?.appOptions))
 
   app.use('users', new MemoryService({ multi: true, startId: 1 }) as any)
   app.use('companies', new MemoryService({ multi: true, startId: 1 }) as any)
@@ -25,6 +32,7 @@ const mockApp = () => {
     after: {
       all: [
         populate({
+          ...hookOptions,
           populates: {
             company: {
               service: 'companies',
@@ -60,6 +68,7 @@ const mockApp = () => {
     after: {
       all: [
         populate({
+          ...hookOptions,
           populates: {
             users: {
               service: 'users',
@@ -87,6 +96,21 @@ const mockApp = () => {
     postsService,
   }
 }
+
+type UnnamedQueryAppOption = boolean | undefined
+type UnnamedQueryServiceOption = boolean | undefined
+
+const testUnnamedAppService = new Map<[UnnamedQueryAppOption, UnnamedQueryServiceOption], boolean>([
+  [[undefined, undefined], false],
+  [[undefined, false], false],
+  [[undefined, true], true],
+  [[false, undefined], false],
+  [[false, false], false],
+  [[false, true], true],
+  [[true, undefined], true],
+  [[true, false], false],
+  [[true, true], true],
+])
 
 describe('graph-populate.app.test.ts', () => {
   it('initializes graph-populate with app.configure', () => {
@@ -714,5 +738,62 @@ describe('graph-populate.app.test.ts', () => {
     assert(postsAfterCalledI === 1, 'called postsService after hook')
     assert(usersAfterCalledI === 2, 'called usersService after hook twice')
     assert.deepStrictEqual(result, expected, 'populated correctly')
+  })
+
+  describe('unnamed queries', () => {
+    testUnnamedAppService.forEach((expected, [appOption, serviceOption]) => {
+      it(`does run for internal calls (app: ${appOption} & service: ${serviceOption})`, async () => {
+        const { usersService, companiesService } = mockApp({
+          appOptions: { allowUnnamedQueryForExternal: appOption },
+          hookOptions: { allowUnnamedQueryForExternal: serviceOption },
+        })
+
+        const company = await companiesService.create({ name: 'company' })
+        const _user = await usersService.create({ companyId: company.id })
+
+        const user = await usersService.get(_user.id, {
+          query: {},
+          $populateParams: {
+            query: {
+              company: {},
+            },
+          },
+        })
+
+        assert.ok(user.company, 'user has company')
+      })
+
+      it(`${
+        expected ? 'runs' : 'does not run'
+      } for external calls (app: ${appOption} & service: ${serviceOption})`, async () => {
+        const { usersService, companiesService } = mockApp({
+          appOptions: { allowUnnamedQueryForExternal: appOption },
+          hookOptions: { allowUnnamedQueryForExternal: serviceOption },
+        })
+
+        const company = await companiesService.create({ name: 'company' })
+        const _user = await usersService.create({ companyId: company.id })
+
+        if (appOption || serviceOption) {
+          const hallo = ''
+        }
+
+        const user = await usersService.get(_user.id, {
+          query: {},
+          $populateParams: {
+            query: {
+              company: {},
+            },
+          },
+          provider: 'socketio',
+        })
+
+        if (expected) {
+          assert.ok(user.company, 'user has company')
+        } else {
+          assert.deepEqual(user.company, undefined, 'user has no company')
+        }
+      })
+    })
   })
 })

@@ -13,7 +13,7 @@ import type { PopulateHookOptions, GraphPopulateHookOptions } from '../types'
 export function populate(
   options: PopulateHookOptions,
 ): (context: HookContext) => Promise<HookContext> {
-  const { namedQueries, defaultQueryName, populates } = options
+  const { namedQueries, defaultQueryName, populates, allowUnnamedQueryForExternal } = options
 
   return async function populateFormFeedback(context: HookContext): Promise<HookContext> {
     // Skip this hook if there are no $populateParams or defaultQueryName
@@ -26,7 +26,7 @@ export function populate(
     _set(
       context,
       'params.$populateParams.query',
-      getQuery({ context, defaultQueryName, namedQueries }),
+      getQuery({ context, defaultQueryName, namedQueries, allowUnnamedQueryForExternal }),
     )
 
     /**

@@ -3,9 +3,7 @@ import { populateUtil } from '../src'
 import _omit from 'lodash/omit.js'
 import _orderBy from 'lodash/orderBy.js'
 import { populates as userPopulates } from './testapp/populates.users'
-import * as fakeData from './testapp/data'
-import makeApp from './testapp/app'
-import type { Application } from '@feathersjs/feathers'
+import { makeApp } from './testapp/app'
 
 declare module '@feathersjs/feathers' {
   interface Params {
@@ -15,25 +13,10 @@ declare module '@feathersjs/feathers' {
 }
 
 describe('users.service.server.test.ts', () => {
-  let app: Application
-  beforeAll(async () => {
-    app = makeApp()
-    await Promise.all([
-      app.service('users').create(fakeData.users),
-      app.service('posts').create(fakeData.posts),
-      app.service('comments').create(fakeData.comments),
-    ])
-  })
-
-  it('registered the service', () => {
-    const service = app.service('/users')
-
-    assert.ok(service, 'Registered the service')
-  })
-
   describe('Populate Hook', () => {
     describe('One Level Deep', () => {
       it('populates external, by name', async () => {
+        const { app } = await makeApp()
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -54,6 +37,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('populates nothing external, by query', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -70,7 +55,32 @@ describe('users.service.server.test.ts', () => {
         assert(!user.posts, 'posts were not populated')
       })
 
+      it('populates external, by query with option allowUnnamedQueryForExternal', async () => {
+        const { app } = await makeApp({ allowUnnamedQueryForExternal: true })
+
+        const users = await app.service('users').find({
+          query: {},
+          $populateParams: {
+            query: {
+              posts: {},
+            },
+          },
+          paginate: false,
+        })
+
+        const user = users[0]
+
+        assert(user.posts.length, 'user has posts')
+        user.posts.forEach((post) => {
+          assert.strictEqual(post.authorId, user.id, 'post was added to the correct user')
+          assert(!post.author, 'no author was populated, since we did not request one.')
+          assert(!post.comments, 'no comments were populated, since we did not request any.')
+        })
+      })
+
       it('populates internal, by query', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -92,6 +102,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('populates supports `$limit` in $populateParams by default', async () => {
+        const { app } = await makeApp()
+
         const user1 = (
           await app.service('users').find({
             query: {},
@@ -123,6 +135,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('populates supports `$select` in $populateParams by default', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -149,6 +163,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('populates supports `$skip` in $populateParams by default', async () => {
+        const { app } = await makeApp()
+
         const user1 = (
           await app.service('users').find({
             query: {},
@@ -179,6 +195,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('populates supports `$sort` in $populateParams by default', async () => {
+        const { app } = await makeApp()
+
         const user1 = (
           await app.service('users').find({
             query: {},
@@ -230,6 +248,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('ignore custom query for $populateParams', async () => {
+        const { app } = await makeApp()
+
         const users1 = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -256,6 +276,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('custom query in `service.options.graphPopulate.whitelist` for $populateParams', async () => {
+        const { app } = await makeApp()
+
         const title = 'ipsam modi minima'
 
         const user1 = (
@@ -296,6 +318,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('custom query in $populateParams works with complex relation defined by `requestPerItem`', async () => {
+        const { app } = await makeApp()
+
         const usersWithOrgNames = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -315,13 +339,19 @@ describe('users.service.server.test.ts', () => {
         assert(everyUserHasOrganizations, 'populated organizations')
         usersWithOrgNames.forEach((user) => {
           user.organizations.forEach((org) => {
-            assert.deepStrictEqual(_omit(org, ['name']), {}, 'org only has `name` property')
+            assert.deepStrictEqual(
+              Object.keys(org).sort(),
+              ['id', 'name'].sort(),
+              'org only has `name` property',
+            )
           })
         })
       })
     })
     describe('Two Levels Deep', () => {
       it('populates external, by name', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -349,6 +379,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('populates nothing external, by query', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -368,6 +400,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('populates internal, by query', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -400,6 +434,8 @@ describe('users.service.server.test.ts', () => {
 
     describe('Three Levels Deep', () => {
       it('populates external, by name', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -428,6 +464,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('populates nothing external, by query', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -447,6 +485,8 @@ describe('users.service.server.test.ts', () => {
       })
 
       it('populates internal, by query', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -481,40 +521,9 @@ describe('users.service.server.test.ts', () => {
     })
 
     describe('Multiple Populates Per Level', () => {
-      beforeAll(async () => {
-        await Promise.all([
-          app.service('org-users').remove(null),
-          app.service('orgs').remove(null),
-          app.service('group-users').remove(null),
-          app.service('groups').remove(null),
-          app.service('tasks').remove(null),
-        ])
-        await Promise.all([
-          app.service('org-users').create(fakeData.orgUsers),
-          app.service('orgs').create(fakeData.orgs),
-          app.service('group-users').create(fakeData.groupUsers),
-          app.service('groups').create(fakeData.groups),
-          app.service('tasks').create(fakeData.tasks),
-        ])
-      })
-      afterAll(async () => {
-        await Promise.all([
-          app.service('org-users').remove(null),
-          app.service('orgs').remove(null),
-          app.service('group-users').remove(null),
-          app.service('groups').remove(null),
-          app.service('tasks').remove(null),
-        ])
-        await Promise.all([
-          app.service('org-users').create(fakeData.orgUsers),
-          app.service('orgs').create(fakeData.orgs),
-          app.service('group-users').create(fakeData.groupUsers),
-          app.service('groups').create(fakeData.groups),
-          app.service('tasks').create(fakeData.tasks),
-        ])
-      })
-
       it('populates multiple relationships at multiple levels', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -584,14 +593,9 @@ describe('users.service.server.test.ts', () => {
     })
 
     describe('Recursive Populates', () => {
-      beforeAll(async () => {
-        await Promise.all([app.service('tasks').remove(null)])
-        await Promise.all([app.service('tasks').create(fakeData.tasks)])
-      })
-      afterAll(async () => {
-        await Promise.all([app.service('tasks').remove(null)])
-      })
       it('can handle recursive populates', async () => {
+        const { app } = await makeApp()
+
         const users = await app.service('users').find({
           query: {},
           $populateParams: {
@@ -630,6 +634,8 @@ describe('users.service.server.test.ts', () => {
   })
   describe('Populate Utility', () => {
     it('populates on a single record', async () => {
+      const { app } = await makeApp()
+
       const users = await app.service('users').find({
         query: {
           $limit: 1,

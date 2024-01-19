@@ -39,7 +39,9 @@ Configuring `feathers-graph-populate` in the `app.js` file, allows the global us
 ```js
 // src/app.js
 const graphPopulate = require('feathers-graph-populate')
-app.configure(graphPopulate())
+app.configure(graphPopulate({
+  allowUnnamedQueryForExternal: false // default: false
+}))
 ```
 
 ### Define the Relationships
@@ -209,9 +211,9 @@ feathersClient.service('users').find({
 
 > Notice that the `$populateParams` is a custom `param`, so it is outside of the `query` object.
 
-### Unnamed Queries (internal only)
+### Unnamed Queries (for internal requests only by default or with option: 'allowUnnamedQueryForExternal' for external requests)
 
-For internal requests, in addition to supporting named queries, you can directly provide a query object. This allows custom, unnamed queries like the following:
+In addition to supporting named queries, you can directly provide a query object. This allows custom, unnamed queries like the following:
 
 ```js
 app.service('users').find({
