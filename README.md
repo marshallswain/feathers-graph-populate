@@ -80,7 +80,7 @@ Each populate object must/can have the following properties:
 | `keyHere`  | The primary or secondary key for the current entry<br><br>**required**<br>**Type:** `{String}` |
 | `keyThere` | The primary or secondary key for the referenced entry/entries<br><br>**required**<br>**Type:** `{String}` |
 | `asArray`  | Is the referenced item a single entry or an array of entries?<br><br>**optional - default:** `true`<br>**Type:** `{Boolean}`
-| `params`   | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged deeply <br>Merged deeply after the params are generated internally.<br><quote>**ProTip:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss</quote><br><br>**optional - default:** `{}`<br>**Type:** `{Object | Function(params, context): undefined|params}` |
+| `params`   | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged deeply <br>Merged deeply after the params are generated internally.<br>**ProTip:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss<br><br>**optional - default:** `{}`<br>**Type:** `{Object | Function(params, context): undefined|params}` |
 
 ### Create named queries to use from connected clients.
 

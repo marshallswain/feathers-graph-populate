@@ -1,0 +1,11 @@
+/**
+ * Colors
+ * -------------------------------------------------------------------------- */
+
+:root {
+  --vp-c-brand: #cc0099;
+  --vp-c-brand-light: #d600a0;
+  --vp-c-brand-lighter: #e600ac;
+  --vp-c-brand-dark: #cc0099;
+  --vp-c-brand-darker: rgb(118, 2, 120);
+}

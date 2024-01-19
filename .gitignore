@@ -118,4 +118,5 @@ data/
 
 # vuepress
 
-docs/.vuepress/dist
+docs/.vitepress/dist
+docs/.vitepress/cache

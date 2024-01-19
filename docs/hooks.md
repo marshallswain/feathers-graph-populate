@@ -1,7 +1,4 @@
----
-title: graph-populate hooks
-sidebarDepth: 3
----
+# Hooks
 
 ## Introduction
 
