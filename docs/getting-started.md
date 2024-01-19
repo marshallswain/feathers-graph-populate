@@ -1,7 +1,4 @@
----
-title: Getting Started
-sidebarDepth: 3
----
+# Getting Started
 
 <!--- Usage ------------------------------------------------------------------------------------ -->
 [![Github Actions](https://github.com/marshallswain/feathers-graph-populate/actions/workflows/node.js.yml/badge.svg)](https://github.com/marshallswain/feathers-graph-populate/actions)
@@ -39,7 +36,9 @@ Configuring `feathers-graph-populate` in the `app.js` file, allows the global us
 ```js
 // src/app.js
 const graphPopulate = require('feathers-graph-populate')
-app.configure(graphPopulate())
+app.configure(graphPopulate({
+  allowUnnamedQueryForExternal: false // default: false
+}))
 ```
 
 ### Define the Relationships
@@ -108,7 +107,7 @@ Each populate object must/can have the following properties:
 | `asArray`        | Is the referenced item a single entry or an array of entries?<br><br>**optional - default:** `true`<br>**Type:** `Boolean`
 | `requestPerItem` | Decided wether your `params` object/function runs against each item individually or bundled. Most of the time you don't need this.<br><br>**optional - default:<br>- `false`** (if `keyHere` and `keyThere` are defined)<br>- **`true`** (if `keyHere` and `keyThere` are not defined)<br>**Type:** `String`
 | `catchOnError`   | Wether the hook continues populating, if an error occurs (e.g. because of missing authentication) or throws. Also can be set on the prior options<br><br>**optional - default:** `false`<br>**Type:**: `Boolean` |
-| `params`         | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged deeply <br>Merged deeply after the params are generated internally.<br><quote>**ProTip #1:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss</quote><br><quote>**ProTip #2:** If you don't define `keyHere` and `keyThere` or set `requestPerItem` to `true` the function has access to the _`this` keyword_ being the individual item the request will be made for.</quote><br><quote>**ProTip #3**: You can skip a `requestPerItem` if it returns `undefined`.</quote><br><quote>**ProTip #4**: The hook whats for async functions!</quote><br><br>**optional - default:** `{}`<br>**Possible types:**<br>- `Object`: _will be merged with params - simple requests_<br>- `Function(params, context, { path, service }) => params`: _needs to return the `params` or a new one which gets merged deeply - more complex_<br>- `Function(params, context, { path, service }) => Promise<params>`<br>- `[Object | Function]` |
+| `params`         | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged deeply <br>Merged deeply after the params are generated internally.<br>**ProTip #1:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss<br>**ProTip #2:** If you don't define `keyHere` and `keyThere` or set `requestPerItem` to `true` the function has access to the _`this` keyword_ being the individual item the request will be made for.<br>**ProTip #3**: You can skip a `requestPerItem` if it returns `undefined`.<br>**ProTip #4**: The hook whats for async functions!<br><br>**optional - default:** `{}`<br>**Possible types:**<br>- `Object`: _will be merged with params - simple requests_<br>- `Function(params, context, { path, service }) => params`: _needs to return the `params` or a new one which gets merged deeply - more complex_<br>- `Function(params, context, { path, service }) => Promise<params>`<br>- `[Object | Function]` |
 
 ### Create Named Queries
 
@@ -209,9 +208,9 @@ feathersClient.service('users').find({
 
 > Notice that the `$populateParams` is a custom `param`, so it is outside of the `query` object.
 
-### Unnamed Queries (internal only)
+### Unnamed Queries (for internal requests only by default or with option: 'allowUnnamedQueryForExternal' for external requests)
 
-For internal requests, in addition to supporting named queries, you can directly provide a query object. This allows custom, unnamed queries like the following:
+In addition to supporting named queries, you can directly provide a query object. This allows custom, unnamed queries like the following:
 
 ```js
 app.service('users').find({

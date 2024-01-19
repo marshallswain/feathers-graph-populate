@@ -2,16 +2,24 @@ import { enableHooks, getHooks } from './hooks.commons'
 
 import type { Application, Service } from '@feathersjs/feathers'
 
-import type { Method, GraphPopulateHook, SingleGraphPopulateParams, AnyData } from '../types'
+import type {
+  Method,
+  GraphPopulateHook,
+  SingleGraphPopulateParams,
+  AnyData,
+  InitOptions,
+} from '../types'
 
 export class GraphPopulateApplication {
   private _app: Application
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   __hooks: any
   hooks: (hooks: GraphPopulateHook | AnyData | unknown[]) => void
+  options?: InitOptions
 
-  constructor(app: Application) {
+  constructor(app: Application, options?: InitOptions) {
     this._app = app
+    this.options = options
 
     const methods = ['find', 'get', 'create', 'update', 'patch', 'remove']
     const types = ['before', 'after']
@@ -61,5 +69,9 @@ export class GraphPopulateApplication {
     }
 
     return currentParams
+  }
+
+  get allowUnnamedQueryForExternal(): boolean | undefined {
+    return this.options?.allowUnnamedQueryForExternal
   }
 }

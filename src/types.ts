@@ -32,18 +32,30 @@ export type Populates<S = string> = Record<string, PopulateObject<S>>
 
 export interface GraphPopulateHookOptions<S = string> {
   populates: Populates<S>
+  /**
+   * @default: false
+   */
+  allowUnnamedQueryForExternal?: boolean
 }
 
 export interface PopulateHookOptions<S = string> {
   populates: Populates<S>
   namedQueries?: AnyData
   defaultQueryName?: string
+  /**
+   * @default: false
+   */
+  allowUnnamedQueryForExternal?: boolean
 }
 
 export interface GetPopulateQueryOptions {
   context: HookContext
   namedQueries: AnyData
   defaultQueryName: string
+  /**
+   * @default: false
+   */
+  allowUnnamedQueryForExternal?: boolean
 }
 
 export interface PopulateUtilOptions<S = string> {
@@ -57,7 +69,9 @@ export type GraphPopulateHook =
   | ((params?: Params, context?: HookContext) => void | Promise<Params>)
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface InitOptions {}
+export interface InitOptions {
+  allowUnnamedQueryForExternal?: boolean
+}
 
 export type Method = 'find' | 'get' | 'create' | 'update' | 'patch' | 'remove'
 export type Type = 'before' | 'after' | 'error'

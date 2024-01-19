@@ -38,7 +38,7 @@
     "dist/**"
   ],
   "engines": {
-    "node": ">= 16"
+    "node": ">= 18"
   },
   "scripts": {
     "compile": "shx rm -rf dist/ && tsup src/index.ts --format cjs,esm --dts",
@@ -48,31 +48,30 @@
     "test": "vitest run",
     "vitest": "vitest",
     "coverage": "vitest run --coverage",
-    "docs": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs": "vitepress dev docs",
+    "docs:build": "vitepress build docs"
   },
   "peerDependencies": {
     "@feathersjs/feathers": "^5.0.0"
   },
   "dependencies": {
-    "@feathersjs/commons": "^5.0.8",
+    "@feathersjs/commons": "^5.0.14",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@feathersjs/errors": "^5.0.8",
-    "@feathersjs/feathers": "^5.0.8",
-    "@feathersjs/memory": "^5.0.8",
-    "@types/lodash": "^4.14.198",
-    "@typescript-eslint/eslint-plugin": "^6.7.2",
-    "@typescript-eslint/parser": "^6.7.2",
-    "eslint": "^8.49.0",
-    "np": "^8.0.4",
+    "@feathersjs/errors": "^5.0.14",
+    "@feathersjs/feathers": "^5.0.14",
+    "@feathersjs/memory": "^5.0.14",
+    "@types/lodash": "^4.14.202",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "np": "^9.2.0",
     "shx": "^0.3.4",
-    "tsup": "^7.2.0",
-    "typescript": "^5.2.2",
-    "vite": "^4.4.9",
-    "vitest": "^0.34.5",
-    "vuepress": "^1.9.10",
-    "vuepress-theme-default-prefers-color-scheme": "^2.0.0"
+    "tsup": "^8.0.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11",
+    "vitepress": "^1.0.0-rc.39",
+    "vitest": "^1.2.1"
   }
 }
