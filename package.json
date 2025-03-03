@@ -12,9 +12,9 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/index.mjs"
     }
   },
   "keywords": [
@@ -44,7 +44,7 @@
     "compile": "shx rm -rf dist/ && tsup src/index.ts --format cjs,esm --dts",
     "version": "npm run compile",
     "release": "np",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint",
     "test": "vitest run",
     "vitest": "vitest",
     "coverage": "vitest run --coverage",
@@ -55,23 +55,23 @@
     "@feathersjs/feathers": "^5.0.0"
   },
   "dependencies": {
-    "@feathersjs/commons": "^5.0.14",
+    "@feathersjs/commons": "^5.0.33",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@feathersjs/errors": "^5.0.14",
-    "@feathersjs/feathers": "^5.0.14",
-    "@feathersjs/memory": "^5.0.14",
-    "@types/lodash": "^4.14.202",
-    "@typescript-eslint/eslint-plugin": "^6.19.0",
-    "@typescript-eslint/parser": "^6.19.0",
-    "eslint": "^8.56.0",
-    "np": "^9.2.0",
+    "@feathers-community/eslint-config": "^0.0.3",
+    "@feathersjs/errors": "^5.0.33",
+    "@feathersjs/feathers": "^5.0.33",
+    "@feathersjs/memory": "^5.0.33",
+    "@tsconfig/node22": "^22.0.0",
+    "@types/lodash": "^4.17.16",
+    "eslint": "^9.21.0",
+    "np": "^10.2.0",
     "shx": "^0.3.4",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.11",
-    "vitepress": "^1.0.0-rc.39",
-    "vitest": "^1.2.1"
+    "tsup": "^8.4.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.0",
+    "vitepress": "^1.6.3",
+    "vitest": "^3.0.7"
   }
 }

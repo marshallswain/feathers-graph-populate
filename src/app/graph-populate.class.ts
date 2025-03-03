@@ -12,7 +12,7 @@ import type {
 
 export class GraphPopulateApplication {
   private _app: Application
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   __hooks: any
   hooks: (hooks: GraphPopulateHook | AnyData | unknown[]) => void
   options?: InitOptions
@@ -27,7 +27,6 @@ export class GraphPopulateApplication {
     enableHooks(this, methods, types)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   withAppParams(
     params: SingleGraphPopulateParams | SingleGraphPopulateParams[],
     method: Method,

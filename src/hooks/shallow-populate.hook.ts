@@ -1,12 +1,12 @@
 import _get from 'lodash/get.js'
 import _set from 'lodash/set.js'
-import _has from 'lodash/has.js'
 
 import {
   assertIncludes,
+  CumulatedIncludeAndIds,
   makeCumulatedRequest,
   makeRequestPerItem,
-  mapDataWithId,
+  noRelation,
   setItems,
   shouldCatchOnError,
 } from '../utils/shallow-populate.utils'
@@ -16,22 +16,23 @@ import type { HookContext } from '@feathersjs/feathers'
 import type {
   AnyData,
   CumulatedRequestResult,
+  IncludeCumulated,
+  IncludeShared,
   PopulateObject,
   ShallowPopulateOptions,
 } from '../types'
-
-const defaults: ShallowPopulateOptions = {
-  include: undefined,
-  catchOnError: false,
-}
+import { toArray } from '../utils/to-array'
 
 export function shallowPopulate(
-  options: Partial<ShallowPopulateOptions> & Pick<ShallowPopulateOptions, 'include'>,
+  opts: Partial<ShallowPopulateOptions> &
+    Pick<ShallowPopulateOptions, 'include'>,
 ): (context: HookContext) => Promise<HookContext> {
-  options = Object.assign({}, defaults, options)
+  const options = {
+    catchOnError: false,
+    ...opts,
+  }
 
-  // Make an array of includes
-  const includes: PopulateObject[] = [].concat(options.include || [])
+  const includes = toArray<PopulateObject>(options.include)
 
   if (!includes.length) {
     throw new Error(
@@ -41,20 +42,15 @@ export function shallowPopulate(
 
   assertIncludes(includes)
 
-  const cumulatedIncludes = includes.filter((include) => !include.requestPerItem)
+  const cumulatedIncludes = includes.filter(
+    (include) => !include.requestPerItem,
+  ) as IncludeCumulated[]
 
-  const includesByKeyHere = cumulatedIncludes.reduce((includes, include) => {
-    if (_has(include, 'keyHere') && !includes[include.keyHere]) {
-      includes[include.keyHere] = include
-    }
-    return includes
-  }, {})
+  const includesPerItem = includes.filter(
+    (include) => include.requestPerItem,
+  ) as IncludeShared[]
 
-  const keysHere = Object.keys(includesByKeyHere)
-
-  const includesPerItem = includes.filter((include) => include.requestPerItem)
-
-  return async function shallowPopulate(context: HookContext): Promise<HookContext> {
+  return async (context: HookContext): Promise<HookContext> => {
     const { app, type } = context
     let data: AnyData[] =
       type === 'before'
@@ -63,54 +59,72 @@ export function shallowPopulate(
           ? context.result.data || context.result
           : context.result
 
-    data = [].concat(data || [])
+    data = toArray(data)
 
     if (!data.length) {
       return context
     }
 
-    const dataMap: AnyData = data.reduce((byKeyHere: AnyData, current: AnyData) => {
-      keysHere.forEach((key) => {
-        byKeyHere[key] = byKeyHere[key] || {}
-        const keyHere = _get(current, key) as string | string[]
+    const includesAndIds: CumulatedIncludeAndIds[] = []
 
-        if (keyHere !== undefined) {
-          if (Array.isArray(keyHere)) {
-            if (!includesByKeyHere[key].asArray) {
-              mapDataWithId(byKeyHere, key, keyHere[0], current)
-            } else {
-              keyHere.forEach((hereKey) => mapDataWithId(byKeyHere, key, hereKey, current))
-            }
-          } else {
-            mapDataWithId(byKeyHere, key, keyHere, current)
+    for (const include of cumulatedIncludes) {
+      let result: CumulatedIncludeAndIds | undefined = undefined
+
+      for (const item of data) {
+        const id = _get(item, include.keyHere!)
+        if (id == null) {
+          _set(item, include.nameAs, noRelation(include))
+          continue
+        }
+
+        if (!result) {
+          result = { include, ids: [] }
+        }
+
+        const ids = toArray(id)
+
+        for (const id of ids) {
+          if (!result.ids.includes(id)) {
+            result.ids.push(id)
           }
         }
-      })
+      }
 
-      return byKeyHere
-    }, {})
+      if (result) {
+        includesAndIds.push(result)
+      }
+    }
 
-    const promisesCumulatedResults = cumulatedIncludes.map(
-      async (include: PopulateObject): Promise<CumulatedRequestResult> => {
-        let result: CumulatedRequestResult
-        try {
-          result = await makeCumulatedRequest(app, include, dataMap, context)
-        } catch (err) {
-          if (!shouldCatchOnError(options, include)) throw err
-          return { include }
-        }
-        return result
-      },
-    )
+    const promises: Promise<CumulatedRequestResult>[] = []
 
-    const cumulatedResults = await Promise.all(promisesCumulatedResults)
+    for (const keyHere in includesAndIds) {
+      const includeAndIds = includesAndIds[keyHere]
+      if (!includeAndIds.ids.length) continue
+
+      promises.push(
+        new Promise<CumulatedRequestResult>((resolve, reject) => {
+          makeCumulatedRequest(app, includeAndIds, context)
+            .then(resolve)
+            .catch((err) => {
+              if (!shouldCatchOnError(options, includeAndIds.include)) {
+                reject(err)
+                return
+              }
+
+              resolve({ include: includeAndIds.include })
+            })
+        }),
+      )
+    }
+
+    const cumulatedResults = await Promise.all(promises)
 
     cumulatedResults.forEach((result) => {
       if (!result) return
       const { include } = result
       if (!result.response) {
         data.forEach((item) => {
-          _set(item, include.nameAs, include.asArray ? [] : {})
+          _set(item, include.nameAs, noRelation(include))
         })
         return
       }
@@ -126,7 +140,7 @@ export function shallowPopulate(
           await makeRequestPerItem(item, app, include, context)
         } catch (err) {
           if (!shouldCatchOnError(options, include)) throw err
-          _set(item, include.nameAs, include.asArray ? [] : {})
+          _set(item, include.nameAs, noRelation(include))
         }
       })
       promisesPerIncludeAndItem.push(...promisesPerItem)

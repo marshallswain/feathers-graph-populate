@@ -17,7 +17,9 @@ export async function populateUtil(
 ): Promise<unknown[]> {
   const { app, params, populates } = options
   if (!app) {
-    throw new Error('The app object must be provided in the populateUtil options.')
+    throw new Error(
+      'The app object must be provided in the populateUtil options.',
+    )
   }
   // If there's nothing to populate, return.
   // @ts-expect-error add $populateParams to params

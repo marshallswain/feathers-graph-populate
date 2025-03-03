@@ -1,9 +1,7 @@
-import assert from 'assert'
+import assert from 'node:assert'
 import { memory } from '@feathersjs/memory'
-import sift from 'sift'
 import { NotAuthenticated } from '@feathersjs/errors'
 import { shallowPopulate as makePopulate } from '../src'
-import type { ShallowPopulateOptions } from '../src'
 import type { HookContext, Params } from '@feathersjs/feathers'
 import { feathers } from '@feathersjs/feathers'
 
@@ -325,7 +323,7 @@ describe('shallow-populate.general.test.ts', () => {
 
   it('throws when used without an includes object', () => {
     assert.throws(() => {
-      //@ts-ignore
+      //@ts-expect-error test case
       makePopulate()
     }, 'does not work with no includes object')
   })
@@ -410,7 +408,7 @@ describe('shallow-populate.general.test.ts', () => {
 
     includesOptions.forEach((options) => {
       assert.throws(() => {
-        //@ts-ignore
+        // @ts-expect-error test case
         makePopulate(options)
       }, 'Every `include` must contain `service`, `nameAs` and (`keyHere` and `keyThere`) or properties')
     })
@@ -440,17 +438,17 @@ describe('shallow-populate.general.test.ts', () => {
   })
 
   it('does nothing if we have no data', async () => {
-    for (const { type, dataResult } of beforeAfter) {
-      const options: ShallowPopulateOptions = {
-        include: {
-          // from: 'users',
-          service: 'posts',
-          nameAs: 'posts',
-          keyHere: 'postsId',
-          keyThere: 'id',
-        },
-      }
+    const shallowPopulate = makePopulate({
+      include: {
+        // from: 'users',
+        service: 'posts',
+        nameAs: 'posts',
+        keyHere: 'postsId',
+        keyThere: 'id',
+      },
+    })
 
+    for (const { type, dataResult } of beforeAfter) {
       const context = {
         app: {
           service(path) {
@@ -463,26 +461,31 @@ describe('shallow-populate.general.test.ts', () => {
         [dataResult]: {},
       } as unknown as HookContext
 
-      const shallowPopulate = makePopulate(options)
       const response = await shallowPopulate(context)
       const result = response[dataResult]
 
-      assert.deepStrictEqual(result, context[dataResult], 'data should not be touched')
+      assert.deepStrictEqual(
+        result,
+        context[dataResult],
+        'data should not be touched',
+      )
     }
   })
 
   it('works with falsy "keyHere: 0" value', async () => {
-    for (const { type, dataResult } of beforeAfter) {
-      const options = {
-        include: {
-          // from: 'posts',
-          service: 'users',
-          nameAs: 'user',
-          keyHere: 'id',
-          keyThere: 'userId',
-        },
-      }
+    const keyHere = 'id'
 
+    const shallowPopulate = makePopulate({
+      include: {
+        // from: 'posts',
+        service: 'users',
+        nameAs: 'user',
+        keyHere,
+        keyThere: 'userId',
+      },
+    })
+
+    for (const { type, dataResult } of beforeAfter) {
       let calledFind = false
 
       const context = {
@@ -492,9 +495,9 @@ describe('shallow-populate.general.test.ts', () => {
               find(params: Params) {
                 calledFind = true
                 assert.deepStrictEqual(
-                  params.query?.userId.$in,
-                  [0],
-                  'sets "userId.$in" accordingly',
+                  params.query?.userId,
+                  0,
+                  'sets "userId" accordingly',
                 )
               },
             }
@@ -504,29 +507,205 @@ describe('shallow-populate.general.test.ts', () => {
         type,
         params: {},
         [dataResult]: {
-          id: 0,
+          [keyHere]: 0,
         },
       } as unknown as HookContext
 
-      const shallowPopulate = makePopulate(options)
       await shallowPopulate(context)
 
-      assert(calledFind, 'called find method')
+      assert.ok(calledFind, 'called find method')
+    }
+  })
+
+  it('skips for "keyHere: null" and sets null/[]', async () => {
+    const keyHere = 'anyId'
+
+    const shallowPopulate = makePopulate({
+      include: [
+        {
+          // from: 'posts',
+          service: 'users',
+          nameAs: 'user',
+          keyHere,
+          keyThere: 'userId',
+          asArray: false,
+        },
+        {
+          service: 'users',
+          nameAs: 'users',
+          keyHere,
+          keyThere: 'userId',
+          asArray: true,
+        },
+      ],
+    })
+
+    for (const { type, dataResult } of beforeAfter) {
+      let calledFind = false
+
+      const context = {
+        app: {
+          service() {
+            return {
+              find() {
+                calledFind = true
+              },
+            }
+          },
+        },
+        method: 'create',
+        type,
+        params: {},
+        [dataResult]: {
+          [keyHere]: null,
+        },
+      } as unknown as HookContext
+
+      await shallowPopulate(context)
+
+      assert.ok(
+        calledFind === false,
+        `skipped find method for ${type}, ${dataResult}`,
+      )
+
+      assert.deepStrictEqual(
+        context[dataResult].user,
+        null,
+        'set null for user',
+      )
+
+      assert.deepStrictEqual(
+        context[dataResult].users,
+        [],
+        'set empty array for users',
+      )
+    }
+  })
+
+  it('skips for "keyHere: undefined" and sets null/[]', async () => {
+    const keyHere = 'anyId'
+
+    const shallowPopulate = makePopulate({
+      include: [
+        {
+          // from: 'posts',
+          service: 'users',
+          nameAs: 'user',
+          keyHere,
+          keyThere: 'userId',
+          asArray: false,
+        },
+        {
+          service: 'users',
+          nameAs: 'users',
+          keyHere,
+          keyThere: 'userId',
+          asArray: true,
+        },
+      ],
+    })
+
+    for (const { type, dataResult } of beforeAfter) {
+      let calledFind = false
+
+      const context = {
+        app: {
+          service() {
+            return {
+              find() {
+                calledFind = true
+              },
+            }
+          },
+        },
+        method: 'create',
+        type,
+        params: {},
+        [dataResult]: {
+          [keyHere]: undefined,
+        },
+      } as unknown as HookContext
+
+      await shallowPopulate(context)
+
+      assert.ok(
+        calledFind === false,
+        `skipped find method for ${type}, ${dataResult}`,
+      )
+
+      assert.deepStrictEqual(
+        context[dataResult].user,
+        null,
+        'set null for user',
+      )
+
+      assert.deepStrictEqual(
+        context[dataResult].users,
+        [],
+        'set empty array for users',
+      )
+    }
+  })
+
+  it('skips for "keyHere: undefined" and sets empty array', async () => {
+    const keyHere = 'anyId'
+
+    const shallowPopulate = makePopulate({
+      include: {
+        // from: 'posts',
+        service: 'users',
+        nameAs: 'users',
+        keyHere,
+        keyThere: 'userId',
+        asArray: true,
+      },
+    })
+
+    for (const { type, dataResult } of beforeAfter) {
+      let calledFind = false
+
+      const context = {
+        app: {
+          service() {
+            return {
+              find() {
+                calledFind = true
+              },
+            }
+          },
+        },
+        method: 'create',
+        type,
+        params: {},
+        [dataResult]: {
+          [keyHere]: undefined,
+        },
+      } as unknown as HookContext
+
+      await shallowPopulate(context)
+
+      assert.ok(
+        calledFind === false,
+        `called find method for ${type}, ${dataResult}`,
+      )
+
+      assert.ok(context[dataResult].users.length === 0, 'set empty array')
     }
   })
 
   describe('requestPerItem: false', () => {
     it('throws if populated request throws', async () => {
+      const shallowPopulate = makePopulate({
+        include: {
+          // from: 'users',
+          service: 'tasks',
+          nameAs: 'tasks',
+          keyHere: 'id',
+          keyThere: 'userId',
+        },
+      })
+
       for (const { type, dataResult } of beforeAfter) {
-        const options = {
-          include: {
-            // from: 'users',
-            service: 'tasks',
-            nameAs: 'tasks',
-            keyHere: 'id',
-            keyThere: 'userId',
-          },
-        }
         const context = {
           app: {
             service() {
@@ -545,36 +724,37 @@ describe('shallow-populate.general.test.ts', () => {
           },
         } as unknown as HookContext
 
-        const shallowPopulate = makePopulate(options)
-
-        await assert.rejects(shallowPopulate(context), 'throws because of lacking authentication')
+        await assert.rejects(
+          shallowPopulate(context),
+          'throws because of lacking authentication',
+        )
       }
     })
 
     it('does not throw if `options.catchOnError: true`', async () => {
+      const shallowPopulate = makePopulate({
+        include: [
+          {
+            // from: 'users',
+            service: 'posts',
+            nameAs: 'posts',
+            keyHere: 'id',
+            keyThere: 'userId',
+          },
+          {
+            // from: 'users',
+            service: 'posts',
+            nameAs: 'post',
+            keyHere: 'id',
+            keyThere: 'userId',
+            asArray: false,
+          },
+        ],
+        catchOnError: true,
+      })
+
       for (const { type, dataResult } of beforeAfter) {
         let reachedThrow = false
-
-        const options: ShallowPopulateOptions = {
-          include: [
-            {
-              // from: 'users',
-              service: 'posts',
-              nameAs: 'posts',
-              keyHere: 'id',
-              keyThere: 'userId',
-            },
-            {
-              // from: 'users',
-              service: 'posts',
-              nameAs: 'post',
-              keyHere: 'id',
-              keyThere: 'userId',
-              asArray: false,
-            },
-          ],
-          catchOnError: true,
-        }
 
         const context = {
           app: {
@@ -595,42 +775,42 @@ describe('shallow-populate.general.test.ts', () => {
           },
         } as unknown as HookContext
 
-        const shallowPopulate = makePopulate(options)
         const response = await shallowPopulate(context)
         const { [dataResult]: result } = response
 
-        assert(reachedThrow, 'throw was fired')
-        assert(result.posts.length === 0, 'set empty array by default')
-        assert.deepStrictEqual(result.post, {}, 'set empty object by default')
+        assert.ok(reachedThrow, 'throw was fired')
+        assert.ok(result.posts.length === 0, 'set empty array by default')
+        assert.deepStrictEqual(result.post, null, 'set empty object by default')
       }
     })
 
     it('does not throw if `include.catchOnError: true`', async () => {
+      const shallowPopulate = makePopulate({
+        include: [
+          {
+            // from: 'users',
+            service: 'posts',
+            nameAs: 'posts',
+            keyHere: 'id',
+            keyThere: 'userId',
+            catchOnError: true,
+          },
+          {
+            // from: 'users',
+            service: 'posts',
+            nameAs: 'post',
+            keyHere: 'id',
+            keyThere: 'userId',
+            asArray: false,
+            catchOnError: true,
+          },
+        ],
+        catchOnError: false,
+      })
+
       for (const { type, dataResult } of beforeAfter) {
         let reachedThrow = false
 
-        const options = {
-          include: [
-            {
-              // from: 'users',
-              service: 'posts',
-              nameAs: 'posts',
-              keyHere: 'id',
-              keyThere: 'userId',
-              catchOnError: true,
-            },
-            {
-              // from: 'users',
-              service: 'posts',
-              nameAs: 'post',
-              keyHere: 'id',
-              keyThere: 'userId',
-              asArray: false,
-              catchOnError: true,
-            },
-          ],
-          catchOnError: false,
-        }
         const context = {
           app: {
             service() {
@@ -650,30 +830,31 @@ describe('shallow-populate.general.test.ts', () => {
           },
         } as unknown as HookContext
 
-        const shallowPopulate = makePopulate(options)
         const response = await shallowPopulate(context)
         const { [dataResult]: result } = response
 
-        assert(reachedThrow, 'throw was fired')
-        assert(result.posts.length === 0, 'set empty array by default')
-        assert.deepStrictEqual(result.post, {}, 'set empty object by default')
+        assert.ok(reachedThrow, 'throw was fired')
+        assert.ok(result.posts.length === 0, 'set empty array by default')
+        assert.deepStrictEqual(result.post, null, 'set empty object by default')
       }
     })
 
     describe('params - requestPerItem: false', () => {
       it('can pass in custom params for lookup', async () => {
-        for (const { type, dataResult } of beforeAfter) {
-          const options = {
-            include: {
-              // from: 'users',
-              service: 'posts',
-              nameAs: 'posts',
-              keyHere: 'postsId',
-              keyThere: 'id',
-              params: { fromCommentsPopulate: true },
-            },
-          }
+        const keyHere = 'postsId'
 
+        const shallowPopulate = makePopulate({
+          include: {
+            // from: 'users',
+            service: 'posts',
+            nameAs: 'posts',
+            keyHere,
+            keyThere: 'id',
+            params: { fromCommentsPopulate: true },
+          },
+        })
+
+        for (const { type, dataResult } of beforeAfter) {
           let hasCalledFind = false
 
           const context = {
@@ -683,7 +864,10 @@ describe('shallow-populate.general.test.ts', () => {
               service() {
                 return {
                   find(params: Params = {}) {
-                    assert(params.fromCommentsPopulate === true, 'we have a custom param')
+                    assert.ok(
+                      params.fromCommentsPopulate === true,
+                      'we have a custom param',
+                    )
                     hasCalledFind = true
                     return []
                   },
@@ -693,29 +877,31 @@ describe('shallow-populate.general.test.ts', () => {
             params: {},
             [dataResult]: {
               id: '1',
+              [keyHere]: '2',
             },
           } as unknown as HookContext
 
-          const shallowPopulate = makePopulate(options)
-
           await shallowPopulate(context)
-          assert(hasCalledFind, 'checks were made')
+          assert.ok(hasCalledFind, 'checks were made')
         }
       })
 
       it('can pass in custom params for lookup and merges them deeply', async () => {
-        for (const { type, dataResult } of beforeAfter) {
-          const options = {
-            include: {
-              // from: 'users',
-              service: 'posts',
-              nameAs: 'posts',
-              keyHere: 'postsId',
-              keyThere: 'id',
-              params: { query: { $select: ['id'] } },
-            },
-          }
+        const keyHere = 'postsId'
+        const idHere = '2'
 
+        const shallowPopulate = makePopulate({
+          include: {
+            // from: 'users',
+            service: 'posts',
+            nameAs: 'posts',
+            keyHere,
+            keyThere: 'id',
+            params: { query: { $select: ['id'] } },
+          },
+        })
+
+        for (const { type, dataResult } of beforeAfter) {
           let hasCalledFind = false
 
           const context = {
@@ -726,11 +912,15 @@ describe('shallow-populate.general.test.ts', () => {
                 return {
                   find(params: Params = {}) {
                     assert.deepStrictEqual(
-                      params.query?.id.$in,
-                      [],
+                      params.query?.id,
+                      idHere,
                       'we have the params from shallow-populate',
                     )
-                    assert.deepStrictEqual(params.query?.$select, ['id'], 'we have a merged query')
+                    assert.deepStrictEqual(
+                      params.query?.$select,
+                      ['id'],
+                      'we have a merged query',
+                    )
                     hasCalledFind = true
                     return []
                   },
@@ -740,36 +930,38 @@ describe('shallow-populate.general.test.ts', () => {
             params: {},
             [dataResult]: {
               id: '1',
+              [keyHere]: idHere,
             },
           } as unknown as HookContext
 
-          const shallowPopulate = makePopulate(options)
-
           await shallowPopulate(context)
-          assert(hasCalledFind, 'checks were made')
+          assert.ok(hasCalledFind, 'checks were made')
         }
       })
 
       it('can pass in custom params-function which overrides params', async () => {
-        for (const { type, dataResult } of beforeAfter) {
-          const options = {
-            include: {
-              // from: 'users',
-              service: 'posts',
-              nameAs: 'posts',
-              keyHere: 'postsId',
-              keyThere: 'id',
-              params: (params: Params) => {
-                assert.deepStrictEqual(
-                  params.query?.id.$in,
-                  [],
-                  'we have the params from shallow-populate first',
-                )
-                params.query!.$select = ['id']
-              },
-            },
-          }
+        const keyHere = 'postsId'
+        const idHere = '2'
 
+        const shallowPopulate = makePopulate({
+          include: {
+            // from: 'users',
+            service: 'posts',
+            nameAs: 'posts',
+            keyHere,
+            keyThere: 'id',
+            params: (params: Params) => {
+              assert.deepStrictEqual(
+                params.query?.id,
+                idHere,
+                'we have the params from shallow-populate first',
+              )
+              params.query!.$select = ['id']
+            },
+          },
+        })
+
+        for (const { type, dataResult } of beforeAfter) {
           let hasCalledFind = false
 
           const context = {
@@ -780,11 +972,15 @@ describe('shallow-populate.general.test.ts', () => {
                 return {
                   find(params: Params) {
                     assert.deepStrictEqual(
-                      params.query?.id.$in,
-                      [],
+                      params.query?.id,
+                      idHere,
                       'we have the params from shallow-populate',
                     )
-                    assert.deepStrictEqual(params.query.$select, ['id'], 'we have a merged query')
+                    assert.deepStrictEqual(
+                      params.query.$select,
+                      ['id'],
+                      'we have a merged query',
+                    )
                     hasCalledFind = true
                     return []
                   },
@@ -794,31 +990,31 @@ describe('shallow-populate.general.test.ts', () => {
             params: {},
             [dataResult]: {
               id: '1',
+              [keyHere]: idHere,
             },
           } as unknown as HookContext
 
-          const shallowPopulate = makePopulate(options)
-
           await shallowPopulate(context)
-          assert(hasCalledFind, 'checks were made')
+          assert.ok(hasCalledFind, 'checks were made')
         }
       })
 
       it('can pass in custom params-function which returns params and merges them deeply', async () => {
-        for (const { type, dataResult } of beforeAfter) {
-          const options = {
-            include: {
-              // from: 'users',
-              service: 'posts',
-              nameAs: 'posts',
-              keyHere: 'postsId',
-              keyThere: 'id',
-              params: () => {
-                return { query: { $select: ['id'] } }
-              },
+        const shallowPopulate = makePopulate({
+          include: {
+            // from: 'users',
+            service: 'posts',
+            nameAs: 'posts',
+            keyHere: 'postsId',
+            keyThere: 'id',
+            params: (params: Params) => {
+              params.query!.$select = ['id']
+              return params
             },
-          }
+          },
+        })
 
+        for (const { type, dataResult } of beforeAfter) {
           let hasCalledFind = false
 
           const context = {
@@ -829,11 +1025,15 @@ describe('shallow-populate.general.test.ts', () => {
                 return {
                   find(params: Params) {
                     assert.deepStrictEqual(
-                      params.query?.id.$in,
-                      [],
+                      params.query?.id,
+                      '2',
                       'we have the params from shallow-populate',
                     )
-                    assert.deepStrictEqual(params.query.$select, ['id'], 'we have a merged query')
+                    assert.deepStrictEqual(
+                      params.query.$select,
+                      ['id'],
+                      'we have a merged query',
+                    )
                     hasCalledFind = true
                     return []
                   },
@@ -843,33 +1043,39 @@ describe('shallow-populate.general.test.ts', () => {
             params: {},
             [dataResult]: {
               id: '1',
+              postsId: '2',
             },
           } as unknown as HookContext
 
-          const shallowPopulate = makePopulate(options)
-
           await shallowPopulate(context)
-          assert(hasCalledFind, 'checks were made')
+          assert.ok(hasCalledFind, 'checks were made')
         }
       })
 
       it('can pass in custom params-function with context', async () => {
-        for (const { type, dataResult } of beforeAfter) {
-          let paramsFunctionCalled = false
+        const keyHere = 'postsId'
 
-          const options = {
-            include: {
-              service: 'posts',
-              nameAs: 'posts',
-              keyHere: 'postsId',
-              keyThere: 'id',
-              params: (params, context) => {
-                assert(context.method === 'create', 'we can pass the context to include')
-                params.method = context.method
-                paramsFunctionCalled = true
-              },
+        let paramsFunctionCalled = false
+
+        const shallowPopulate = makePopulate({
+          include: {
+            service: 'posts',
+            nameAs: 'posts',
+            keyHere,
+            keyThere: 'id',
+            params: (params, context) => {
+              assert.ok(
+                context?.method === 'create',
+                'we can pass the context to include',
+              )
+              params!.method = context.method
+              paramsFunctionCalled = true
             },
-          }
+          },
+        })
+
+        for (const { type, dataResult } of beforeAfter) {
+          paramsFunctionCalled = false
 
           let hasCalledFind = false
 
@@ -880,7 +1086,7 @@ describe('shallow-populate.general.test.ts', () => {
               service() {
                 return {
                   find(params: Params) {
-                    assert(
+                    assert.ok(
                       params.method === 'create',
                       'we can manipulate the params based on the context',
                     )
@@ -893,14 +1099,13 @@ describe('shallow-populate.general.test.ts', () => {
             params: {},
             [dataResult]: {
               id: '1',
+              [keyHere]: '2',
             },
           } as unknown as HookContext
 
-          const shallowPopulate = makePopulate(options)
-
           await shallowPopulate(context)
-          assert(paramsFunctionCalled, 'params function was called')
-          assert(hasCalledFind, 'checks were made')
+          assert.ok(paramsFunctionCalled, 'params function was called')
+          assert.ok(hasCalledFind, 'checks were made')
         }
       })
 
@@ -917,7 +1122,10 @@ describe('shallow-populate.general.test.ts', () => {
                 keyHere: 'id',
                 keyThere: 'postsId',
                 params: () => {
-                  assert(!calledIncludeUsersParams, 'not called before -> only called once')
+                  assert.ok(
+                    !calledIncludeUsersParams,
+                    'not called before -> only called once',
+                  )
                   calledIncludeUsersParams = true
                 },
               },
@@ -927,7 +1135,10 @@ describe('shallow-populate.general.test.ts', () => {
                 keyHere: 'id',
                 keyThere: 'postsId',
                 params: () => {
-                  assert(!calledIncludeCommentsParams, 'not called before -> only called once')
+                  assert.ok(
+                    !calledIncludeCommentsParams,
+                    'not called before -> only called once',
+                  )
                   calledIncludeCommentsParams = true
                 },
               },
@@ -961,8 +1172,14 @@ describe('shallow-populate.general.test.ts', () => {
           const shallowPopulate = makePopulate(options)
 
           await shallowPopulate(context)
-          assert(calledIncludeUsersParams, 'params function for users was called')
-          assert(calledIncludeCommentsParams, 'params function for comments was called')
+          assert.ok(
+            calledIncludeUsersParams,
+            'params function for users was called',
+          )
+          assert.ok(
+            calledIncludeCommentsParams,
+            'params function for comments was called',
+          )
         }
       })
 
@@ -993,7 +1210,7 @@ describe('shallow-populate.general.test.ts', () => {
               service() {
                 return {
                   find(params: Params) {
-                    assert(
+                    assert.ok(
                       params.calledAsyncFunction,
                       'waited for async params function before find',
                     )
@@ -1011,8 +1228,8 @@ describe('shallow-populate.general.test.ts', () => {
 
           const shallowPopulate = makePopulate(options)
           await shallowPopulate(context)
-          assert(calledAsyncFunction, 'waited for async params function')
-          assert(hasCalledFind, 'checks were made')
+          assert.ok(calledAsyncFunction, 'waited for async params function')
+          assert.ok(hasCalledFind, 'checks were made')
         }
       })
 
@@ -1023,7 +1240,7 @@ describe('shallow-populate.general.test.ts', () => {
           const expected = {
             paginate: false,
             query: {
-              postsId: { $in: ['1'] },
+              postsId: '1',
               second: true,
               fourth: true,
             },
@@ -1043,26 +1260,30 @@ describe('shallow-populate.general.test.ts', () => {
                   {},
                   { query: { second: true } },
                   (params) => {
-                    assert(params.query.second, 'walked through before')
+                    assert.ok(params.query.second, 'walked through before')
                     params.third = true
                   },
                   (params) => {
-                    assert(params.third, 'walked through before')
+                    assert.ok(params.third, 'walked through before')
                     return { query: { fourth: true } }
                   },
                   async (params) => {
-                    assert(params.query.fourth, 'walked through before')
+                    assert.ok(params.query.fourth, 'walked through before')
                     await new Promise((resolve) => setTimeout(resolve, 200))
                     params.fifth = true
                   },
                   (params, context) => {
-                    assert(params.fifth, 'walked through before')
+                    assert.ok(params.fifth, 'walked through before')
                     if (context.app) {
                       return { sixth: true }
                     }
                   },
                   (params) => {
-                    assert.deepStrictEqual(params, expected, 'params object is right')
+                    assert.deepStrictEqual(
+                      params,
+                      expected,
+                      'params object is right',
+                    )
                     calledLastFunction = true
                   },
                 ],
@@ -1088,7 +1309,7 @@ describe('shallow-populate.general.test.ts', () => {
           const shallowPopulate = makePopulate(options)
 
           await shallowPopulate(context)
-          assert(calledLastFunction, 'all params were called')
+          assert.ok(calledLastFunction, 'all params were called')
         }
       })
 
@@ -1104,11 +1325,15 @@ describe('shallow-populate.general.test.ts', () => {
               keyThere: 'id',
               params: (params, context, target) => {
                 assert.ok(target, 'target is defined')
-                assert(
+                assert.ok(
                   target.service && typeof target.service.find === 'function',
                   'target has service',
                 )
-                assert.strictEqual(typeof target.path, 'string', 'target.path is string')
+                assert.strictEqual(
+                  typeof target.path,
+                  'string',
+                  'target.path is string',
+                )
                 params.path = target.path
                 paramsFunctionCalled = true
               },
@@ -1138,14 +1363,15 @@ describe('shallow-populate.general.test.ts', () => {
             params: {},
             [dataResult]: {
               id: '1',
+              postsId: '2',
             },
           } as unknown as HookContext
 
           const shallowPopulate = makePopulate(options)
 
           await shallowPopulate(context)
-          assert(paramsFunctionCalled, 'params function was called')
-          assert(hasCalledFind, 'checks were made')
+          assert.ok(paramsFunctionCalled, 'params function was called')
+          assert.ok(hasCalledFind, 'checks were made')
         }
       })
     })
@@ -1182,7 +1408,10 @@ describe('shallow-populate.general.test.ts', () => {
 
         const shallowPopulate = makePopulate(options)
 
-        await assert.rejects(shallowPopulate(context), 'throws because of lacking authentication')
+        await assert.rejects(
+          shallowPopulate(context),
+          'throws because of lacking authentication',
+        )
       }
     })
 
@@ -1231,35 +1460,37 @@ describe('shallow-populate.general.test.ts', () => {
         const response = await shallowPopulate(context)
         const { [dataResult]: result } = response
 
-        assert(throwReached, 'throw was fired')
-        assert(result.posts.length === 0, 'set empty array by default')
-        assert.deepStrictEqual(result.post, {}, 'set empty object by default')
+        assert.ok(throwReached, 'throw was fired')
+        assert.ok(result.posts.length === 0, 'set empty array by default')
+        assert.deepStrictEqual(result.post, null, 'set empty object by default')
       }
     })
 
     it('does not throw if `include.catchOnError: true`', async () => {
       let throwReached = false
+
+      const shallowPopulate = makePopulate({
+        include: [
+          {
+            // from: 'users',
+            service: 'posts',
+            nameAs: 'posts',
+            params: { fromCommentsPopulate: true },
+            catchOnError: true,
+          },
+          {
+            // from: 'users',
+            service: 'posts',
+            nameAs: 'post',
+            asArray: false,
+            params: { fromCommentsPopulate: true },
+            catchOnError: true,
+          },
+        ],
+        catchOnError: false,
+      })
+
       for (const { type, dataResult } of beforeAfter) {
-        const options = {
-          include: [
-            {
-              // from: 'users',
-              service: 'posts',
-              nameAs: 'posts',
-              params: { fromCommentsPopulate: true },
-              catchOnError: true,
-            },
-            {
-              // from: 'users',
-              service: 'posts',
-              nameAs: 'post',
-              asArray: false,
-              params: { fromCommentsPopulate: true },
-              catchOnError: true,
-            },
-          ],
-          catchOnError: false,
-        }
         const context = {
           app: {
             service() {
@@ -1279,27 +1510,26 @@ describe('shallow-populate.general.test.ts', () => {
           },
         } as unknown as HookContext
 
-        const shallowPopulate = makePopulate(options)
         const response = await shallowPopulate(context)
         const { [dataResult]: result } = response
 
-        assert(throwReached, 'throw was fired')
-        assert(result.posts.length === 0, 'set empty array by default')
-        assert.deepStrictEqual(result.post, {}, 'set empty object by default')
+        assert.ok(throwReached, 'throw was fired')
+        assert.ok(result.posts.length === 0, 'set empty array by default')
+        assert.deepStrictEqual(result.post, null, 'set empty object by default')
       }
     })
 
     it('can pass in custom params for lookup without `keyHere` and `keyThere`', async () => {
-      for (const { type, dataResult } of beforeAfter) {
-        const options = {
-          include: {
-            // from: 'users',
-            service: 'posts',
-            nameAs: 'posts',
-            params: { fromCommentsPopulate: true },
-          },
-        }
+      const shallowPopulate = makePopulate({
+        include: {
+          // from: 'users',
+          service: 'posts',
+          nameAs: 'posts',
+          params: { fromCommentsPopulate: true },
+        },
+      })
 
+      for (const { type, dataResult } of beforeAfter) {
         let hasCalledFind = false
 
         const context = {
@@ -1309,7 +1539,10 @@ describe('shallow-populate.general.test.ts', () => {
             service() {
               return {
                 find(params: Params) {
-                  assert(params.fromCommentsPopulate === true, 'we have a custom param')
+                  assert.ok(
+                    params.fromCommentsPopulate === true,
+                    'we have a custom param',
+                  )
                   hasCalledFind = true
                   return []
                 },
@@ -1322,10 +1555,8 @@ describe('shallow-populate.general.test.ts', () => {
           },
         } as unknown as HookContext
 
-        const shallowPopulate = makePopulate(options)
-
         await shallowPopulate(context)
-        assert(hasCalledFind, 'checks were made')
+        assert.ok(hasCalledFind, 'checks were made')
       }
     })
 
@@ -1336,7 +1567,11 @@ describe('shallow-populate.general.test.ts', () => {
           service: 'posts',
           nameAs: 'posts',
           params: (params: Params) => {
-            assert.deepStrictEqual(params, expected, 'params just have paginate attribute')
+            assert.deepStrictEqual(
+              params,
+              expected,
+              'params just have paginate attribute',
+            )
             return params
           },
         },
@@ -1398,7 +1633,10 @@ describe('shallow-populate.general.test.ts', () => {
         const shallowPopulate = makePopulate(options)
 
         await shallowPopulate(context)
-        assert(!hasCalledFind, 'skip request if params function returns undefined')
+        assert.ok(
+          !hasCalledFind,
+          'skip request if params function returns undefined',
+        )
       }
     })
 
@@ -1425,8 +1663,11 @@ describe('shallow-populate.general.test.ts', () => {
             service() {
               return {
                 find(params: Params) {
-                  assert(params.paginate === false, 'we have the params from shallow-populate')
-                  assert(params.query?.id === 1, 'we have a merged query')
+                  assert.ok(
+                    params.paginate === false,
+                    'we have the params from shallow-populate',
+                  )
+                  assert.ok(params.query?.id === 1, 'we have a merged query')
                   hasCalledFind = true
                   return []
                 },
@@ -1442,7 +1683,7 @@ describe('shallow-populate.general.test.ts', () => {
         const shallowPopulate = makePopulate(options)
 
         await shallowPopulate(context)
-        assert(hasCalledFind, 'checks were made')
+        assert.ok(hasCalledFind, 'checks were made')
       }
     })
 
@@ -1468,7 +1709,10 @@ describe('shallow-populate.general.test.ts', () => {
             service() {
               return {
                 find(params: Params) {
-                  assert(params.paginate === false, 'we have the params from shallow-populate')
+                  assert.ok(
+                    params.paginate === false,
+                    'we have the params from shallow-populate',
+                  )
                   assert.deepStrictEqual(
                     params.query,
                     { $select: ['id'] },
@@ -1489,7 +1733,7 @@ describe('shallow-populate.general.test.ts', () => {
         const shallowPopulate = makePopulate(options)
 
         await shallowPopulate(context)
-        assert(hasCalledFind, 'checks were made')
+        assert.ok(hasCalledFind, 'checks were made')
       }
     })
 
@@ -1502,7 +1746,11 @@ describe('shallow-populate.general.test.ts', () => {
             service: 'posts',
             nameAs: 'posts',
             params: (params: Params, context: HookContext) => {
-              assert.strictEqual(context.method, 'create', 'we can pass the context to include')
+              assert.strictEqual(
+                context.method,
+                'create',
+                'we can pass the context to include',
+              )
               params.method = context.method
               paramsFunctionCalled = true
               return params
@@ -1539,8 +1787,8 @@ describe('shallow-populate.general.test.ts', () => {
         const shallowPopulate = makePopulate(options)
 
         await shallowPopulate(context)
-        assert(paramsFunctionCalled, 'params function was called')
-        assert(hasCalledFind, 'checks were made')
+        assert.ok(paramsFunctionCalled, 'params function was called')
+        assert.ok(hasCalledFind, 'checks were made')
       }
     })
 
@@ -1561,8 +1809,16 @@ describe('shallow-populate.general.test.ts', () => {
             service: 'posts',
             nameAs: 'posts',
             params: function (params, context) {
-              assert.deepStrictEqual(this, item, 'item from data is passed as `this` keyword')
-              assert.strictEqual(context.method, 'create', 'we can pass the context to include')
+              assert.deepStrictEqual(
+                this,
+                item,
+                'item from data is passed as `this` keyword',
+              )
+              assert.strictEqual(
+                context.method,
+                'create',
+                'we can pass the context to include',
+              )
               params.method = context.method
               paramsFunctionCalled = true
               return params
@@ -1578,7 +1834,7 @@ describe('shallow-populate.general.test.ts', () => {
             service() {
               return {
                 find(params: Params) {
-                  assert(
+                  assert.ok(
                     params.method === 'create',
                     'we can manipulate the params based on the context',
                   )
@@ -1595,8 +1851,8 @@ describe('shallow-populate.general.test.ts', () => {
         const shallowPopulate = makePopulate(options)
 
         await shallowPopulate(context)
-        assert(paramsFunctionCalled, 'params function was called')
-        assert(hasCalledFind, 'checks were made')
+        assert.ok(paramsFunctionCalled, 'params function was called')
+        assert.ok(hasCalledFind, 'checks were made')
       }
     })
 
@@ -1655,11 +1911,11 @@ describe('shallow-populate.general.test.ts', () => {
         const shallowPopulate = makePopulate(options)
 
         await shallowPopulate(context)
-        assert(
+        assert.ok(
           calledUsersParamsNTimes === items.length,
           'params function for users was called n times',
         )
-        assert(
+        assert.ok(
           calledCommentsParamsNTimes === items.length,
           'params function for comments was called n times',
         )
@@ -1693,7 +1949,10 @@ describe('shallow-populate.general.test.ts', () => {
             service() {
               return {
                 find(params: Params) {
-                  assert(params.calledAsyncFunction, 'waited for async params function before find')
+                  assert.ok(
+                    params.calledAsyncFunction,
+                    'waited for async params function before find',
+                  )
                   hasCalledFind = true
                   return []
                 },
@@ -1708,8 +1967,8 @@ describe('shallow-populate.general.test.ts', () => {
 
         const shallowPopulate = makePopulate(options)
         await shallowPopulate(context)
-        assert(calledAsyncFunction, 'waited for async params function')
-        assert(hasCalledFind, 'checks were made')
+        assert.ok(calledAsyncFunction, 'waited for async params function')
+        assert.ok(hasCalledFind, 'checks were made')
       }
     })
 
@@ -1737,28 +1996,32 @@ describe('shallow-populate.general.test.ts', () => {
                 {},
                 { query: { second: true } },
                 (params) => {
-                  assert(params.query.second, 'walked through before')
+                  assert.ok(params.query.second, 'walked through before')
                   params.third = true
                   return params
                 },
                 (params) => {
-                  assert(params.third, 'walked through before')
+                  assert.ok(params.third, 'walked through before')
                   return { query: { fourth: true } }
                 },
                 async (params) => {
-                  assert(params.query.fourth, 'walked through before')
+                  assert.ok(params.query.fourth, 'walked through before')
                   await new Promise((resolve) => setTimeout(resolve, 200))
                   params.fifth = true
                   return params
                 },
                 (params, context) => {
-                  assert(params.fifth, 'walked through before')
+                  assert.ok(params.fifth, 'walked through before')
                   if (context.app) {
                     return { sixth: true }
                   }
                 },
                 (params) => {
-                  assert.deepStrictEqual(params, expected, 'params object is right')
+                  assert.deepStrictEqual(
+                    params,
+                    expected,
+                    'params object is right',
+                  )
                   calledLastFunction = true
                   return params
                 },
@@ -1785,7 +2048,7 @@ describe('shallow-populate.general.test.ts', () => {
         const shallowPopulate = makePopulate(options)
 
         await shallowPopulate(context)
-        assert(calledLastFunction, 'all params were called')
+        assert.ok(calledLastFunction, 'all params were called')
       }
     })
 
@@ -1799,11 +2062,15 @@ describe('shallow-populate.general.test.ts', () => {
             nameAs: 'posts',
             params: (params, context, target) => {
               assert.ok(target, 'target is defined')
-              assert(
+              assert.ok(
                 target.service && typeof target.service.find === 'function',
                 'target has service',
               )
-              assert.strictEqual(typeof target.path, 'string', 'target.path is string')
+              assert.strictEqual(
+                typeof target.path,
+                'string',
+                'target.path is string',
+              )
               params.path = target.path
               paramsFunctionCalled = true
               return params
@@ -1840,8 +2107,8 @@ describe('shallow-populate.general.test.ts', () => {
         const shallowPopulate = makePopulate(options)
 
         await shallowPopulate(context)
-        assert(paramsFunctionCalled, 'params function was called')
-        assert(hasCalledFind, 'checks were made')
+        assert.ok(paramsFunctionCalled, 'params function was called')
+        assert.ok(hasCalledFind, 'checks were made')
       }
     })
   })

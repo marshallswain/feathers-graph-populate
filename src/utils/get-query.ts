@@ -18,8 +18,9 @@ export function getQuery(options: GetPopulateQueryOptions): Query {
   // If 'allowByApp' is undefined, it will be 'false'
   // If 'allowByHook' is set, it will be used and the 'allowByApp' will be ignored
   const allowByHook = options.allowUnnamedQueryForExternal
-  const allowByApp = ((context.app as any).graphPopulate as GraphPopulateApplication)?.options
-    ?.allowUnnamedQueryForExternal
+  const allowByApp = (
+    (context.app as any).graphPopulate as GraphPopulateApplication
+  )?.options?.allowUnnamedQueryForExternal
 
   // Remove any possible $populateParams.query passed from the outside
   if (query && context.params.provider && !(allowByHook ?? allowByApp)) {
@@ -31,7 +32,8 @@ export function getQuery(options: GetPopulateQueryOptions): Query {
 
   if (!query) {
     // Set the query based on any $populateParams.name passed from the outside
-    const name = context.params?.$populateParams?.name || options.defaultQueryName
+    const name =
+      context.params?.$populateParams?.name || options.defaultQueryName
     if (!name) {
       return undefined
     }

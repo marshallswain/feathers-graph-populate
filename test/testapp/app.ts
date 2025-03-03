@@ -1,4 +1,4 @@
-import type { Application, HookContext } from '@feathersjs/feathers'
+import type { Application } from '@feathersjs/feathers'
 import { feathers } from '@feathersjs/feathers'
 import { MemoryService } from '@feathersjs/memory'
 import * as usersGraphPopulate from './populates.users'
@@ -90,8 +90,11 @@ function createService(opts: any = {}) {
   return new MemoryService(opts)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function usePopulateHook(app: Application, serviceName: string, gp: PopulateHookOptions) {
+function usePopulateHook(
+  app: Application,
+  serviceName: string,
+  gp: PopulateHookOptions,
+) {
   app.service(serviceName).hooks({
     after: {
       all: [populate(gp)],

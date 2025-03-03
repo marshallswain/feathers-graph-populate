@@ -37,10 +37,6 @@ export default defineConfig({
     },
     socialLinks: [
       {
-        icon: 'twitter',
-        link: 'https://twitter.com/feathersjs',
-      },
-      {
         icon: 'discord',
         link: 'https://discord.gg/qa8kez8QBx',
       },

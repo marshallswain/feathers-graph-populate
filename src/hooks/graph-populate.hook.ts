@@ -24,17 +24,25 @@ export function graphPopulate(
   options: GraphPopulateHookOptions,
 ): (context: HookContext) => Promise<HookContext> {
   if (!options.populates) {
-    throw new Error('options.populates must be provided to the feathers-graph-populate hook')
+    throw new Error(
+      'options.populates must be provided to the feathers-graph-populate hook',
+    )
   }
   const { populates } = options
 
-  return async function deepPopulateHook(context: HookContext): Promise<HookContext> {
-    const populateQuery: Query | undefined = _get(context, 'params.$populateParams.query')
+  return async function deepPopulateHook(
+    context: HookContext,
+  ): Promise<HookContext> {
+    const populateQuery: Query | undefined = _get(
+      context,
+      'params.$populateParams.query',
+    )
 
     if (!populateQuery) return context
 
     const { app } = context
-    const graphPopulateApp: GraphPopulateApplication | undefined = (app as any).graphPopulate
+    const graphPopulateApp: GraphPopulateApplication | undefined = (app as any)
+      .graphPopulate
 
     // Get the populate data based on the query keys
     const keys = Object.keys(populateQuery)
@@ -87,10 +95,17 @@ export function graphPopulate(
       }
 
       if (graphPopulateApp) {
-        params = graphPopulateApp.withAppParams(params, context.method as Method, service)
+        params = graphPopulateApp.withAppParams(
+          params,
+          context.method as Method,
+          service,
+        )
       }
 
-      currentPopulates.push(Object.assign({}, populate, { params }))
+      currentPopulates.push({
+        ...populate,
+        params,
+      })
 
       return currentPopulates
     }, [])

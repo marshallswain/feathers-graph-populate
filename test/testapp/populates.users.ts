@@ -45,7 +45,10 @@ export const populates = {
     service: 'orgs',
     nameAs: 'organizations',
     asArray: true,
-    params: async function (params: Params, context: HookContext): Promise<Params> {
+    params: async function (
+      params: Params,
+      context: HookContext,
+    ): Promise<Params> {
       const orgUsers = await context.app.service('org-users').find({
         query: {
           userId: this.id,
