@@ -14,6 +14,7 @@ export class GraphPopulateApplication {
   private _app: Application
 
   __hooks: any
+  // @ts-expect-error setup in 'enableHooks'
   hooks: (hooks: GraphPopulateHook | AnyData | unknown[]) => void
   options?: InitOptions
 

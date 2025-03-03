@@ -1,6 +1,6 @@
-export { graphPopulate } from './hooks/graph-populate.hook'
-export { populate } from './hooks/populate.hook'
-export { getQuery } from './utils/get-query'
+export * from './hooks/graph-populate.hook'
+export * from './hooks/populate.hook'
+export * from './utils/get-query'
 export { populateUtil } from './utils/util.populate'
 export { shallowPopulate } from './hooks/shallow-populate.hook'
 

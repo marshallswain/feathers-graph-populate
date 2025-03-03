@@ -1,15 +1,26 @@
-import _get from 'lodash/get.js'
 import _isEmpty from 'lodash/isEmpty.js'
-import _merge from 'lodash/merge.js'
 
 import { shallowPopulate as makeShallowPopulate } from './shallow-populate.hook'
 
-import type { HookContext, Query } from '@feathersjs/feathers'
+import type { HookContext, Params, Query } from '@feathersjs/feathers'
 
-import type { GraphPopulateHookOptions, Method } from '../types'
+import type {
+  Method,
+  PopulateObject,
+  Populates,
+  SingleGraphPopulateParams,
+} from '../types'
 import type { GraphPopulateApplication } from '../app/graph-populate.class'
 
 const FILTERS = ['$limit', '$select', '$skip', '$sort']
+
+export interface GraphPopulateHookOptions<S = string> {
+  populates: Populates<S>
+  /**
+   * @default: false
+   */
+  allowUnnamedQueryForExternal?: boolean
+}
 
 /**
  * Sets up the deepPopulate hook using the provided options.
@@ -30,13 +41,9 @@ export function graphPopulate(
   }
   const { populates } = options
 
-  return async function deepPopulateHook(
-    context: HookContext,
-  ): Promise<HookContext> {
-    const populateQuery: Query | undefined = _get(
-      context,
-      'params.$populateParams.query',
-    )
+  return async (context: HookContext): Promise<HookContext> => {
+    const populateQuery: Query | undefined =
+      context.params?.$populateParams?.query
 
     if (!populateQuery) return context
 
@@ -50,12 +57,12 @@ export function graphPopulate(
     const currentPopulates = keys.reduce((currentPopulates, key) => {
       if (!populates[key]) return currentPopulates
 
-      const currentQuery = Object.assign({}, populateQuery[key])
+      const currentQuery = { ...populateQuery[key] }
 
       const populate = populates[key]
       const service = app.service(populate.service)
 
-      let params = []
+      let params: SingleGraphPopulateParams[] = []
       if (populate.params) {
         if (Array.isArray(populate.params)) {
           params.push(...populate.params)
@@ -65,23 +72,24 @@ export function graphPopulate(
       }
 
       if (!_isEmpty(currentQuery)) {
-        const customKeysForQuery: string[] | undefined = _get(
-          service,
-          'options.graphPopulate.whitelist',
-        )
+        const customKeysForQuery = (service as any).options?.graphPopulate
+          ?.whitelist as string[] | undefined
         const extractKeys = [...FILTERS]
+
         if (customKeysForQuery) {
           extractKeys.push(...customKeysForQuery)
         }
+
         const paramsToAdd = Object.keys(currentQuery).reduce(
           (paramsToAdd, key) => {
             if (!extractKeys.includes(key)) return paramsToAdd
             const { query } = paramsToAdd
-            _merge(query, { [key]: currentQuery[key] })
+            query[key] = currentQuery[key]
             delete currentQuery[key]
+
             return paramsToAdd
           },
-          { query: {} },
+          { query: {} } as { query: Query },
         )
         params.push(paramsToAdd)
       }
@@ -91,7 +99,7 @@ export function graphPopulate(
           $populateParams: {
             query: currentQuery,
           },
-        })
+        } as Params)
       }
 
       if (graphPopulateApp) {
@@ -108,9 +116,9 @@ export function graphPopulate(
       })
 
       return currentPopulates
-    }, [])
+    }, [] as PopulateObject[])
 
-    if (!currentPopulates || !currentPopulates.length) {
+    if (!currentPopulates?.length) {
       return context
     }
     const shallowPopulate = makeShallowPopulate({ include: currentPopulates })

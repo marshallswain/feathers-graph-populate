@@ -36,34 +36,6 @@ export type NestedQuery = Record<string, AnyData>
 
 export type Populates<S = string> = Record<string, PopulateObject<S>>
 
-export interface GraphPopulateHookOptions<S = string> {
-  populates: Populates<S>
-  /**
-   * @default: false
-   */
-  allowUnnamedQueryForExternal?: boolean
-}
-
-export interface PopulateHookOptions<S = string> {
-  populates: Populates<S>
-  namedQueries?: AnyData
-  defaultQueryName?: string
-  /**
-   * @default: false
-   */
-  allowUnnamedQueryForExternal?: boolean
-}
-
-export interface GetPopulateQueryOptions {
-  context: HookContext
-  namedQueries: AnyData
-  defaultQueryName: string
-  /**
-   * @default: false
-   */
-  allowUnnamedQueryForExternal?: boolean
-}
-
 export interface PopulateUtilOptions<S = string> {
   app: Application
   params: Params

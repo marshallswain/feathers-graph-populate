@@ -65,6 +65,7 @@
     "@feathersjs/memory": "^5.0.33",
     "@tsconfig/node22": "^22.0.0",
     "@types/lodash": "^4.17.16",
+    "@typescript-eslint/parser": "^8.25.0",
     "eslint": "^9.21.0",
     "np": "^10.2.0",
     "shx": "^0.3.4",

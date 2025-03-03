@@ -24,8 +24,7 @@ import type {
 import { toArray } from '../utils/to-array'
 
 export function shallowPopulate(
-  opts: Partial<ShallowPopulateOptions> &
-    Pick<ShallowPopulateOptions, 'include'>,
+  opts: ShallowPopulateOptions,
 ): (context: HookContext) => Promise<HookContext> {
   const options = {
     catchOnError: false,

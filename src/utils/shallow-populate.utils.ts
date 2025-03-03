@@ -218,7 +218,7 @@ export async function makeRequestPerItem(
 export function setItems(
   data: AnyData[],
   include: IncludeCumulated,
-  params: Params,
+  params: Params | undefined,
   relatedItems: AnyData[],
 ): void {
   const { nameAs, keyThere, asArray } = include
@@ -269,11 +269,11 @@ export function getRelatedItems(
   ids: (string | number) | (string | number)[],
   relatedItems: AnyData[],
   include: IncludeCumulated,
-  params: Params,
+  params: Params | undefined,
 ): GetRelatedItemsResult {
   const { keyThere } = include
-  const skip = params.query?.$skip ?? 0
-  const limit = params.query?.$limit ?? Math.max
+  const skip = params?.query?.$skip ?? 0
+  const limit = params?.query?.$limit ?? Math.max
   ids = toArray(ids)
   let skipped = 0
   let itemOrItems: GetRelatedItemsResult = noRelation(include)
