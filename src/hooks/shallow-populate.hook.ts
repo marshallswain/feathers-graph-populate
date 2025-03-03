@@ -9,7 +9,7 @@ import {
   noRelation,
   setItems,
   shouldCatchOnError,
-} from '../utils/shallow-populate.utils'
+} from '../utils/shallow-populate.utils.js'
 
 import type { HookContext } from '@feathersjs/feathers'
 
@@ -20,8 +20,8 @@ import type {
   IncludeShared,
   PopulateObject,
   ShallowPopulateOptions,
-} from '../types'
-import { toArray } from '../utils/to-array'
+} from '../types.js'
+import { toArray } from '../utils/to-array.js'
 
 export function shallowPopulate(
   opts: ShallowPopulateOptions,

@@ -14,7 +14,7 @@ import type {
   IncludeCumulated,
   PopulateObject,
   ShallowPopulateOptions,
-} from '../types'
+} from '../types.js'
 import { toArray } from './to-array.js'
 
 const requiredIncludeAttrs = ['service', 'nameAs', 'asArray', 'params']
@@ -113,8 +113,7 @@ export const chainedParams = async (
     if (_isFunction(params)) {
       params =
         thisKey == null
-          ? // @ts-expect-error todo
-            params(resultingParams, context, target)
+          ? params(resultingParams, context, target)
           : params.call(thisKey, resultingParams, context, target)
       params = await Promise.resolve(params)
     }

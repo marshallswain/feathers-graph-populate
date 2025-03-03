@@ -1,8 +1,8 @@
-import { graphPopulate } from '../hooks/graph-populate.hook'
+import { graphPopulate } from '../hooks/graph-populate.hook.js'
 
 import type { HookContext } from '@feathersjs/feathers'
 
-import type { PopulateParams, PopulateUtilOptions } from '../types'
+import type { PopulateParams, PopulateUtilOptions } from '../types.js'
 /**
  * This is a utility (not a hook) which performs similar to the graph-populate hook.  It
  * is meant to be used INSIDE of a hook, because it requires the `context` object.

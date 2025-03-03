@@ -1,7 +1,7 @@
 import assert from 'node:assert'
 import { memory } from '@feathersjs/memory'
 import { NotAuthenticated } from '@feathersjs/errors'
-import { shallowPopulate as makePopulate } from '../src'
+import { shallowPopulate as makePopulate } from '../src/index.js'
 import type { HookContext, Params } from '@feathersjs/feathers'
 import { feathers } from '@feathersjs/feathers'
 

@@ -1,4 +1,4 @@
-import { enableHooks, getHooks } from './hooks.commons'
+import { enableHooks, getHooks } from './hooks.commons.js'
 
 import type { Application, Service } from '@feathersjs/feathers'
 
@@ -8,7 +8,7 @@ import type {
   SingleGraphPopulateParams,
   AnyData,
   InitOptions,
-} from '../types'
+} from '../types.js'
 
 export class GraphPopulateApplication {
   private _app: Application

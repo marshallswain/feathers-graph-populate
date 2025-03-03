@@ -3,7 +3,7 @@ import type { Params } from '@feathersjs/feathers'
 import { feathers } from '@feathersjs/feathers'
 import { MemoryService } from '@feathersjs/memory'
 
-import configureGraphPopulate, { populate } from '../../src'
+import configureGraphPopulate, { populate } from '../../src/index.js'
 
 type GraphPopulateParams = Params & { $populateParams: any; test: any }
 

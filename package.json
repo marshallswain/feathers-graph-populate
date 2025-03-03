@@ -17,6 +17,7 @@
       "import": "./dist/index.mjs"
     }
   },
+  "type": "module",
   "keywords": [
     "feathers",
     "feathers.js",
@@ -38,7 +39,7 @@
     "dist/**"
   ],
   "engines": {
-    "node": ">= 18"
+    "node": ">= 20"
   },
   "scripts": {
     "compile": "shx rm -rf dist/ && tsup src/index.ts --format cjs,esm --dts",
@@ -65,7 +66,9 @@
     "@feathersjs/memory": "^5.0.33",
     "@tsconfig/node22": "^22.0.0",
     "@types/lodash": "^4.17.16",
+    "@types/node": "^22.13.9",
     "@typescript-eslint/parser": "^8.25.0",
+    "@vitest/coverage-v8": "^3.0.7",
     "eslint": "^9.21.0",
     "np": "^10.2.0",
     "shx": "^0.3.4",

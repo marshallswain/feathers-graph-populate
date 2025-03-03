@@ -2,7 +2,11 @@ import { _ } from '@feathersjs/commons'
 const { each } = _
 import _get from 'lodash/get.js'
 
-import type { AnyData, GraphPopulateHook, GraphPopulateHookMap } from '../types'
+import type {
+  AnyData,
+  GraphPopulateHook,
+  GraphPopulateHookMap,
+} from '../types.js'
 
 export function convertHookData(
   obj: GraphPopulateHook | AnyData | unknown[],

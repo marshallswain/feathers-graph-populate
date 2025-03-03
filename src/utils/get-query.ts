@@ -1,6 +1,6 @@
 import type { HookContext, Query } from '@feathersjs/feathers'
-import type { GraphPopulateApplication } from '../app/graph-populate.class'
-import { AnyData } from '../types'
+import type { GraphPopulateApplication } from '../app/graph-populate.class.js'
+import { AnyData } from '../types.js'
 
 export interface GetPopulateQueryOptions {
   context: HookContext

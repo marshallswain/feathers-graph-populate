@@ -1,8 +1,10 @@
-import { enableHooks } from './hooks.commons'
+import { enableHooks } from './hooks.commons.js'
 
 import type { Service } from '@feathersjs/feathers'
 
-export default (service: Service & { graphPopulate?: any }): void => {
+export const serviceMixin = (
+  service: Service & { graphPopulate?: any },
+): void => {
   if (!service.graphPopulate) {
     service.graphPopulate = {}
   }

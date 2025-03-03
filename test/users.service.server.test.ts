@@ -1,9 +1,9 @@
 import assert from 'node:assert'
-import { populateUtil } from '../src'
+import { populateUtil } from '../src/index.js'
 import _omit from 'lodash/omit.js'
 import _orderBy from 'lodash/orderBy.js'
-import { populates as userPopulates } from './testapp/populates.users'
-import { makeApp } from './testapp/app'
+import { populates as userPopulates } from './testapp/populates.users.js'
+import { makeApp } from './testapp/app.js'
 
 declare module '@feathersjs/feathers' {
   interface Params {

@@ -1,6 +1,6 @@
 import _isEmpty from 'lodash/isEmpty.js'
 
-import { shallowPopulate as makeShallowPopulate } from './shallow-populate.hook'
+import { shallowPopulate as makeShallowPopulate } from './shallow-populate.hook.js'
 
 import type { HookContext, Params, Query } from '@feathersjs/feathers'
 
@@ -9,8 +9,8 @@ import type {
   PopulateObject,
   Populates,
   SingleGraphPopulateParams,
-} from '../types'
-import type { GraphPopulateApplication } from '../app/graph-populate.class'
+} from '../types.js'
+import type { GraphPopulateApplication } from '../app/graph-populate.class.js'
 
 const FILTERS = ['$limit', '$select', '$skip', '$sort']
 
