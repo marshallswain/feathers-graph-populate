@@ -1,5 +1,6 @@
 import { graphPopulate as makeGraphPopulate } from './graph-populate.hook.js'
-import { GetPopulateQueryOptions, getQuery } from '../utils/get-query.js'
+import type { GetPopulateQueryOptions } from '../utils/get-query.js'
+import { getQuery } from '../utils/get-query.js'
 
 import type { HookContext } from '@feathersjs/feathers'
 

@@ -1,9 +1,9 @@
 import _get from 'lodash/get.js'
 import _set from 'lodash/set.js'
 
+import type { CumulatedIncludeAndIds } from '../utils/shallow-populate.utils.js'
 import {
   assertIncludes,
-  CumulatedIncludeAndIds,
   makeCumulatedRequest,
   makeRequestPerItem,
   noRelation,
