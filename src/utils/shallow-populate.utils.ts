@@ -1,6 +1,5 @@
-import type { Application, HookContext, Params } from '@feathersjs/feathers'
+import type { Application, HookContext, Id, Params } from '@feathersjs/feathers'
 import _get from 'lodash/get.js'
-import _has from 'lodash/has.js'
 import _isEmpty from 'lodash/isEmpty.js'
 import _isEqual from 'lodash/isEqual.js'
 import _isFunction from 'lodash/isFunction.js'
@@ -12,13 +11,17 @@ import type {
   ChainedParamsOptions,
   CumulatedRequestResult,
   GraphPopulateParams,
+  IncludeCumulated,
   PopulateObject,
   ShallowPopulateOptions,
-} from '../types'
+} from '../types.js'
+import { toArray } from './to-array.js'
 
 const requiredIncludeAttrs = ['service', 'nameAs', 'asArray', 'params']
 
-const isDynamicParams = (params) => {
+const isDynamicParams = (
+  params: Params | Params[] | (() => any) | undefined,
+): boolean => {
   if (!params) return false
   if (Array.isArray(params)) {
     return params.some((p) => isDynamicParams(p))
@@ -37,18 +40,19 @@ export const shouldCatchOnError = (
 }
 
 export const assertIncludes = (includes: PopulateObject[]): void => {
-  includes.forEach((include) => {
+  for (const include of includes) {
     // Create default `asArray` property
-    if (!_has(include, 'asArray')) {
+    if (!('asArray' in include)) {
       include.asArray = true
     }
     // Create default `params` property
-    if (!_has(include, 'params')) {
+    if (!('params' in include)) {
       include.params = {}
     }
     // Create default `requestPerItem` property
-    if (!_has(include, 'requestPerItem')) {
-      include.requestPerItem = !_has(include, 'keyHere') && !_has(include, 'keyThere')
+    if (!('requestPerItem' in include)) {
+      include.requestPerItem =
+        !('keyHere' in include) && !('keyThere' in include)
     }
 
     const isDynamic = isDynamicParams(include.params)
@@ -58,7 +62,7 @@ export const assertIncludes = (includes: PopulateObject[]): void => {
       : [...requiredIncludeAttrs, 'keyHere', 'keyThere']
 
     requiredAttrs.forEach((attr) => {
-      if (!_has(include, attr)) {
+      if (!(attr in include)) {
         throw new Error(
           'shallowPopulate hook: Every `include` must contain `service`, `nameAs` and (`keyHere` and `keyThere`) or `params` properties',
         )
@@ -68,23 +72,29 @@ export const assertIncludes = (includes: PopulateObject[]): void => {
     // if is dynamicParams and `keyHere` is defined, also `keyThere` must be defined
     if (
       isDynamic &&
-      Object.keys(include).filter((key) => key === 'keyHere' || key === 'keyThere').length === 1
+      ((!('keyHere' in include) && 'keyThere' in include) ||
+        ('keyHere' in include && !('keyThere' in include)))
     ) {
       throw new Error(
-        'shallowPopulate hook: Every `include` with attribute `KeyHere` or `keyThere` also needs the other attribute defined',
+        'shallowPopulate hook: Every `include` with attribute `keyHere` or `keyThere` also needs the other attribute defined',
       )
     }
 
-    if (include.requestPerItem && (_has(include, 'keyHere') || _has(include, 'keyThere'))) {
+    if (
+      include.requestPerItem &&
+      ('keyHere' in include || 'keyThere' in include)
+    ) {
       throw new Error(
         'shallowPopulate hook: The attributes `keyHere` and `keyThere` are useless when you set `requestPerItem: true`. You should remove these properties',
       )
     }
-  })
+  }
 
   const uniqueNameAs = _uniqBy(includes, 'nameAs')
   if (uniqueNameAs.length !== includes.length) {
-    throw new Error('shallowPopulate hook: Every `ìnclude` must have a unique `nameAs` property')
+    throw new Error(
+      'shallowPopulate hook: Every `ìnclude` must have a unique `nameAs` property',
+    )
   }
 }
 
@@ -94,7 +104,6 @@ export const chainedParams = async (
   target: any,
   options: ChainedParamsOptions = {},
 ): Promise<Params> => {
-  if (!paramsArr) return undefined
   if (!Array.isArray(paramsArr)) paramsArr = [paramsArr]
   const { thisKey, skipWhenUndefined } = options
 
@@ -104,8 +113,7 @@ export const chainedParams = async (
     if (_isFunction(params)) {
       params =
         thisKey == null
-          ? // @ts-expect-error todo
-          params(resultingParams, context, target)
+          ? params(resultingParams, context, target)
           : params.call(thisKey, resultingParams, context, target)
       params = await Promise.resolve(params)
     }
@@ -116,24 +124,21 @@ export const chainedParams = async (
   return resultingParams
 }
 
+export type CumulatedIncludeAndIds = { include: IncludeCumulated; ids: Id[] }
+
 export async function makeCumulatedRequest(
   app: Application,
-  include: PopulateObject,
-  dataMap: AnyData,
+  { include, ids }: CumulatedIncludeAndIds,
   context: HookContext,
 ): Promise<CumulatedRequestResult> {
-  const { keyHere, keyThere } = include
+  const { keyThere } = include
 
-  let params = { paginate: false } as Params
-
-  if (_has(include, 'keyHere') && _has(include, 'keyThere')) {
-    const keyVals = dataMap[keyHere]
-    let keysHere = Object.keys(keyVals) || []
-    keysHere = keysHere.map((k) => keyVals[k].key)
-    Object.assign(params, { query: { [keyThere]: { $in: keysHere } } })
-  }
-
-  const paramsFromInclude = Array.isArray(include.params) ? include.params : [include.params]
+  let params = {
+    query: {
+      [keyThere!]: ids.length === 1 ? ids[0] : { $in: ids },
+    },
+    paginate: false,
+  } as Params
 
   const service = app.service(include.service)
 
@@ -142,29 +147,22 @@ export async function makeCumulatedRequest(
     service,
   }
 
-  params = await chainedParams([params, ...paramsFromInclude], context, target)
+  params = await chainedParams(
+    [params, ...toArray(include.params)],
+    context,
+    target,
+  )
 
-  // modify params
-  let query = params.query || {}
+  // modify params & rm $skip & $m $limit
 
-  query = Object.assign({}, query)
-
-  // remove $skip to prevent unintended results and regard it afterwards
-  if (query.$skip) {
-    delete query.$skip
-  }
-
-  // remove $limit to prevent unintended results and regard it afterwards
-  if (query.$limit) {
-    delete query.$limit
-  }
+  const { $skip, $limit, ...query } = params.query ? { ...params.query } : {}
 
   // if $select hasn't ${keyThere} add it and delete it afterwards
   if (query.$select && !query.$select.includes(keyThere)) {
     query.$select = [...query.$select, keyThere]
   }
 
-  const response = await service.find(Object.assign({}, params, { query }))
+  const response = await service.find({ ...params, query })
 
   return {
     include,
@@ -180,7 +178,7 @@ export async function makeRequestPerItem(
   context: HookContext,
 ): Promise<void> {
   const { nameAs, asArray } = include
-  const paramsFromInclude = Array.isArray(include.params) ? include.params : [include.params]
+  const paramsFromInclude = toArray(include.params)
 
   const paramsOptions = {
     thisKey: item,
@@ -202,11 +200,11 @@ export async function makeRequestPerItem(
   )
 
   if (!params) {
-    asArray ? _set(item, nameAs, []) : _set(item, nameAs, null)
+    _set(item, nameAs, noRelation(include))
+
     return
   }
-  const response = await service.find(params)
-  const relatedItems = response.data || response
+  const relatedItems = await service.find(params)
 
   if (asArray) {
     _set(item, nameAs, relatedItems)
@@ -218,25 +216,35 @@ export async function makeRequestPerItem(
 
 export function setItems(
   data: AnyData[],
-  include: PopulateObject,
-  params: Params,
-  response: { data: AnyData[] } | AnyData[],
+  include: IncludeCumulated,
+  params: Params | undefined,
+  relatedItems: AnyData[],
 ): void {
-  const relatedItems = Array.isArray(response) ? response : response.data
   const { nameAs, keyThere, asArray } = include
 
   data.forEach((item) => {
-    const keyHere = _get(item, include.keyHere) as (string | number) | (string | number)[]
+    const keyHere = _get(item, include.keyHere!) as
+      | (string | number)
+      | (string | number)[]
 
     if (keyHere !== undefined) {
       if (Array.isArray(keyHere)) {
         if (!asArray) {
-          const items = getRelatedItems(keyHere[0], relatedItems, include, params)
+          const items = getRelatedItems(
+            keyHere[0],
+            relatedItems,
+            include,
+            params,
+          )
           if (items !== undefined) {
             _set(item, nameAs, items)
           }
         } else {
-          _set(item, nameAs, getRelatedItems(keyHere, relatedItems, include, params))
+          _set(
+            item,
+            nameAs,
+            getRelatedItems(keyHere, relatedItems, include, params),
+          )
         }
       } else {
         const items = getRelatedItems(keyHere, relatedItems, include, params)
@@ -247,33 +255,31 @@ export function setItems(
     }
   })
 
-  if (params.query.$select && !params.query.$select.includes(keyThere)) {
+  if (params.query?.$select && !params.query.$select.includes(keyThere)) {
     relatedItems.forEach((item) => {
       delete item[keyThere]
     })
   }
 }
 
-type GetRelatedItemsResult = AnyData | AnyData[] | undefined
+type GetRelatedItemsResult = AnyData | AnyData[] | null
 
 export function getRelatedItems(
   ids: (string | number) | (string | number)[],
   relatedItems: AnyData[],
-  include: PopulateObject,
-  params: Params,
+  include: IncludeCumulated,
+  params: Params | undefined,
 ): GetRelatedItemsResult {
-  const { keyThere, asArray } = include
-  const skip = _get(params, 'query.$skip', 0)
-  const limit = _get(params, 'query.$limit', Math.max)
-  ids = [].concat(ids || [])
+  const { keyThere } = include
+  const skip = params?.query?.$skip ?? 0
+  const limit = params?.query?.$limit ?? Math.max
+  ids = toArray(ids)
   let skipped = 0
-  let itemOrItems: GetRelatedItemsResult = asArray ? [] : undefined
+  let itemOrItems: GetRelatedItemsResult = noRelation(include)
 
   let isDone = false
   for (let i = 0, n = relatedItems.length; i < n; i++) {
-    if (isDone) {
-      break
-    }
+    if (isDone) break
     const currentItem = relatedItems[i]
 
     for (let j = 0, m = ids.length; j < m; j++) {
@@ -300,14 +306,18 @@ export function getRelatedItems(
         const keyThereVal = _get(currentItem, keyThere)
         currentId = keyThereVal
       }
-      if (asArray) {
-        if ((Array.isArray(currentId) && currentId.includes(id)) || _isEqual(currentId, id)) {
+      if (include.asArray) {
+        const items = itemOrItems as AnyData[]
+        if (
+          (Array.isArray(currentId) && currentId.includes(id)) ||
+          _isEqual(currentId, id)
+        ) {
           if (skipped < skip) {
             skipped++
             continue
           }
-          (itemOrItems as AnyData[]).push(currentItem)
-          if (itemOrItems.length >= limit) {
+          items.push(currentItem)
+          if (items.length >= limit) {
             isDone = true
             break
           }
@@ -329,17 +339,6 @@ export function getRelatedItems(
   return itemOrItems
 }
 
-export function mapDataWithId<T extends AnyData>(
-  byKeyHere: T,
-  key: string,
-  keyHere: string,
-  current: AnyData,
-): T {
-  byKeyHere[key][keyHere] = byKeyHere[key][keyHere] || {
-    key: keyHere,
-    vals: [],
-  }
-  byKeyHere
-  byKeyHere[key][keyHere].vals.push(current)
-  return byKeyHere
+export const noRelation = (include: PopulateObject) => {
+  return include.asArray ? [] : null
 }

@@ -2,7 +2,11 @@ import { _ } from '@feathersjs/commons'
 const { each } = _
 import _get from 'lodash/get.js'
 
-import type { AnyData, GraphPopulateHook, GraphPopulateHookMap } from '../types'
+import type {
+  AnyData,
+  GraphPopulateHook,
+  GraphPopulateHookMap,
+} from '../types.js'
 
 export function convertHookData(
   obj: GraphPopulateHook | AnyData | unknown[],
@@ -22,21 +26,20 @@ export function convertHookData(
   return hook
 }
 
-// eslint-disable-next-line
 export function getHooks(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   app: any,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   service: any,
   type: string,
   method: string,
   appLast = false,
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): any[] {
   const appHooks = _get(app, ['__hooks', type, method]) || []
   const serviceHooks = _get(service, ['__hooks', type, method]) || []
 
-  return appLast ? [...serviceHooks, ...appHooks] : [...appHooks, ...serviceHooks]
+  return appLast
+    ? [...serviceHooks, ...appHooks]
+    : [...appHooks, ...serviceHooks]
 }
 
 // eslint-disable-next-line
@@ -74,31 +77,29 @@ export function enableHooks(obj: any, methods: string[], types: string[]): AnyDa
         | GraphPopulateHook
         | GraphPopulateHook[],
     ) {
-      each(allHooks, (current: GraphPopulateHook | AnyData | unknown[], type) => {
-        if (!this.__hooks[type]) {
-          throw new Error(`'${type}' is not a valid hook type`)
-        }
-
-        const hooks = convertHookData(current)
-
-        /*each(hooks, (_value, method) => {
-          if (method !== 'all' && methods.indexOf(method) === -1) {
-            throw new Error(`'${method}' is not a valid hook method`)
-          }
-        })*/
-
-        methods.forEach((method) => {
-          const currentHooks = this.__hooks[type][method] || (this.__hooks[type][method] = [])
-
-          if (hooks.all) {
-            currentHooks.push(...hooks.all)
+      each(
+        allHooks,
+        (current: GraphPopulateHook | AnyData | unknown[], type) => {
+          if (!this.__hooks[type]) {
+            throw new Error(`'${type}' is not a valid hook type`)
           }
 
-          if (hooks[method]) {
-            currentHooks.push(...hooks[method])
-          }
-        })
-      })
+          const hooks = convertHookData(current)
+
+          methods.forEach((method) => {
+            const currentHooks =
+              this.__hooks[type][method] || (this.__hooks[type][method] = [])
+
+            if (hooks.all) {
+              currentHooks.push(...hooks.all)
+            }
+
+            if (hooks[method]) {
+              currentHooks.push(...hooks[method])
+            }
+          })
+        },
+      )
 
       return this
     },

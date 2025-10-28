@@ -1,24 +1,33 @@
-import assert from 'assert'
+import assert from 'node:assert'
 import type { Params } from '@feathersjs/feathers'
 import { feathers } from '@feathersjs/feathers'
 import { MemoryService } from '@feathersjs/memory'
 
-import configureGraphPopulate, { populate } from '../../src'
-import type { InitOptions, PopulateHookOptions } from '../../src'
+import configureGraphPopulate, { populate } from '../../src/index.js'
+import type { InitOptions, PopulateHookOptions } from '../../src/index.js'
 
 type GraphPopulateParams = Params & { $populateParams: any; test?: any }
 
 type MockAppOptions = {
   appOptions?: InitOptions
-  hookOptions?: Omit<PopulateHookOptions, 'populates' | 'namedQueries' | 'defaultQueryName'>
+  hookOptions?: Omit<
+    PopulateHookOptions,
+    'populates' | 'namedQueries' | 'defaultQueryName'
+  >
 }
 
 const mockApp = (options?: MockAppOptions) => {
   const hookOptions = options?.hookOptions ?? {}
   const app = feathers<{
-    users: MemoryService<any, any, GraphPopulateParams> & { graphPopulate: any }
-    companies: MemoryService<any, any, GraphPopulateParams> & { graphPopulate: any }
-    posts: MemoryService<any, any, GraphPopulateParams> & { graphPopulate: any }
+    users: MemoryService<any, any, GraphPopulateParams> & {
+      graphPopulate: any
+    }
+    companies: MemoryService<any, any, GraphPopulateParams> & {
+      graphPopulate: any
+    }
+    posts: MemoryService<any, any, GraphPopulateParams> & {
+      graphPopulate: any
+    }
   }>()
   app.configure(configureGraphPopulate(options?.appOptions))
 
@@ -100,7 +109,10 @@ const mockApp = (options?: MockAppOptions) => {
 type UnnamedQueryAppOption = boolean | undefined
 type UnnamedQueryServiceOption = boolean | undefined
 
-const testUnnamedAppService = new Map<[UnnamedQueryAppOption, UnnamedQueryServiceOption], boolean>([
+const testUnnamedAppService = new Map<
+  [UnnamedQueryAppOption, UnnamedQueryServiceOption],
+  boolean
+>([
   [[undefined, undefined], false],
   [[undefined, false], false],
   [[undefined, true], true],
@@ -120,18 +132,31 @@ describe('graph-populate.app.test.ts', () => {
 
     assert.ok(graphPopulateApp, 'app has graphPopulateApp')
     assert.ok(graphPopulateApp.__hooks, 'app has __hooks')
-    assert.strictEqual(typeof graphPopulateApp.hooks, 'function', 'app has hooks-function')
+    assert.strictEqual(
+      typeof graphPopulateApp.hooks,
+      'function',
+      'app has hooks-function',
+    )
 
     assert.ok(usersService.graphPopulate, 'usersService has graphPopulate')
-    assert.ok(usersService.graphPopulate.__hooks, 'usersService.graphPopulate has __hooks')
+    assert.ok(
+      usersService.graphPopulate.__hooks,
+      'usersService.graphPopulate has __hooks',
+    )
     assert.strictEqual(
       typeof usersService.graphPopulate.hooks,
       'function',
       'usersService.graphPopulate has hooks-function',
     )
 
-    assert.ok(companiesService.graphPopulate, 'companiesService has graphPopulate')
-    assert.ok(companiesService.graphPopulate.__hooks, 'companiesService.graphPopulate has __hooks')
+    assert.ok(
+      companiesService.graphPopulate,
+      'companiesService has graphPopulate',
+    )
+    assert.ok(
+      companiesService.graphPopulate.__hooks,
+      'companiesService.graphPopulate has __hooks',
+    )
     assert.strictEqual(
       typeof companiesService.graphPopulate.hooks,
       'function',
@@ -139,7 +164,10 @@ describe('graph-populate.app.test.ts', () => {
     )
 
     assert.ok(postsService.graphPopulate, 'postsService has graphPopulate')
-    assert.ok(postsService.graphPopulate.__hooks, 'postsService.graphPopulate has __hooks')
+    assert.ok(
+      postsService.graphPopulate.__hooks,
+      'postsService.graphPopulate has __hooks',
+    )
     assert.strictEqual(
       typeof postsService.graphPopulate.hooks,
       'function',
@@ -236,43 +264,67 @@ describe('graph-populate.app.test.ts', () => {
       before: {
         all: [
           (params) => {
-            assert(!params.count, '"app:before:all": count not set')
+            assert.ok(!params.count, '"app:before:all": count not set')
             params.count = 1
           },
         ],
         find: [
           (params) => {
-            assert.strictEqual(params.count, 1, '"app:before:find": run app:all before')
+            assert.strictEqual(
+              params.count,
+              1,
+              '"app:before:find": run app:all before',
+            )
             params.count++
           },
         ],
         get: [
           (params) => {
-            assert.strictEqual(params.count, 1, '"app:before:get": run app:all before')
+            assert.strictEqual(
+              params.count,
+              1,
+              '"app:before:get": run app:all before',
+            )
             params.count++
           },
         ],
         create: [
           (params) => {
-            assert.strictEqual(params.count, 1, '"app:before:create": run app:all before')
+            assert.strictEqual(
+              params.count,
+              1,
+              '"app:before:create": run app:all before',
+            )
             params.count++
           },
         ],
         update: [
           (params) => {
-            assert.strictEqual(params.count, 1, '"app:before:update": run app:all before')
+            assert.strictEqual(
+              params.count,
+              1,
+              '"app:before:update": run app:all before',
+            )
             params.count++
           },
         ],
         patch: [
           (params) => {
-            assert.strictEqual(params.count, 1, '"app:before:patch": run app:all before')
+            assert.strictEqual(
+              params.count,
+              1,
+              '"app:before:patch": run app:all before',
+            )
             params.count++
           },
         ],
         remove: [
           (params) => {
-            assert.strictEqual(params.count, 1, '"app:before:remove": run app:all before')
+            assert.strictEqual(
+              params.count,
+              1,
+              '"app:before:remove": run app:all before',
+            )
             params.count++
           },
         ],
@@ -291,37 +343,61 @@ describe('graph-populate.app.test.ts', () => {
         ],
         find: [
           (params) => {
-            assert.strictEqual(params.count, 7, '"app:after:find": run all hooks')
+            assert.strictEqual(
+              params.count,
+              7,
+              '"app:after:find": run all hooks',
+            )
             params.count++
           },
         ],
         get: [
           (params) => {
-            assert.strictEqual(params.count, 7, '"app:after:get": run all hooks')
+            assert.strictEqual(
+              params.count,
+              7,
+              '"app:after:get": run all hooks',
+            )
             params.count++
           },
         ],
         create: [
           (params) => {
-            assert.strictEqual(params.count, 7, '"app:after:create": run all hooks')
+            assert.strictEqual(
+              params.count,
+              7,
+              '"app:after:create": run all hooks',
+            )
             params.count++
           },
         ],
         update: [
           (params) => {
-            assert.strictEqual(params.count, 7, '"app:after:update": run all hooks')
+            assert.strictEqual(
+              params.count,
+              7,
+              '"app:after:update": run all hooks',
+            )
             params.count++
           },
         ],
         patch: [
           (params) => {
-            assert.strictEqual(params.count, 7, '"app:after:patch": run all hooks')
+            assert.strictEqual(
+              params.count,
+              7,
+              '"app:after:patch": run all hooks',
+            )
             params.count++
           },
         ],
         remove: [
           (params) => {
-            assert.strictEqual(params.count, 7, '"app:after:remove": run all hooks')
+            assert.strictEqual(
+              params.count,
+              7,
+              '"app:after:remove": run all hooks',
+            )
             params.count++
           },
         ],
@@ -404,7 +480,11 @@ describe('graph-populate.app.test.ts', () => {
       after: {
         all: [
           (params) => {
-            assert.strictEqual(params.count, 4, '"service:after:all": run all four before')
+            assert.strictEqual(
+              params.count,
+              4,
+              '"service:after:all": run all four before',
+            )
             params.count++
           },
         ],
@@ -485,7 +565,11 @@ describe('graph-populate.app.test.ts', () => {
     await Promise.all(
       Object.keys(methods).map(async (method) => {
         await usersService[method](...methods[method])
-        assert.strictEqual(calledAppAfterAll[method], true, `called all hooks for '${method}'`)
+        assert.strictEqual(
+          calledAppAfterAll[method],
+          true,
+          `called all hooks for '${method}'`,
+        )
       }),
     )
   })
@@ -507,11 +591,20 @@ describe('graph-populate.app.test.ts', () => {
       after: {
         all: [
           (context) => {
-            assert(companiesAfterCalledI === 0, 'companiesService not called before')
+            assert.ok(
+              companiesAfterCalledI === 0,
+              'companiesService not called before',
+            )
             companiesAfterCalledI++
-            assert(context.params.test === true, 'params.test was set')
-            assert(context.params['before:all'] === true, '"before:all" was called')
-            assert(context.params['after:all'] === true, '"after:all" was called')
+            assert.ok(context.params.test === true, 'params.test was set')
+            assert.ok(
+              context.params['before:all'] === true,
+              '"before:all" was called',
+            )
+            assert.ok(
+              context.params['after:all'] === true,
+              '"after:all" was called',
+            )
           },
         ],
       },
@@ -521,11 +614,20 @@ describe('graph-populate.app.test.ts', () => {
       after: {
         all: [
           (context) => {
-            assert(postsAfterCalledI === 0, 'companiesService not called before')
+            assert.ok(
+              postsAfterCalledI === 0,
+              'companiesService not called before',
+            )
             postsAfterCalledI++
-            assert(context.params.test === true, 'params.test was set')
-            assert(context.params['before:all'] === true, '"before:all" was called')
-            assert(context.params['after:all'] === true, '"after:all" was called')
+            assert.ok(context.params.test === true, 'params.test was set')
+            assert.ok(
+              context.params['before:all'] === true,
+              '"before:all" was called',
+            )
+            assert.ok(
+              context.params['after:all'] === true,
+              '"after:all" was called',
+            )
           },
         ],
       },
@@ -535,12 +637,18 @@ describe('graph-populate.app.test.ts', () => {
       after: {
         find: [
           (context) => {
-            assert(usersAfterCalledI < 2, 'usersService just called twice')
+            assert.ok(usersAfterCalledI < 2, 'usersService just called twice')
             usersAfterCalledI++
-            assert(context.params.test === true, 'params.test was set')
+            assert.ok(context.params.test === true, 'params.test was set')
             if (usersAfterCalledI === 1) {
-              assert(context.params['before:all'] === true, '"before:all" was called')
-              assert(context.params['after:all'] === true, '"after:all" was called')
+              assert.ok(
+                context.params['before:all'] === true,
+                '"before:all" was called',
+              )
+              assert.ok(
+                context.params['after:all'] === true,
+                '"after:all" was called',
+              )
             }
           },
         ],
@@ -572,7 +680,10 @@ describe('graph-populate.app.test.ts', () => {
         all: [
           function (params) {
             calledAfter++
-            assert(params.test === true, 'passed from "before:all" to "after:all"')
+            assert.ok(
+              params.test === true,
+              'passed from "before:all" to "after:all"',
+            )
             params['after:all'] = true
           },
         ],
@@ -609,9 +720,9 @@ describe('graph-populate.app.test.ts', () => {
 
     assert.strictEqual(calledBefore, 3, 'called "before:all" 3 times')
     assert.strictEqual(calledAfter, 3, 'called "after:all" 3 times')
-    assert(companiesAfterCalledI === 1, 'called companiesService after hook')
-    assert(postsAfterCalledI === 1, 'called postsService after hook')
-    assert(usersAfterCalledI === 2, 'called usersService after hook twice')
+    assert.ok(companiesAfterCalledI === 1, 'called companiesService after hook')
+    assert.ok(postsAfterCalledI === 1, 'called postsService after hook')
+    assert.ok(usersAfterCalledI === 2, 'called usersService after hook twice')
     assert.deepStrictEqual(result, expected, 'populated correctly')
   })
 
@@ -632,11 +743,20 @@ describe('graph-populate.app.test.ts', () => {
       after: {
         all: [
           (context) => {
-            assert(companiesAfterCalledI === 0, 'companiesService not called before')
+            assert.ok(
+              companiesAfterCalledI === 0,
+              'companiesService not called before',
+            )
             companiesAfterCalledI++
-            assert(context.params.test === true, 'params.test was set')
-            assert(context.params['before:all'] === true, '"before:all" was called')
-            assert(context.params['after:all'] === true, '"after:all" was called')
+            assert.ok(context.params.test === true, 'params.test was set')
+            assert.ok(
+              context.params['before:all'] === true,
+              '"before:all" was called',
+            )
+            assert.ok(
+              context.params['after:all'] === true,
+              '"after:all" was called',
+            )
           },
         ],
       },
@@ -646,11 +766,20 @@ describe('graph-populate.app.test.ts', () => {
       after: {
         all: [
           (context) => {
-            assert(postsAfterCalledI === 0, 'companiesService not called before')
+            assert.ok(
+              postsAfterCalledI === 0,
+              'companiesService not called before',
+            )
             postsAfterCalledI++
-            assert(context.params.test === true, 'params.test was set')
-            assert(context.params['before:all'] === true, '"before:all" was called')
-            assert(context.params['after:all'] === true, '"after:all" was called')
+            assert.ok(context.params.test === true, 'params.test was set')
+            assert.ok(
+              context.params['before:all'] === true,
+              '"before:all" was called',
+            )
+            assert.ok(
+              context.params['after:all'] === true,
+              '"after:all" was called',
+            )
           },
         ],
       },
@@ -660,12 +789,18 @@ describe('graph-populate.app.test.ts', () => {
       after: {
         find: [
           (context) => {
-            assert(usersAfterCalledI < 2, 'usersService just called twice')
+            assert.ok(usersAfterCalledI < 2, 'usersService just called twice')
             usersAfterCalledI++
-            assert(context.params.test === true, 'params.test was set')
+            assert.ok(context.params.test === true, 'params.test was set')
             if (usersAfterCalledI === 1) {
-              assert(context.params['before:all'] === true, '"before:all" was called')
-              assert(context.params['after:all'] === true, '"after:all" was called')
+              assert.ok(
+                context.params['before:all'] === true,
+                '"before:all" was called',
+              )
+              assert.ok(
+                context.params['after:all'] === true,
+                '"after:all" was called',
+              )
             }
           },
         ],
@@ -697,7 +832,10 @@ describe('graph-populate.app.test.ts', () => {
         all: [
           function (params) {
             calledAfter++
-            assert(params.test === true, 'passed from "before:all" to "after:all"')
+            assert.ok(
+              params.test === true,
+              'passed from "before:all" to "after:all"',
+            )
             params['after:all'] = true
           },
         ],
@@ -734,9 +872,9 @@ describe('graph-populate.app.test.ts', () => {
 
     assert.strictEqual(calledBefore, 3, 'called "before:all" 3 times')
     assert.strictEqual(calledAfter, 3, 'called "after:all" 3 times')
-    assert(companiesAfterCalledI === 1, 'called companiesService after hook')
-    assert(postsAfterCalledI === 1, 'called postsService after hook')
-    assert(usersAfterCalledI === 2, 'called usersService after hook twice')
+    assert.ok(companiesAfterCalledI === 1, 'called companiesService after hook')
+    assert.ok(postsAfterCalledI === 1, 'called postsService after hook')
+    assert.ok(usersAfterCalledI === 2, 'called usersService after hook twice')
     assert.deepStrictEqual(result, expected, 'populated correctly')
   })
 
@@ -773,10 +911,6 @@ describe('graph-populate.app.test.ts', () => {
 
         const company = await companiesService.create({ name: 'company' })
         const _user = await usersService.create({ companyId: company.id })
-
-        if (appOption || serviceOption) {
-          const hallo = ''
-        }
 
         const user = await usersService.get(_user.id, {
           query: {},

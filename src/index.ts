@@ -1,15 +1,15 @@
-export { graphPopulate } from './hooks/graph-populate.hook'
-export { populate } from './hooks/populate.hook'
-export { getQuery } from './utils/get-query'
-export { populateUtil } from './utils/util.populate'
-export { shallowPopulate } from './hooks/shallow-populate.hook'
+export * from './hooks/graph-populate.hook.js'
+export * from './hooks/populate.hook.js'
+export * from './utils/get-query.js'
+export { populateUtil } from './utils/util.populate.js'
+export { shallowPopulate } from './hooks/shallow-populate.hook.js'
 
-export { paramsForServer } from './hooks/params-for-server.hook'
-export { paramsFromClient } from './hooks/params-from-client.hook'
+export { paramsForServer } from './hooks/params-for-server.hook.js'
+export { paramsFromClient } from './hooks/params-from-client.hook.js'
 
-export { definePopulates } from './utils/define-populates'
+export { definePopulates } from './utils/define-populates.js'
 
-export { initApp as default } from './app/graph-populate.app'
-export { type GraphPopulateApplication } from './app/graph-populate.class'
+export { initApp as default } from './app/graph-populate.app.js'
+export { type GraphPopulateApplication } from './app/graph-populate.class.js'
 
-export * from './types'
+export * from './types.js'

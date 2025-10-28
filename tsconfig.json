@@ -1,15 +1,8 @@
 {
+  "extends": "@tsconfig/node22/tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "outDir": "dist",
-    "moduleResolution": "node",
-    "target": "es2018",
-    "downlevelIteration": true,
-    "sourceMap": false,
-    "declaration": true,
     "types": ["vitest/globals"]
   },
-  "include": ["src/**/*"],
+  "include": ["**/*.ts", "docs/.vitepress/**/*.ts"],
   "exclude": ["node_modules"]
 }

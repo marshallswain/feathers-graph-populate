@@ -1,6 +1,16 @@
-import type { Query } from '@feathersjs/feathers'
-import type { GetPopulateQueryOptions } from '../types'
-import type { GraphPopulateApplication } from '../app/graph-populate.class'
+import type { HookContext, Query } from '@feathersjs/feathers'
+import type { GraphPopulateApplication } from '../app/graph-populate.class.js'
+import type { AnyData } from '../types.js'
+
+export interface GetPopulateQueryOptions {
+  context: HookContext
+  namedQueries?: AnyData
+  defaultQueryName?: string
+  /**
+   * @default: false
+   */
+  allowUnnamedQueryForExternal?: boolean
+}
 
 /**
  * getPopulateQuery is a helper utility for the populate hook, which performs the following:
@@ -9,7 +19,7 @@ import type { GraphPopulateApplication } from '../app/graph-populate.class'
  * 2. Consistency - it makes sure the the $populateParams.query is always available to the populate hook,
  *    whenever applicable.
  */
-export function getQuery(options: GetPopulateQueryOptions): Query {
+export function getQuery(options: GetPopulateQueryOptions): Query | undefined {
   const { context, namedQueries } = options
   let query = context.params?.$populateParams?.query
 
@@ -18,25 +28,30 @@ export function getQuery(options: GetPopulateQueryOptions): Query {
   // If 'allowByApp' is undefined, it will be 'false'
   // If 'allowByHook' is set, it will be used and the 'allowByApp' will be ignored
   const allowByHook = options.allowUnnamedQueryForExternal
-  const allowByApp = ((context.app as any).graphPopulate as GraphPopulateApplication)?.options
-    ?.allowUnnamedQueryForExternal
+  const allowByApp = (
+    (context.app as any).graphPopulate as GraphPopulateApplication
+  )?.options?.allowUnnamedQueryForExternal
 
   // Remove any possible $populateParams.query passed from the outside
   if (query && context.params.provider && !(allowByHook ?? allowByApp)) {
-    if ((allowByHook ?? allowByApp) !== true) {
-      delete context.params.$populateParams.query
-      query = undefined
-    }
+    delete context.params.$populateParams.query
+    query = undefined
   }
 
   if (!query) {
+    if (!namedQueries) {
+      return undefined
+    }
+
     // Set the query based on any $populateParams.name passed from the outside
-    const name = context.params?.$populateParams?.name || options.defaultQueryName
+    const name =
+      context.params?.$populateParams?.name || options.defaultQueryName
+
     if (!name) {
       return undefined
     }
 
-    query = namedQueries?.[name]?.query || namedQueries[name]
+    query = namedQueries[name]?.query || namedQueries[name]
   }
 
   return query

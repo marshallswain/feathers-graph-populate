@@ -1,17 +1,17 @@
-import type { Application, HookContext } from '@feathersjs/feathers'
+import type { Application } from '@feathersjs/feathers'
 import { feathers } from '@feathersjs/feathers'
 import { MemoryService } from '@feathersjs/memory'
-import * as usersGraphPopulate from './populates.users'
-import * as postsGraphPopulate from './populates.posts'
-import * as commentsGraphPopulate from './populates.comments'
-import * as groupUsersGraphPopulate from './populates.group-users'
-import * as groupsGraphPopulate from './populates.groups'
-import * as orgUsersGraphPopulate from './populates.org-users'
-import * as orgsGraphPopulate from './populates.orgs'
-import * as tasksGraphPopulate from './populates.tasks'
-import type { PopulateHookOptions } from '../../src'
-import * as fakeData from './data'
-import { populate } from '../../src'
+import * as usersGraphPopulate from './populates.users.js'
+import * as postsGraphPopulate from './populates.posts.js'
+import * as commentsGraphPopulate from './populates.comments.js'
+import * as groupUsersGraphPopulate from './populates.group-users.js'
+import * as groupsGraphPopulate from './populates.groups.js'
+import * as orgUsersGraphPopulate from './populates.org-users.js'
+import * as orgsGraphPopulate from './populates.orgs.js'
+import * as tasksGraphPopulate from './populates.tasks.js'
+import type { PopulateHookOptions } from '../../src/index.js'
+import * as fakeData from './data.js'
+import { populate } from '../../src/index.js'
 
 type MakeAppOptions = {
   allowUnnamedQueryForExternal?: boolean
@@ -90,8 +90,11 @@ function createService(opts: any = {}) {
   return new MemoryService(opts)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function usePopulateHook(app: Application, serviceName: string, gp: PopulateHookOptions) {
+function usePopulateHook(
+  app: Application,
+  serviceName: string,
+  gp: PopulateHookOptions,
+) {
   app.service(serviceName).hooks({
     after: {
       all: [populate(gp)],

@@ -1,9 +1,8 @@
-import { graphPopulate } from '../hooks/graph-populate.hook'
-import _isObject from 'lodash/isObject.js'
+import { graphPopulate } from '../hooks/graph-populate.hook.js'
 
 import type { HookContext } from '@feathersjs/feathers'
 
-import type { PopulateParams, PopulateUtilOptions } from '../types'
+import type { PopulateParams, PopulateUtilOptions } from '../types.js'
 /**
  * This is a utility (not a hook) which performs similar to the graph-populate hook.  It
  * is meant to be used INSIDE of a hook, because it requires the `context` object.
@@ -17,15 +16,16 @@ export async function populateUtil(
 ): Promise<unknown[]> {
   const { app, params, populates } = options
   if (!app) {
-    throw new Error('The app object must be provided in the populateUtil options.')
+    throw new Error(
+      'The app object must be provided in the populateUtil options.',
+    )
   }
   // If there's nothing to populate, return.
-  // @ts-expect-error add $populateParams to params
-  if (!_isObject(params.$populateParams)) {
+  if (!('$populateParams' in params)) {
     return records
   }
-  // @ts-expect-error add $populateParams to params
-  const $populateParams: PopulateParams = params.$populateParams
+
+  const $populateParams = params.$populateParams as PopulateParams
   const populateQuery = $populateParams.query
   if (!populates || !populateQuery || !Object.keys(populateQuery).length) {
     return records

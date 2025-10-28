@@ -1,22 +1,23 @@
 {
   "name": "feathers-graph-populate",
   "description": "Add lightning fast, GraphQL-like populates to your FeathersJS API.",
-  "version": "4.2.0",
+  "version": "5.0.0-1",
   "homepage": "https://feathers-graph-populate.netlify.app/",
   "repository": {
     "type": "git",
     "url": "https://github.com/marshallswain/feathers-graph-populate"
   },
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js"
     }
   },
+  "type": "module",
   "keywords": [
     "feathers",
     "feathers.js",
@@ -38,13 +39,13 @@
     "dist/**"
   ],
   "engines": {
-    "node": ">= 18"
+    "node": ">= 20"
   },
   "scripts": {
     "compile": "shx rm -rf dist/ && tsup src/index.ts --format cjs,esm --dts",
     "version": "npm run compile",
     "release": "np",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint",
     "test": "vitest run",
     "vitest": "vitest",
     "coverage": "vitest run --coverage",
@@ -55,23 +56,26 @@
     "@feathersjs/feathers": "^5.0.0"
   },
   "dependencies": {
-    "@feathersjs/commons": "^5.0.14",
+    "@feathersjs/commons": "^5.0.35",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@feathersjs/errors": "^5.0.14",
-    "@feathersjs/feathers": "^5.0.14",
-    "@feathersjs/memory": "^5.0.14",
-    "@types/lodash": "^4.14.202",
-    "@typescript-eslint/eslint-plugin": "^6.19.0",
-    "@typescript-eslint/parser": "^6.19.0",
-    "eslint": "^8.56.0",
-    "np": "^9.2.0",
-    "shx": "^0.3.4",
-    "tsup": "^8.0.1",
-    "typescript": "^5.3.3",
-    "vite": "^5.0.11",
-    "vitepress": "^1.0.0-rc.39",
-    "vitest": "^1.2.1"
+    "@feathers-community/eslint-config": "^0.0.9",
+    "@feathersjs/errors": "^5.0.35",
+    "@feathersjs/feathers": "^5.0.35",
+    "@feathersjs/memory": "^5.0.35",
+    "@tsconfig/node22": "^22.0.2",
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^24.9.2",
+    "@typescript-eslint/parser": "^8.46.2",
+    "@vitest/coverage-v8": "^4.0.4",
+    "eslint": "^9.38.0",
+    "np": "^10.2.0",
+    "shx": "^0.4.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.12",
+    "vitepress": "^1.6.4",
+    "vitest": "^4.0.4"
   }
 }

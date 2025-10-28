@@ -1,6 +1,5 @@
 import type { Application, HookContext, Params } from '@feathersjs/feathers'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type AnyData = Record<string, any>
 
 export type SingleGraphPopulateParams =
@@ -8,18 +7,25 @@ export type SingleGraphPopulateParams =
   | ((params?: Params, context?: HookContext) => void | Params)
   | ((params?: Params, context?: HookContext) => void | Promise<Params>)
 
-export type GraphPopulateParams = SingleGraphPopulateParams | SingleGraphPopulateParams[]
+export type GraphPopulateParams =
+  | SingleGraphPopulateParams
+  | SingleGraphPopulateParams[]
 
-export interface PopulateObject<S = string> {
+export interface IncludeShared<S = string> {
   service: S
   nameAs: string
-  keyHere?: string
-  keyThere?: string
-  asArray?: boolean
   requestPerItem?: boolean
+  asArray?: boolean
   catchOnError?: boolean
   params?: GraphPopulateParams
 }
+
+export interface IncludeCumulated<S = string> extends IncludeShared<S> {
+  keyHere: string
+  keyThere: string
+}
+
+export type PopulateObject<S = string> = IncludeCumulated<S> | IncludeShared<S>
 
 export interface PopulateParams {
   name?: string
@@ -29,34 +35,6 @@ export interface PopulateParams {
 export type NestedQuery = Record<string, AnyData>
 
 export type Populates<S = string> = Record<string, PopulateObject<S>>
-
-export interface GraphPopulateHookOptions<S = string> {
-  populates: Populates<S>
-  /**
-   * @default: false
-   */
-  allowUnnamedQueryForExternal?: boolean
-}
-
-export interface PopulateHookOptions<S = string> {
-  populates: Populates<S>
-  namedQueries?: AnyData
-  defaultQueryName?: string
-  /**
-   * @default: false
-   */
-  allowUnnamedQueryForExternal?: boolean
-}
-
-export interface GetPopulateQueryOptions {
-  context: HookContext
-  namedQueries: AnyData
-  defaultQueryName: string
-  /**
-   * @default: false
-   */
-  allowUnnamedQueryForExternal?: boolean
-}
 
 export interface PopulateUtilOptions<S = string> {
   app: Application
@@ -68,7 +46,6 @@ export type GraphPopulateHook =
   | ((params?: Params, context?: HookContext) => void | Params)
   | ((params?: Params, context?: HookContext) => void | Promise<Params>)
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface InitOptions {
   allowUnnamedQueryForExternal?: boolean
 }
@@ -95,7 +72,7 @@ export interface ChainedParamsOptions {
 }
 
 export interface CumulatedRequestResult {
-  include: PopulateObject
+  include: IncludeCumulated
   params?: Params
-  response?: { data: AnyData[] } | AnyData[]
+  response?: AnyData[]
 }

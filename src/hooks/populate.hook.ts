@@ -1,11 +1,22 @@
-import _set from 'lodash/set.js'
-
-import { graphPopulate } from './graph-populate.hook'
-import { getQuery } from '../utils/get-query'
+import { graphPopulate as makeGraphPopulate } from './graph-populate.hook.js'
+import type { GetPopulateQueryOptions } from '../utils/get-query.js'
+import { getQuery } from '../utils/get-query.js'
 
 import type { HookContext } from '@feathersjs/feathers'
 
-import type { PopulateHookOptions, GraphPopulateHookOptions } from '../types'
+import type { Populates } from '../types.js'
+
+export type PopulateHookOptions<S = string> = Pick<
+  GetPopulateQueryOptions,
+  'namedQueries' | 'defaultQueryName'
+> & {
+  populates: Populates<S>
+  /**
+   * @default: false
+   */
+  allowUnnamedQueryForExternal?: boolean
+}
+
 /**
  * $populateParams.name can be passed from the outside.
  * $populateParams.query can be directly used, internally.
@@ -13,25 +24,40 @@ import type { PopulateHookOptions, GraphPopulateHookOptions } from '../types'
 export function populate(
   options: PopulateHookOptions,
 ): (context: HookContext) => Promise<HookContext> {
-  const { namedQueries, defaultQueryName, populates, allowUnnamedQueryForExternal } = options
+  const {
+    namedQueries,
+    defaultQueryName,
+    populates,
+    allowUnnamedQueryForExternal,
+  } = options
 
-  return async function populateFormFeedback(context: HookContext): Promise<HookContext> {
+  const graphPopulate = makeGraphPopulate({ populates })
+
+  return async (context: HookContext): Promise<HookContext> => {
     // Skip this hook if there are no $populateParams or defaultQueryName
     if (!context.params.$populateParams && !defaultQueryName) {
-      return Promise.resolve(context)
+      return context
     }
     /**
      * The `getQuery` function sets up params.$populateParams.query.
      */
-    _set(
+    const query = getQuery({
       context,
-      'params.$populateParams.query',
-      getQuery({ context, defaultQueryName, namedQueries, allowUnnamedQueryForExternal }),
-    )
+      namedQueries,
+      defaultQueryName,
+      allowUnnamedQueryForExternal,
+    })
+
+    if (!query) return context
+
+    // Set the query at params.$populateParams.query
+    if (!context.params.$populateParams) context.params.$populateParams = {}
+
+    context.params.$populateParams.query = query
 
     /**
      * The graphPopulate hook expects to find a query at params.$populateParams.query
      */
-    return graphPopulate({ populates } as GraphPopulateHookOptions)(context)
+    return graphPopulate(context)
   }
 }

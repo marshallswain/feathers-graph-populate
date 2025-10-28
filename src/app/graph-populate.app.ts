@@ -1,10 +1,9 @@
-import { GraphPopulateApplication } from './graph-populate.class'
-import serviceMixin from './graph-populate.service-mixin'
+import { GraphPopulateApplication } from './graph-populate.class.js'
+import { serviceMixin } from './graph-populate.service-mixin.js'
 
 import type { Application } from '@feathersjs/feathers'
-import type { InitOptions } from '../types'
+import type { InitOptions } from '../types.js'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function initApp(options?: InitOptions): (app: Application) => void {
   return (app: Application): void => {
     const graphPopulate = new GraphPopulateApplication(app, options)
