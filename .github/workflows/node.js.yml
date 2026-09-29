@@ -1,4 +1,4 @@
-# This workflow will do a clean install of node dependencies, run tests across different versions of node
+# This workflow will do a clean install of node dependencies with pnpm, run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
 name: Node.js CI
@@ -17,26 +17,30 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v6
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run typecheck
-      - run: npm run test
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
 
   coverage:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v6
       - name: Use Node.js 24.x
         uses: actions/setup-node@v4
         with:
           node-version: 24.x
-      - run: npm ci
-      - run: npm run coverage
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm coverage
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -48,10 +52,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v6
       - name: Use Node.js 24.x
         uses: actions/setup-node@v4
         with:
           node-version: 24.x
-      - run: npm ci
-      - run: npm run compile
-      - run: npm run attw
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm build
+      - run: pnpm attw

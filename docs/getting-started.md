@@ -24,6 +24,8 @@ This project is built for [FeathersJS](http://feathersjs.com). An open source we
 ```
 npm i feathers-graph-populate
 
+pnpm add feathers-graph-populate
+
 yarn add feathers-graph-populate
 ```
 
@@ -107,7 +109,7 @@ Each populate object must/can have the following properties:
 | `asArray`        | Is the referenced item a single entry or an array of entries?<br><br>**optional - default:** `true`<br>**Type:** `Boolean`
 | `requestPerItem` | Decided wether your `params` object/function runs against each item individually or bundled. Most of the time you don't need this.<br><br>**optional - default:<br>- `false`** (if `keyHere` and `keyThere` are defined)<br>- **`true`** (if `keyHere` and `keyThere` are not defined)<br>**Type:** `String`
 | `catchOnError`   | Wether the hook continues populating, if an error occurs (e.g. because of missing authentication) or throws. Also can be set on the prior options<br><br>**optional - default:** `false`<br>**Type:**: `Boolean` |
-| `params`         | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged deeply <br>Merged deeply after the params are generated internally.<br>**ProTip #1:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss<br>**ProTip #2:** If you don't define `keyHere` and `keyThere` or set `requestPerItem` to `true` the function has access to the _`this` keyword_ being the individual item the request will be made for.<br>**ProTip #3**: You can skip a `requestPerItem` if it returns `undefined`.<br>**ProTip #4**: The hook whats for async functions!<br><br>**optional - default:** `{}`<br>**Possible types:**<br>- `Object`: _will be merged with params - simple requests_<br>- `Function(params, context, { path, service }) => params`: _needs to return the `params` or a new one which gets merged deeply - more complex_<br>- `Function(params, context, { path, service }) => Promise<params>`<br>- `[Object | Function]` |
+| `params`         | Additional params to be passed to the underlying service.<br>You can mutate the passed `params` object or return a newly created `params` object which gets merged shallowly after the params are generated internally.<br>Only `query` is merged in depth: it is merged with [`mergeQuery`](https://utils.feathersjs.com/utils/merge-query.html) in `intersect` mode, so later params can only narrow it: conflicting properties must all match (`$and`), `$select` is intersected, `$limit`/`$skip` of later params win and `$sort` is combined.<br>**ProTip #1:** You can use this for adding a '$select' property or passing authentication and user data from 'context' to 'params' to restrict accesss<br>**ProTip #2:** If you don't define `keyHere` and `keyThere` or set `requestPerItem` to `true` the function has access to the _`this` keyword_ being the individual item the request will be made for.<br>**ProTip #3**: You can skip a `requestPerItem` if it returns `undefined`.<br>**ProTip #4**: The hook whats for async functions!<br><br>**optional - default:** `{}`<br>**Possible types:**<br>- `Object`: _will be merged with params - simple requests_<br>- `Function(params, context, { path, service }) => params`: _needs to return the `params` or a new one which gets merged - more complex_<br>- `Function(params, context, { path, service }) => Promise<params>`<br>- `[Object | Function]` |
 
 ### Create Named Queries
 
@@ -305,10 +307,12 @@ app.service('users').find({
 })
 ```
 
+The custom query is merged with the `params` of the populate (see `params` above), so it can only narrow them. If a populate defines `params: { query: { published: true } }`, a client querying `published: false` gets no posts instead of unpublished ones, and `$select` can only pick fields the populate selects itself.
+
 
 ## Testing
 
-`npm test`
+`pnpm test`
 
 ## Help
 

@@ -1,5 +1,3 @@
-import _isEmpty from 'lodash/isEmpty.js'
-
 import { shallowPopulate as makeShallowPopulate } from './shallow-populate.hook.js'
 
 import type { Params, Query } from '@feathersjs/feathers'
@@ -75,7 +73,7 @@ export function graphPopulate(
         }
       }
 
-      if (!_isEmpty(currentQuery)) {
+      if (Object.keys(currentQuery).length) {
         const customKeysForQuery = (service as any).options?.graphPopulate
           ?.whitelist as string[] | undefined
         const extractKeys = [...FILTERS]
@@ -98,7 +96,7 @@ export function graphPopulate(
         params.push(paramsToAdd)
       }
 
-      if (!_isEmpty(currentQuery)) {
+      if (Object.keys(currentQuery).length) {
         params.push({
           $populateParams: {
             query: currentQuery,
