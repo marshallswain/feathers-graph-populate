@@ -38,12 +38,12 @@
   "engines": {
     "node": "^22.18.0 || >=24.0.0"
   },
+  "packageManager": "pnpm@12.6.0",
   "scripts": {
-    "compile": "shx rm -rf dist/ && tsdown src/index.ts --format esm --dts",
+    "build": "tsdown src/index.ts --format esm --dts",
     "attw": "attw --pack . --ignore-rules cjs-resolves-to-esm",
-    "prepublishOnly": "npm run lint && npm run test && npm run compile",
-    "version": "npm run compile",
-    "release": "np",
+    "prepublishOnly": "pnpm lint && pnpm test && pnpm build",
+    "version": "pnpm build",
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -56,28 +56,25 @@
     "@feathersjs/feathers": "^5.0.0"
   },
   "dependencies": {
-    "@feathersjs/commons": "^5.0.44",
-    "lodash": "^4.18.1"
+    "dequal": "^2.0.3",
+    "feathers-utils": "^10.8.4"
   },
   "devDependencies": {
-    "@arethetypeswrong/cli": "^0.18.2",
-    "@feathers-community/eslint-config": "^0.1.0",
-    "@feathersjs/errors": "^5.0.44",
-    "@feathersjs/feathers": "^5.0.44",
-    "@feathersjs/memory": "^5.0.44",
-    "@tsconfig/node22": "^22.0.5",
-    "@types/lodash": "^4.17.24",
-    "@types/node": "^25.6.2",
-    "@typescript-eslint/parser": "^8.59.2",
-    "@vitest/coverage-v8": "^4.1.5",
-    "eslint": "^10.3.0",
-    "feathers-utils": "^10.0.0",
-    "np": "^11.2.0",
-    "shx": "^0.4.0",
-    "tsdown": "^0.22.0",
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@feathers-community/eslint-config": "^0.3.0",
+    "@feathersjs/adapter-commons": "^5.0.50",
+    "@feathersjs/errors": "^5.0.50",
+    "@feathersjs/feathers": "^5.0.50",
+    "@feathersjs/memory": "^5.0.50",
+    "@tsconfig/node22": "^22.0.6",
+    "@types/node": "^26.6.3",
+    "@typescript-eslint/parser": "^8.70.1",
+    "@vitest/coverage-v8": "^5.0.2",
+    "eslint": "^10.11.0",
+    "tsdown": "^0.23.0",
     "typescript": "^6.0.3",
-    "vite": "^8.0.11",
-    "vitepress": "^1.6.4",
-    "vitest": "^4.1.5"
+    "vite": "^8.3.1",
+    "vitepress": "^2.0.0-alpha.20",
+    "vitest": "^5.0.2"
   }
 }

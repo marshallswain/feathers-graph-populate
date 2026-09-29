@@ -12,6 +12,8 @@ import { assertIncludes } from '../../src/utils/shallow-populate.utils.js'
 
 type Ctx = Params & AdapterParams & { $populateParams?: any }
 
+const NAME_AS_X_REGEX = /nameAs="x"/
+
 describe('regression: $limit honored in cumulated populates', () => {
   it('limits attached related items when $limit is set in populate params', async () => {
     const app = feathers<{
@@ -169,7 +171,7 @@ describe('regression: assertIncludes does not mutate caller objects', () => {
           { service: 'a', nameAs: 'x', keyHere: 'h', keyThere: 't' } as any,
           { service: 'b', nameAs: 'x', keyHere: 'h', keyThere: 't' } as any,
         ]),
-      /nameAs="x"/,
+      NAME_AS_X_REGEX,
       'duplicate nameAs error mentions the value',
     )
 
@@ -183,7 +185,7 @@ describe('regression: assertIncludes does not mutate caller objects', () => {
             keyHere: 'h',
           } as any,
         ]),
-      /nameAs="x"/,
+      NAME_AS_X_REGEX,
       'keyHere-without-keyThere error mentions the include',
     )
   })

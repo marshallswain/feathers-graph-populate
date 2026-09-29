@@ -1,7 +1,5 @@
 import assert from 'node:assert'
 import { populateUtil } from '../src/index.js'
-import _omit from 'lodash/omit.js'
-import _orderBy from 'lodash/orderBy.js'
 import { populates as userPopulates } from './testapp/populates.users.js'
 import { makeApp } from './testapp/app.js'
 
@@ -11,6 +9,12 @@ declare module '@feathersjs/feathers' {
     paginate?: boolean
   }
 }
+
+const sortByTitle = (posts: any[], direction: 'asc' | 'desc' = 'asc') =>
+  posts.toSorted((a, b) => {
+    const result = a.title < b.title ? -1 : a.title > b.title ? 1 : 0
+    return direction === 'asc' ? result : -result
+  })
 
 describe('users.service.server.test.ts', () => {
   describe('Populate Hook', () => {
@@ -184,8 +188,10 @@ describe('users.service.server.test.ts', () => {
         assert.ok(user.posts.length, 'user has posts')
         user.posts.forEach((post: any) => {
           assert.deepStrictEqual(
-            _omit(post, ['id', 'authorId']),
-            {},
+            Object.keys(post).filter(
+              (key) => key !== 'id' && key !== 'authorId',
+            ),
+            [],
             'post only has `id` and `authorId`',
           )
           assert.strictEqual(
@@ -273,18 +279,18 @@ describe('users.service.server.test.ts', () => {
         assert.ok(posts1.length > 1, 'has at least some posts')
         assert.notDeepStrictEqual(posts1, posts2, 'arrays differ')
         assert.deepStrictEqual(
-          _orderBy(posts1, 'title'),
-          _orderBy(posts2, 'title'),
+          sortByTitle(posts1),
+          sortByTitle(posts2),
           'same entries',
         )
         assert.deepStrictEqual(
           posts1,
-          _orderBy(posts1, 'title', 'asc'),
+          sortByTitle(posts1, 'asc'),
           'sorted alphabetically ascending',
         )
         assert.deepStrictEqual(
           posts2,
-          _orderBy(posts2, 'title', 'desc'),
+          sortByTitle(posts2, 'desc'),
           'sorted alphabetically descending',
         )
       })

@@ -1,11 +1,21 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm run *)",
-      "Bash(npm test *)",
+      "Bash(pnpm run *)",
+      "Bash(pnpm build *)",
+      "Bash(pnpm attw *)",
+      "Bash(pnpm lint *)",
+      "Bash(pnpm typecheck *)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm vitest *)",
+      "Bash(pnpm coverage *)",
+      "Bash(pnpm docs *)",
+      "Bash(pnpm docs:build *)",
+      "Bash(pnpm view *)",
       "Bash(npx tsc *)",
-      "Bash(npm view *)",
-      "Bash(npx eslint *)"
+      "Bash(npx eslint *)",
+      "Bash(pnpm exec tsc *)",
+      "Bash(pnpm exec eslint *)"
     ]
   }
 }

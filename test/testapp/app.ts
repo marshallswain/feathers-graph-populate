@@ -85,7 +85,7 @@ export async function makeApp(options?: MakeAppOptions): Promise<{
 }
 
 function createService(opts: any = {}): any {
-  opts = Object.assign({ id: 'id', multi: true }, opts)
+  opts = { id: 'id', multi: true, ...opts }
 
   return new MemoryService(opts)
 }

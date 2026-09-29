@@ -1,6 +1,3 @@
-import _get from 'lodash/get.js'
-import _set from 'lodash/set.js'
-
 import type { Id } from '@feathersjs/feathers'
 
 import type { CumulatedIncludeAndIds } from '../utils/shallow-populate.utils.js'
@@ -23,6 +20,7 @@ import type {
   PopulateObject,
   ShallowPopulateOptions,
 } from '../types.js'
+import { get, set } from '../utils/object.js'
 import { toArray } from '../utils/to-array.js'
 
 export function shallowPopulate(
@@ -76,9 +74,9 @@ export function shallowPopulate(
       let result: CumulatedIncludeAndIds | undefined = undefined
 
       for (const item of data) {
-        const id = _get(item, include.keyHere!) as Id | Id[] | null | undefined
+        const id = get(item, include.keyHere!) as Id | Id[] | null | undefined
         if (id == null) {
-          _set(item, include.nameAs, noRelation(include))
+          set(item, include.nameAs, noRelation(include))
           continue
         }
 
@@ -129,7 +127,7 @@ export function shallowPopulate(
       const { include } = result
       if (!result.response) {
         data.forEach((item) => {
-          _set(item, include.nameAs, noRelation(include))
+          set(item, include.nameAs, noRelation(include))
         })
         return
       }
@@ -145,7 +143,7 @@ export function shallowPopulate(
           await makeRequestPerItem(item, app, include, context)
         } catch (err) {
           if (!shouldCatchOnError(options, include)) throw err
-          _set(item, include.nameAs, noRelation(include))
+          set(item, include.nameAs, noRelation(include))
         }
       })
       promisesPerIncludeAndItem.push(...promisesPerItem)

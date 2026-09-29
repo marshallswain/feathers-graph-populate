@@ -1,7 +1,3 @@
-import { _ } from '@feathersjs/commons'
-const { each } = _
-import _get from 'lodash/get.js'
-
 import type {
   AnyData,
   GraphPopulateHook,
@@ -21,11 +17,11 @@ export function convertHookData(
   } else if (typeof obj !== 'object') {
     hook.all = [obj as SingleGraphPopulateParams]
   } else {
-    each(obj, function (value, key) {
+    for (const [key, value] of Object.entries(obj ?? {})) {
       hook[key as HookMapKey] = (
         !Array.isArray(value) ? [value] : value
       ) as SingleGraphPopulateParams[]
-    })
+    }
   }
 
   return hook
@@ -39,8 +35,8 @@ export function getHooks(
   method: string,
   appLast = false,
 ): any[] {
-  const appHooks = _get(app, ['__hooks', type, method]) || []
-  const serviceHooks = _get(service, ['__hooks', type, method]) || []
+  const appHooks = app?.__hooks?.[type]?.[method] || []
+  const serviceHooks = service?.__hooks?.[type]?.[method] || []
 
   return appLast
     ? [...serviceHooks, ...appHooks]
@@ -79,31 +75,28 @@ export function enableHooks(obj: any, methods: string[], types: string[]): AnyDa
       this: { __hooks: HookData },
       allHooks: HookData | GraphPopulateHook | GraphPopulateHook[],
     ) {
-      each(
-        allHooks,
-        (current: GraphPopulateHook | AnyData | unknown[], type) => {
-          const typeKey = type as HookDataKey
-          if (!this.__hooks[typeKey]) {
-            throw new Error(`'${type}' is not a valid hook type`)
+      for (const [type, current] of Object.entries(allHooks ?? {})) {
+        const typeKey = type as HookDataKey
+        if (!this.__hooks[typeKey]) {
+          throw new Error(`'${type}' is not a valid hook type`)
+        }
+
+        const hooks = convertHookData(current)
+
+        methods.forEach((method) => {
+          const methodKey = method as HookMapKey
+          const map = this.__hooks[typeKey]!
+          const currentHooks = map[methodKey] || (map[methodKey] = [])
+
+          if (hooks.all) {
+            currentHooks.push(...hooks.all)
           }
 
-          const hooks = convertHookData(current)
-
-          methods.forEach((method) => {
-            const methodKey = method as HookMapKey
-            const map = this.__hooks[typeKey]!
-            const currentHooks = map[methodKey] || (map[methodKey] = [])
-
-            if (hooks.all) {
-              currentHooks.push(...hooks.all)
-            }
-
-            if (hooks[methodKey]) {
-              currentHooks.push(...hooks[methodKey]!)
-            }
-          })
-        },
-      )
+          if (hooks[methodKey]) {
+            currentHooks.push(...hooks[methodKey]!)
+          }
+        })
+      }
 
       return this
     },

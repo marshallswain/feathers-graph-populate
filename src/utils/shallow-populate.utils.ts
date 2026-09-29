@@ -1,10 +1,6 @@
 import type { Application, HookContext, Id, Params } from '@feathersjs/feathers'
-import _get from 'lodash/get.js'
-import _isEmpty from 'lodash/isEmpty.js'
-import _isEqual from 'lodash/isEqual.js'
-import _isFunction from 'lodash/isFunction.js'
-import _merge from 'lodash/merge.js'
-import _set from 'lodash/set.js'
+import { dequal } from 'dequal'
+import { mergeQuery } from 'feathers-utils/utils'
 import type {
   AnyData,
   ChainedParamsOptions,
@@ -14,6 +10,7 @@ import type {
   PopulateObject,
   ShallowPopulateOptions,
 } from '../types.js'
+import { get, set } from './object.js'
 import { toArray } from './to-array.js'
 
 const requiredIncludeAttrs = ['service', 'nameAs', 'asArray', 'params']
@@ -25,7 +22,7 @@ const isDynamicParams = (
   if (Array.isArray(params)) {
     return params.some((p) => isDynamicParams(p))
   } else {
-    return !_isEmpty(params) || _isFunction(params)
+    return typeof params === 'function' || Object.keys(params).length > 0
   }
 }
 
@@ -102,6 +99,22 @@ export const assertIncludes = (includes: PopulateObject[]): void => {
   })
 }
 
+/**
+ * Merges `source` into `target` shallowly. `query` is merged with `mergeQuery`
+ * in `intersect` mode, so later params can only narrow the query: conflicting
+ * properties must both match (`$and`) and `$select` is intersected.
+ */
+const mergeParams = (target: Params, source: Params): Params => {
+  const { query, ...rest } = source
+  const merged: Params = { ...target, ...rest }
+  if (query !== undefined) {
+    merged.query = target.query
+      ? mergeQuery(target.query, query, { mode: 'intersect' })
+      : { ...query }
+  }
+  return merged
+}
+
 export const chainedParams = async (
   paramsArr: GraphPopulateParams,
   context: HookContext,
@@ -111,11 +124,11 @@ export const chainedParams = async (
   const arr = Array.isArray(paramsArr) ? paramsArr : [paramsArr]
   const { thisKey, skipWhenUndefined } = options
 
-  const resultingParams: Params = {}
+  let resultingParams: Params = {}
   for (let i = 0, n = arr.length; i < n; i++) {
     let params: Params | void | undefined
     const current = arr[i]
-    if (_isFunction(current)) {
+    if (typeof current === 'function') {
       const fn = current as (
         params: Params,
         context: HookContext,
@@ -130,7 +143,9 @@ export const chainedParams = async (
       params = current
     }
     if (!params && skipWhenUndefined) return undefined
-    if (params !== resultingParams) _merge(resultingParams, params)
+    if (params && params !== resultingParams) {
+      resultingParams = mergeParams(resultingParams, params)
+    }
   }
 
   return resultingParams
@@ -212,17 +227,17 @@ export async function makeRequestPerItem(
   )
 
   if (!params) {
-    _set(item, nameAs, noRelation(include))
+    set(item, nameAs, noRelation(include))
 
     return
   }
   const relatedItems = await service.find(params)
 
   if (asArray) {
-    _set(item, nameAs, relatedItems)
+    set(item, nameAs, relatedItems)
   } else {
     const relatedItem = relatedItems.length > 0 ? relatedItems[0] : null
-    _set(item, nameAs, relatedItem)
+    set(item, nameAs, relatedItem)
   }
 }
 
@@ -253,9 +268,8 @@ export function setItems(
   }
 
   data.forEach((item) => {
-    const keyHere = _get(item, include.keyHere!) as
-      | (string | number)
-      | (string | number)[]
+    const keyHere = get(item, include.keyHere!) as
+      (string | number) | (string | number)[]
 
     if (keyHere === undefined) return
 
@@ -263,10 +277,10 @@ export function setItems(
       if (!asArray) {
         const found = getRelatedItems(keyHere[0], relatedItems, include, params)
         if (found !== undefined) {
-          _set(item, nameAs, stripResult(found))
+          set(item, nameAs, stripResult(found))
         }
       } else {
-        _set(
+        set(
           item,
           nameAs,
           stripResult(getRelatedItems(keyHere, relatedItems, include, params)),
@@ -275,7 +289,7 @@ export function setItems(
     } else {
       const found = getRelatedItems(keyHere, relatedItems, include, params)
       if (found !== undefined) {
-        _set(item, nameAs, stripResult(found))
+        set(item, nameAs, stripResult(found))
       }
     }
   })
@@ -318,18 +332,18 @@ export function getRelatedItems(
         const nestedProp = keyThere.slice(keyThere.indexOf('.') + 1)
         // Map over the array to grab each nestedProp's value.
         currentId = (currentItem[arrayName] as AnyData[]).map((nestedItem) => {
-          const keyThereVal = _get(nestedItem, nestedProp)
+          const keyThereVal = get(nestedItem, nestedProp)
           return keyThereVal
         })
       } else {
-        const keyThereVal = _get(currentItem, keyThere)
+        const keyThereVal = get(currentItem, keyThere)
         currentId = keyThereVal
       }
       if (include.asArray) {
         const items = itemOrItems as AnyData[]
         if (
           (Array.isArray(currentId) && currentId.includes(id)) ||
-          _isEqual(currentId, id)
+          dequal(currentId, id)
         ) {
           if (skipped < skip) {
             skipped++
@@ -342,7 +356,7 @@ export function getRelatedItems(
           }
         }
       } else {
-        if (_isEqual(currentId, id)) {
+        if (dequal(currentId, id)) {
           if (skipped < skip) {
             skipped++
             continue
