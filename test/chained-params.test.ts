@@ -4,7 +4,7 @@ import { feathers } from '@feathersjs/feathers'
 import { MemoryService } from '@feathersjs/memory'
 
 import configureGraphPopulate, { populate } from '../src/index.js'
-import { chainedParams } from '../src/utils/shallow-populate.utils.js'
+import { chainedParams } from '../src/utils/chained-params.js'
 
 const context = {} as any
 const target = {}

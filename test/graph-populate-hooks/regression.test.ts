@@ -8,7 +8,7 @@ import configureGraphPopulate, {
   populate,
   shallowPopulate,
 } from '../../src/index.js'
-import { assertIncludes } from '../../src/utils/shallow-populate.utils.js'
+import { assertIncludes } from '../../src/utils/assert-includes.js'
 
 type Ctx = Params & AdapterParams & { $populateParams?: any }
 

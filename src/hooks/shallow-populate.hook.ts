@@ -1,15 +1,13 @@
 import type { Id } from '@feathersjs/feathers'
 
-import type { CumulatedIncludeAndIds } from '../utils/shallow-populate.utils.js'
-import {
-  applyIncludeDefaults,
-  assertIncludes,
-  makeCumulatedRequest,
-  makeRequestPerItem,
-  noRelation,
-  setItems,
-  shouldCatchOnError,
-} from '../utils/shallow-populate.utils.js'
+import { applyIncludeDefaults } from '../utils/apply-include-defaults.js'
+import { assertIncludes } from '../utils/assert-includes.js'
+import type { CumulatedIncludeAndIds } from '../utils/make-cumulated-request.js'
+import { makeCumulatedRequest } from '../utils/make-cumulated-request.js'
+import { makeRequestPerItem } from '../utils/make-request-per-item.js'
+import { noRelation } from '../utils/no-relation.js'
+import { setItems } from '../utils/set-items.js'
+import { shouldCatchOnError } from '../utils/should-catch-on-error.js'
 
 import type {
   AnyData,
