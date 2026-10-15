@@ -1,15 +1,13 @@
 import type { Id } from '@feathersjs/feathers'
 
-import type { CumulatedIncludeAndIds } from '../utils/shallow-populate.utils.js'
-import {
-  applyIncludeDefaults,
-  assertIncludes,
-  makeCumulatedRequest,
-  makeRequestPerItem,
-  noRelation,
-  setItems,
-  shouldCatchOnError,
-} from '../utils/shallow-populate.utils.js'
+import { applyIncludeDefaults } from '../utils/apply-include-defaults.js'
+import { assertIncludes } from '../utils/assert-includes.js'
+import type { CumulatedIncludeAndIds } from '../utils/make-cumulated-request.js'
+import { makeCumulatedRequest } from '../utils/make-cumulated-request.js'
+import { makeRequestPerItem } from '../utils/make-request-per-item.js'
+import { noRelation } from '../utils/no-relation.js'
+import { setItems } from '../utils/set-items.js'
+import { shouldCatchOnError } from '../utils/should-catch-on-error.js'
 
 import type {
   AnyData,
@@ -71,7 +69,7 @@ export function shallowPopulate(
     const includesAndIds: CumulatedIncludeAndIds[] = []
 
     for (const include of cumulatedIncludes) {
-      let result: CumulatedIncludeAndIds | undefined = undefined
+      let ids: Set<Id> | undefined = undefined
 
       for (const item of data) {
         const id = get(item, include.keyHere!) as Id | Id[] | null | undefined
@@ -80,28 +78,23 @@ export function shallowPopulate(
           continue
         }
 
-        if (!result) {
-          result = { include, ids: [] }
+        if (!ids) {
+          ids = new Set()
         }
 
-        const ids = toArray(id)
-
-        for (const id of ids) {
-          if (!result.ids.includes(id)) {
-            result.ids.push(id)
-          }
+        for (const currentId of toArray(id)) {
+          ids.add(currentId)
         }
       }
 
-      if (result) {
-        includesAndIds.push(result)
+      if (ids) {
+        includesAndIds.push({ include, ids: [...ids] })
       }
     }
 
     const promises: Promise<CumulatedRequestResult>[] = []
 
-    for (const keyHere in includesAndIds) {
-      const includeAndIds = includesAndIds[keyHere]
+    for (const includeAndIds of includesAndIds) {
       if (!includeAndIds.ids.length) continue
 
       promises.push(
