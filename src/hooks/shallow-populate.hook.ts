@@ -71,7 +71,7 @@ export function shallowPopulate(
     const includesAndIds: CumulatedIncludeAndIds[] = []
 
     for (const include of cumulatedIncludes) {
-      let result: CumulatedIncludeAndIds | undefined = undefined
+      let ids: Set<Id> | undefined = undefined
 
       for (const item of data) {
         const id = get(item, include.keyHere!) as Id | Id[] | null | undefined
@@ -80,28 +80,23 @@ export function shallowPopulate(
           continue
         }
 
-        if (!result) {
-          result = { include, ids: [] }
+        if (!ids) {
+          ids = new Set()
         }
 
-        const ids = toArray(id)
-
-        for (const id of ids) {
-          if (!result.ids.includes(id)) {
-            result.ids.push(id)
-          }
+        for (const currentId of toArray(id)) {
+          ids.add(currentId)
         }
       }
 
-      if (result) {
-        includesAndIds.push(result)
+      if (ids) {
+        includesAndIds.push({ include, ids: [...ids] })
       }
     }
 
     const promises: Promise<CumulatedRequestResult>[] = []
 
-    for (const keyHere in includesAndIds) {
-      const includeAndIds = includesAndIds[keyHere]
+    for (const includeAndIds of includesAndIds) {
       if (!includeAndIds.ids.length) continue
 
       promises.push(
