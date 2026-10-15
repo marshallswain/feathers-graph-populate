@@ -38,7 +38,7 @@
   "engines": {
     "node": "^22.18.0 || >=24.0.0"
   },
-  "packageManager": "pnpm@12.6.0",
+  "packageManager": "pnpm@12.11.2",
   "scripts": {
     "build": "tsdown src/index.ts --format esm --dts",
     "attw": "attw --pack . --ignore-rules cjs-resolves-to-esm",
@@ -57,7 +57,7 @@
   },
   "dependencies": {
     "dequal": "^2.0.3",
-    "feathers-utils": "^10.8.4"
+    "feathers-utils": "^10.9.3"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
@@ -67,14 +67,14 @@
     "@feathersjs/feathers": "^5.0.50",
     "@feathersjs/memory": "^5.0.50",
     "@tsconfig/node22": "^22.0.6",
-    "@types/node": "^26.6.3",
-    "@typescript-eslint/parser": "^8.70.1",
-    "@vitest/coverage-v8": "^5.0.2",
-    "eslint": "^10.11.0",
-    "tsdown": "^0.23.0",
+    "@types/node": "^26.6.5",
+    "@typescript-eslint/parser": "^8.71.2",
+    "@vitest/coverage-v8": "^5.0.5",
+    "eslint": "^10.12.0",
+    "tsdown": "^0.23.1",
     "typescript": "^6.0.3",
-    "vite": "^8.3.1",
+    "vite": "^8.3.4",
     "vitepress": "^2.0.0-alpha.20",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.5"
   }
 }

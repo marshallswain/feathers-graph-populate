@@ -1,2 +1,8 @@
 allowBuilds:
   unrs-resolver: false
+minimumReleaseAgeExclude:
+  - '@vitest/coverage-v8@5.0.5'
+  - '@vitest/mocker@5.0.5'
+  - '@vitest/spy@5.0.5'
+  - feathers-utils@10.9.3
+  - vitest@5.0.5
